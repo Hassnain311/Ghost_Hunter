@@ -1,0 +1,1501 @@
+agent_name,topology_id,sigma,trial,seed,captured,total_steps,mean_manhattan_error
+HMM Hunter,0,0.5,0,42,1,11,1.818
+Naive Sensor Baseline,0,0.5,0,42,1,73,5.603
+Random Baseline,0,0.5,0,42,1,73,5.603
+HMM Hunter,0,0.5,1,49,1,11,2.545
+Naive Sensor Baseline,0,0.5,1,49,0,100,7.39
+Random Baseline,0,0.5,1,49,0,100,7.39
+HMM Hunter,0,0.5,2,56,1,9,4.333
+Naive Sensor Baseline,0,0.5,2,56,0,100,6.19
+Random Baseline,0,0.5,2,56,0,100,6.19
+HMM Hunter,0,0.5,3,63,1,11,5.182
+Naive Sensor Baseline,0,0.5,3,63,1,26,4.231
+Random Baseline,0,0.5,3,63,1,26,4.231
+HMM Hunter,0,0.5,4,70,1,28,4.964
+Naive Sensor Baseline,0,0.5,4,70,0,100,5.96
+Random Baseline,0,0.5,4,70,0,100,5.96
+HMM Hunter,0,0.5,5,77,1,14,2.571
+Naive Sensor Baseline,0,0.5,5,77,1,52,5.212
+Random Baseline,0,0.5,5,77,1,52,5.212
+HMM Hunter,0,0.5,6,84,1,16,3.25
+Naive Sensor Baseline,0,0.5,6,84,0,100,7.52
+Random Baseline,0,0.5,6,84,0,100,7.52
+HMM Hunter,0,0.5,7,91,1,11,4.0
+Naive Sensor Baseline,0,0.5,7,91,0,100,7.17
+Random Baseline,0,0.5,7,91,0,100,7.17
+HMM Hunter,0,0.5,8,98,1,7,4.143
+Naive Sensor Baseline,0,0.5,8,98,1,22,3.682
+Random Baseline,0,0.5,8,98,1,22,3.682
+HMM Hunter,0,0.5,9,105,1,9,4.111
+Naive Sensor Baseline,0,0.5,9,105,1,28,7.429
+Random Baseline,0,0.5,9,105,1,28,7.429
+HMM Hunter,0,0.5,10,112,1,15,2.267
+Naive Sensor Baseline,0,0.5,10,112,1,71,6.704
+Random Baseline,0,0.5,10,112,1,71,6.704
+HMM Hunter,0,0.5,11,119,1,16,3.75
+Naive Sensor Baseline,0,0.5,11,119,1,17,4.0
+Random Baseline,0,0.5,11,119,1,17,4.0
+HMM Hunter,0,0.5,12,126,1,3,3.667
+Naive Sensor Baseline,0,0.5,12,126,1,86,5.302
+Random Baseline,0,0.5,12,126,1,86,5.302
+HMM Hunter,0,0.5,13,133,1,14,3.857
+Naive Sensor Baseline,0,0.5,13,133,1,24,4.917
+Random Baseline,0,0.5,13,133,1,24,4.917
+HMM Hunter,0,0.5,14,140,1,17,5.529
+Naive Sensor Baseline,0,0.5,14,140,0,100,7.01
+Random Baseline,0,0.5,14,140,0,100,7.01
+HMM Hunter,0,0.5,15,147,1,10,1.6
+Naive Sensor Baseline,0,0.5,15,147,0,100,8.36
+Random Baseline,0,0.5,15,147,0,100,8.36
+HMM Hunter,0,0.5,16,154,1,10,2.6
+Naive Sensor Baseline,0,0.5,16,154,1,99,5.879
+Random Baseline,0,0.5,16,154,1,99,5.879
+HMM Hunter,0,0.5,17,161,1,19,2.211
+Naive Sensor Baseline,0,0.5,17,161,1,74,9.5
+Random Baseline,0,0.5,17,161,1,74,9.5
+HMM Hunter,0,0.5,18,168,1,17,4.235
+Naive Sensor Baseline,0,0.5,18,168,0,100,8.17
+Random Baseline,0,0.5,18,168,0,100,8.17
+HMM Hunter,0,0.5,19,175,1,24,2.875
+Naive Sensor Baseline,0,0.5,19,175,1,55,5.6
+Random Baseline,0,0.5,19,175,1,55,5.6
+HMM Hunter,0,1.0,0,42,1,12,1.75
+Naive Sensor Baseline,0,1.0,0,42,1,73,5.603
+Random Baseline,0,1.0,0,42,1,73,5.603
+HMM Hunter,0,1.0,1,49,1,11,2.545
+Naive Sensor Baseline,0,1.0,1,49,0,100,7.39
+Random Baseline,0,1.0,1,49,0,100,7.39
+HMM Hunter,0,1.0,2,56,1,10,4.0
+Naive Sensor Baseline,0,1.0,2,56,0,100,6.19
+Random Baseline,0,1.0,2,56,0,100,6.19
+HMM Hunter,0,1.0,3,63,1,11,4.909
+Naive Sensor Baseline,0,1.0,3,63,1,26,4.231
+Random Baseline,0,1.0,3,63,1,26,4.231
+HMM Hunter,0,1.0,4,70,1,41,5.122
+Naive Sensor Baseline,0,1.0,4,70,0,100,5.96
+Random Baseline,0,1.0,4,70,0,100,5.96
+HMM Hunter,0,1.0,5,77,1,11,2.636
+Naive Sensor Baseline,0,1.0,5,77,1,52,5.212
+Random Baseline,0,1.0,5,77,1,52,5.212
+HMM Hunter,0,1.0,6,84,1,32,2.688
+Naive Sensor Baseline,0,1.0,6,84,0,100,7.52
+Random Baseline,0,1.0,6,84,0,100,7.52
+HMM Hunter,0,1.0,7,91,1,10,6.1
+Naive Sensor Baseline,0,1.0,7,91,0,100,7.17
+Random Baseline,0,1.0,7,91,0,100,7.17
+HMM Hunter,0,1.0,8,98,1,10,4.8
+Naive Sensor Baseline,0,1.0,8,98,1,22,3.682
+Random Baseline,0,1.0,8,98,1,22,3.682
+HMM Hunter,0,1.0,9,105,1,16,3.812
+Naive Sensor Baseline,0,1.0,9,105,1,28,7.429
+Random Baseline,0,1.0,9,105,1,28,7.429
+HMM Hunter,0,1.0,10,112,1,13,2.462
+Naive Sensor Baseline,0,1.0,10,112,1,71,6.704
+Random Baseline,0,1.0,10,112,1,71,6.704
+HMM Hunter,0,1.0,11,119,1,5,5.8
+Naive Sensor Baseline,0,1.0,11,119,1,17,4.0
+Random Baseline,0,1.0,11,119,1,17,4.0
+HMM Hunter,0,1.0,12,126,1,55,3.436
+Naive Sensor Baseline,0,1.0,12,126,1,86,5.302
+Random Baseline,0,1.0,12,126,1,86,5.302
+HMM Hunter,0,1.0,13,133,1,14,4.857
+Naive Sensor Baseline,0,1.0,13,133,1,24,4.917
+Random Baseline,0,1.0,13,133,1,24,4.917
+HMM Hunter,0,1.0,14,140,1,20,5.15
+Naive Sensor Baseline,0,1.0,14,140,0,100,7.01
+Random Baseline,0,1.0,14,140,0,100,7.01
+HMM Hunter,0,1.0,15,147,1,10,1.8
+Naive Sensor Baseline,0,1.0,15,147,0,100,8.36
+Random Baseline,0,1.0,15,147,0,100,8.36
+HMM Hunter,0,1.0,16,154,1,14,2.714
+Naive Sensor Baseline,0,1.0,16,154,1,99,5.879
+Random Baseline,0,1.0,16,154,1,99,5.879
+HMM Hunter,0,1.0,17,161,1,19,2.211
+Naive Sensor Baseline,0,1.0,17,161,1,74,9.5
+Random Baseline,0,1.0,17,161,1,74,9.5
+HMM Hunter,0,1.0,18,168,1,18,3.722
+Naive Sensor Baseline,0,1.0,18,168,0,100,8.17
+Random Baseline,0,1.0,18,168,0,100,8.17
+HMM Hunter,0,1.0,19,175,1,16,5.75
+Naive Sensor Baseline,0,1.0,19,175,1,55,5.6
+Random Baseline,0,1.0,19,175,1,55,5.6
+HMM Hunter,0,1.5,0,42,1,13,1.769
+Naive Sensor Baseline,0,1.5,0,42,1,73,5.603
+Random Baseline,0,1.5,0,42,1,73,5.603
+HMM Hunter,0,1.5,1,49,1,11,2.727
+Naive Sensor Baseline,0,1.5,1,49,0,100,7.39
+Random Baseline,0,1.5,1,49,0,100,7.39
+HMM Hunter,0,1.5,2,56,1,10,4.0
+Naive Sensor Baseline,0,1.5,2,56,0,100,6.19
+Random Baseline,0,1.5,2,56,0,100,6.19
+HMM Hunter,0,1.5,3,63,1,24,4.208
+Naive Sensor Baseline,0,1.5,3,63,1,26,4.231
+Random Baseline,0,1.5,3,63,1,26,4.231
+HMM Hunter,0,1.5,4,70,1,15,6.667
+Naive Sensor Baseline,0,1.5,4,70,0,100,5.96
+Random Baseline,0,1.5,4,70,0,100,5.96
+HMM Hunter,0,1.5,5,77,1,16,4.0
+Naive Sensor Baseline,0,1.5,5,77,1,52,5.212
+Random Baseline,0,1.5,5,77,1,52,5.212
+HMM Hunter,0,1.5,6,84,1,29,3.966
+Naive Sensor Baseline,0,1.5,6,84,0,100,7.52
+Random Baseline,0,1.5,6,84,0,100,7.52
+HMM Hunter,0,1.5,7,91,1,10,6.8
+Naive Sensor Baseline,0,1.5,7,91,0,100,7.17
+Random Baseline,0,1.5,7,91,0,100,7.17
+HMM Hunter,0,1.5,8,98,1,83,3.265
+Naive Sensor Baseline,0,1.5,8,98,1,22,3.682
+Random Baseline,0,1.5,8,98,1,22,3.682
+HMM Hunter,0,1.5,9,105,1,9,3.444
+Naive Sensor Baseline,0,1.5,9,105,1,28,7.429
+Random Baseline,0,1.5,9,105,1,28,7.429
+HMM Hunter,0,1.5,10,112,1,17,2.235
+Naive Sensor Baseline,0,1.5,10,112,1,71,6.704
+Random Baseline,0,1.5,10,112,1,71,6.704
+HMM Hunter,0,1.5,11,119,1,5,6.6
+Naive Sensor Baseline,0,1.5,11,119,1,17,4.0
+Random Baseline,0,1.5,11,119,1,17,4.0
+HMM Hunter,0,1.5,12,126,1,12,1.917
+Naive Sensor Baseline,0,1.5,12,126,1,86,5.302
+Random Baseline,0,1.5,12,126,1,86,5.302
+HMM Hunter,0,1.5,13,133,1,14,3.929
+Naive Sensor Baseline,0,1.5,13,133,1,24,4.917
+Random Baseline,0,1.5,13,133,1,24,4.917
+HMM Hunter,0,1.5,14,140,1,18,4.611
+Naive Sensor Baseline,0,1.5,14,140,0,100,7.01
+Random Baseline,0,1.5,14,140,0,100,7.01
+HMM Hunter,0,1.5,15,147,1,27,2.444
+Naive Sensor Baseline,0,1.5,15,147,0,100,8.36
+Random Baseline,0,1.5,15,147,0,100,8.36
+HMM Hunter,0,1.5,16,154,1,9,4.111
+Naive Sensor Baseline,0,1.5,16,154,1,99,5.879
+Random Baseline,0,1.5,16,154,1,99,5.879
+HMM Hunter,0,1.5,17,161,1,32,2.375
+Naive Sensor Baseline,0,1.5,17,161,1,74,9.5
+Random Baseline,0,1.5,17,161,1,74,9.5
+HMM Hunter,0,1.5,18,168,1,18,3.389
+Naive Sensor Baseline,0,1.5,18,168,0,100,8.17
+Random Baseline,0,1.5,18,168,0,100,8.17
+HMM Hunter,0,1.5,19,175,1,32,4.531
+Naive Sensor Baseline,0,1.5,19,175,1,55,5.6
+Random Baseline,0,1.5,19,175,1,55,5.6
+HMM Hunter,0,2.0,0,42,1,13,1.846
+Naive Sensor Baseline,0,2.0,0,42,1,73,5.603
+Random Baseline,0,2.0,0,42,1,73,5.603
+HMM Hunter,0,2.0,1,49,1,19,3.947
+Naive Sensor Baseline,0,2.0,1,49,0,100,7.39
+Random Baseline,0,2.0,1,49,0,100,7.39
+HMM Hunter,0,2.0,2,56,1,12,4.75
+Naive Sensor Baseline,0,2.0,2,56,0,100,6.19
+Random Baseline,0,2.0,2,56,0,100,6.19
+HMM Hunter,0,2.0,3,63,1,43,4.209
+Naive Sensor Baseline,0,2.0,3,63,1,26,4.231
+Random Baseline,0,2.0,3,63,1,26,4.231
+HMM Hunter,0,2.0,4,70,1,38,5.368
+Naive Sensor Baseline,0,2.0,4,70,0,100,5.96
+Random Baseline,0,2.0,4,70,0,100,5.96
+HMM Hunter,0,2.0,5,77,1,13,3.308
+Naive Sensor Baseline,0,2.0,5,77,1,52,5.212
+Random Baseline,0,2.0,5,77,1,52,5.212
+HMM Hunter,0,2.0,6,84,1,23,3.783
+Naive Sensor Baseline,0,2.0,6,84,0,100,7.52
+Random Baseline,0,2.0,6,84,0,100,7.52
+HMM Hunter,0,2.0,7,91,1,10,7.0
+Naive Sensor Baseline,0,2.0,7,91,0,100,7.17
+Random Baseline,0,2.0,7,91,0,100,7.17
+HMM Hunter,0,2.0,8,98,1,7,4.429
+Naive Sensor Baseline,0,2.0,8,98,1,22,3.682
+Random Baseline,0,2.0,8,98,1,22,3.682
+HMM Hunter,0,2.0,9,105,1,9,3.556
+Naive Sensor Baseline,0,2.0,9,105,1,28,7.429
+Random Baseline,0,2.0,9,105,1,28,7.429
+HMM Hunter,0,2.0,10,112,1,29,5.828
+Naive Sensor Baseline,0,2.0,10,112,1,71,6.704
+Random Baseline,0,2.0,10,112,1,71,6.704
+HMM Hunter,0,2.0,11,119,1,63,4.778
+Naive Sensor Baseline,0,2.0,11,119,1,17,4.0
+Random Baseline,0,2.0,11,119,1,17,4.0
+HMM Hunter,0,2.0,12,126,1,27,3.0
+Naive Sensor Baseline,0,2.0,12,126,1,86,5.302
+Random Baseline,0,2.0,12,126,1,86,5.302
+HMM Hunter,0,2.0,13,133,1,15,4.533
+Naive Sensor Baseline,0,2.0,13,133,1,24,4.917
+Random Baseline,0,2.0,13,133,1,24,4.917
+HMM Hunter,0,2.0,14,140,1,20,3.5
+Naive Sensor Baseline,0,2.0,14,140,0,100,7.01
+Random Baseline,0,2.0,14,140,0,100,7.01
+HMM Hunter,0,2.0,15,147,1,10,2.7
+Naive Sensor Baseline,0,2.0,15,147,0,100,8.36
+Random Baseline,0,2.0,15,147,0,100,8.36
+HMM Hunter,0,2.0,16,154,1,20,2.45
+Naive Sensor Baseline,0,2.0,16,154,1,99,5.879
+Random Baseline,0,2.0,16,154,1,99,5.879
+HMM Hunter,0,2.0,17,161,1,25,2.76
+Naive Sensor Baseline,0,2.0,17,161,1,74,9.5
+Random Baseline,0,2.0,17,161,1,74,9.5
+HMM Hunter,0,2.0,18,168,1,24,2.75
+Naive Sensor Baseline,0,2.0,18,168,0,100,8.17
+Random Baseline,0,2.0,18,168,0,100,8.17
+HMM Hunter,0,2.0,19,175,1,32,4.625
+Naive Sensor Baseline,0,2.0,19,175,1,55,5.6
+Random Baseline,0,2.0,19,175,1,55,5.6
+HMM Hunter,0,3.0,0,42,1,13,3.077
+Naive Sensor Baseline,0,3.0,0,42,1,73,5.603
+Random Baseline,0,3.0,0,42,1,73,5.603
+HMM Hunter,0,3.0,1,49,1,48,3.688
+Naive Sensor Baseline,0,3.0,1,49,0,100,7.39
+Random Baseline,0,3.0,1,49,0,100,7.39
+HMM Hunter,0,3.0,2,56,1,29,5.0
+Naive Sensor Baseline,0,3.0,2,56,0,100,6.19
+Random Baseline,0,3.0,2,56,0,100,6.19
+HMM Hunter,0,3.0,3,63,1,50,5.2
+Naive Sensor Baseline,0,3.0,3,63,1,26,4.231
+Random Baseline,0,3.0,3,63,1,26,4.231
+HMM Hunter,0,3.0,4,70,1,54,5.019
+Naive Sensor Baseline,0,3.0,4,70,0,100,5.96
+Random Baseline,0,3.0,4,70,0,100,5.96
+HMM Hunter,0,3.0,5,77,1,36,3.278
+Naive Sensor Baseline,0,3.0,5,77,1,52,5.212
+Random Baseline,0,3.0,5,77,1,52,5.212
+HMM Hunter,0,3.0,6,84,1,35,3.4
+Naive Sensor Baseline,0,3.0,6,84,0,100,7.52
+Random Baseline,0,3.0,6,84,0,100,7.52
+HMM Hunter,0,3.0,7,91,1,13,5.615
+Naive Sensor Baseline,0,3.0,7,91,0,100,7.17
+Random Baseline,0,3.0,7,91,0,100,7.17
+HMM Hunter,0,3.0,8,98,1,36,3.5
+Naive Sensor Baseline,0,3.0,8,98,1,22,3.682
+Random Baseline,0,3.0,8,98,1,22,3.682
+HMM Hunter,0,3.0,9,105,1,9,3.333
+Naive Sensor Baseline,0,3.0,9,105,1,28,7.429
+Random Baseline,0,3.0,9,105,1,28,7.429
+HMM Hunter,0,3.0,10,112,1,34,7.676
+Naive Sensor Baseline,0,3.0,10,112,1,71,6.704
+Random Baseline,0,3.0,10,112,1,71,6.704
+HMM Hunter,0,3.0,11,119,1,80,3.788
+Naive Sensor Baseline,0,3.0,11,119,1,17,4.0
+Random Baseline,0,3.0,11,119,1,17,4.0
+HMM Hunter,0,3.0,12,126,1,47,3.851
+Naive Sensor Baseline,0,3.0,12,126,1,86,5.302
+Random Baseline,0,3.0,12,126,1,86,5.302
+HMM Hunter,0,3.0,13,133,1,15,4.333
+Naive Sensor Baseline,0,3.0,13,133,1,24,4.917
+Random Baseline,0,3.0,13,133,1,24,4.917
+HMM Hunter,0,3.0,14,140,1,24,4.75
+Naive Sensor Baseline,0,3.0,14,140,0,100,7.01
+Random Baseline,0,3.0,14,140,0,100,7.01
+HMM Hunter,0,3.0,15,147,1,23,3.391
+Naive Sensor Baseline,0,3.0,15,147,0,100,8.36
+Random Baseline,0,3.0,15,147,0,100,8.36
+HMM Hunter,0,3.0,16,154,1,8,4.25
+Naive Sensor Baseline,0,3.0,16,154,1,99,5.879
+Random Baseline,0,3.0,16,154,1,99,5.879
+HMM Hunter,0,3.0,17,161,1,29,3.172
+Naive Sensor Baseline,0,3.0,17,161,1,74,9.5
+Random Baseline,0,3.0,17,161,1,74,9.5
+HMM Hunter,0,3.0,18,168,1,79,3.734
+Naive Sensor Baseline,0,3.0,18,168,0,100,8.17
+Random Baseline,0,3.0,18,168,0,100,8.17
+HMM Hunter,0,3.0,19,175,1,32,5.25
+Naive Sensor Baseline,0,3.0,19,175,1,55,5.6
+Random Baseline,0,3.0,19,175,1,55,5.6
+HMM Hunter,1,0.5,0,142,1,1,2.0
+Naive Sensor Baseline,1,0.5,0,142,1,1,2.0
+Random Baseline,1,0.5,0,142,1,1,2.0
+HMM Hunter,1,0.5,1,149,1,10,2.8
+Naive Sensor Baseline,1,0.5,1,149,1,10,4.1
+Random Baseline,1,0.5,1,149,1,10,4.1
+HMM Hunter,1,0.5,2,156,1,20,2.9
+Naive Sensor Baseline,1,0.5,2,156,1,78,6.09
+Random Baseline,1,0.5,2,156,1,78,6.09
+HMM Hunter,1,0.5,3,163,1,11,4.273
+Naive Sensor Baseline,1,0.5,3,163,0,100,8.08
+Random Baseline,1,0.5,3,163,0,100,8.08
+HMM Hunter,1,0.5,4,170,1,69,3.565
+Naive Sensor Baseline,1,0.5,4,170,0,100,10.29
+Random Baseline,1,0.5,4,170,0,100,10.29
+HMM Hunter,1,0.5,5,177,1,20,3.55
+Naive Sensor Baseline,1,0.5,5,177,0,100,8.23
+Random Baseline,1,0.5,5,177,0,100,8.23
+HMM Hunter,1,0.5,6,184,1,20,4.05
+Naive Sensor Baseline,1,0.5,6,184,1,39,5.59
+Random Baseline,1,0.5,6,184,1,39,5.59
+HMM Hunter,1,0.5,7,191,1,5,2.2
+Naive Sensor Baseline,1,0.5,7,191,1,10,2.6
+Random Baseline,1,0.5,7,191,1,10,2.6
+HMM Hunter,1,0.5,8,198,1,9,3.778
+Naive Sensor Baseline,1,0.5,8,198,1,10,4.0
+Random Baseline,1,0.5,8,198,1,10,4.0
+HMM Hunter,1,0.5,9,205,1,19,4.895
+Naive Sensor Baseline,1,0.5,9,205,1,97,5.206
+Random Baseline,1,0.5,9,205,1,97,5.206
+HMM Hunter,1,0.5,10,212,1,1,1.0
+Naive Sensor Baseline,1,0.5,10,212,1,1,1.0
+Random Baseline,1,0.5,10,212,1,1,1.0
+HMM Hunter,1,0.5,11,219,1,19,5.053
+Naive Sensor Baseline,1,0.5,11,219,1,9,4.333
+Random Baseline,1,0.5,11,219,1,9,4.333
+HMM Hunter,1,0.5,12,226,1,18,2.722
+Naive Sensor Baseline,1,0.5,12,226,0,100,8.4
+Random Baseline,1,0.5,12,226,0,100,8.4
+HMM Hunter,1,0.5,13,233,1,2,2.5
+Naive Sensor Baseline,1,0.5,13,233,1,2,2.0
+Random Baseline,1,0.5,13,233,1,2,2.0
+HMM Hunter,1,0.5,14,240,1,18,3.333
+Naive Sensor Baseline,1,0.5,14,240,0,100,6.57
+Random Baseline,1,0.5,14,240,0,100,6.57
+HMM Hunter,1,0.5,15,247,1,10,3.5
+Naive Sensor Baseline,1,0.5,15,247,1,18,5.389
+Random Baseline,1,0.5,15,247,1,18,5.389
+HMM Hunter,1,0.5,16,254,1,17,2.824
+Naive Sensor Baseline,1,0.5,16,254,1,99,6.364
+Random Baseline,1,0.5,16,254,1,99,6.364
+HMM Hunter,1,0.5,17,261,1,23,2.739
+Naive Sensor Baseline,1,0.5,17,261,1,30,6.267
+Random Baseline,1,0.5,17,261,1,30,6.267
+HMM Hunter,1,0.5,18,268,1,24,2.875
+Naive Sensor Baseline,1,0.5,18,268,0,100,8.92
+Random Baseline,1,0.5,18,268,0,100,8.92
+HMM Hunter,1,0.5,19,275,1,11,2.727
+Naive Sensor Baseline,1,0.5,19,275,0,100,6.27
+Random Baseline,1,0.5,19,275,0,100,6.27
+HMM Hunter,1,1.0,0,142,1,2,1.5
+Naive Sensor Baseline,1,1.0,0,142,1,1,2.0
+Random Baseline,1,1.0,0,142,1,1,2.0
+HMM Hunter,1,1.0,1,149,1,9,3.0
+Naive Sensor Baseline,1,1.0,1,149,1,10,4.1
+Random Baseline,1,1.0,1,149,1,10,4.1
+HMM Hunter,1,1.0,2,156,1,26,3.269
+Naive Sensor Baseline,1,1.0,2,156,1,78,6.09
+Random Baseline,1,1.0,2,156,1,78,6.09
+HMM Hunter,1,1.0,3,163,1,16,5.062
+Naive Sensor Baseline,1,1.0,3,163,0,100,8.08
+Random Baseline,1,1.0,3,163,0,100,8.08
+HMM Hunter,1,1.0,4,170,1,89,3.64
+Naive Sensor Baseline,1,1.0,4,170,0,100,10.29
+Random Baseline,1,1.0,4,170,0,100,10.29
+HMM Hunter,1,1.0,5,177,1,26,2.885
+Naive Sensor Baseline,1,1.0,5,177,0,100,8.23
+Random Baseline,1,1.0,5,177,0,100,8.23
+HMM Hunter,1,1.0,6,184,1,12,5.333
+Naive Sensor Baseline,1,1.0,6,184,1,39,5.59
+Random Baseline,1,1.0,6,184,1,39,5.59
+HMM Hunter,1,1.0,7,191,1,5,2.2
+Naive Sensor Baseline,1,1.0,7,191,1,10,2.6
+Random Baseline,1,1.0,7,191,1,10,2.6
+HMM Hunter,1,1.0,8,198,1,11,3.909
+Naive Sensor Baseline,1,1.0,8,198,1,10,4.0
+Random Baseline,1,1.0,8,198,1,10,4.0
+HMM Hunter,1,1.0,9,205,1,31,6.032
+Naive Sensor Baseline,1,1.0,9,205,1,97,5.206
+Random Baseline,1,1.0,9,205,1,97,5.206
+HMM Hunter,1,1.0,10,212,1,1,1.0
+Naive Sensor Baseline,1,1.0,10,212,1,1,1.0
+Random Baseline,1,1.0,10,212,1,1,1.0
+HMM Hunter,1,1.0,11,219,1,24,6.0
+Naive Sensor Baseline,1,1.0,11,219,1,9,4.333
+Random Baseline,1,1.0,11,219,1,9,4.333
+HMM Hunter,1,1.0,12,226,1,14,2.929
+Naive Sensor Baseline,1,1.0,12,226,0,100,8.4
+Random Baseline,1,1.0,12,226,0,100,8.4
+HMM Hunter,1,1.0,13,233,1,2,2.5
+Naive Sensor Baseline,1,1.0,13,233,1,2,2.0
+Random Baseline,1,1.0,13,233,1,2,2.0
+HMM Hunter,1,1.0,14,240,1,26,2.808
+Naive Sensor Baseline,1,1.0,14,240,0,100,6.57
+Random Baseline,1,1.0,14,240,0,100,6.57
+HMM Hunter,1,1.0,15,247,1,20,2.4
+Naive Sensor Baseline,1,1.0,15,247,1,18,5.389
+Random Baseline,1,1.0,15,247,1,18,5.389
+HMM Hunter,1,1.0,16,254,1,21,3.476
+Naive Sensor Baseline,1,1.0,16,254,1,99,6.364
+Random Baseline,1,1.0,16,254,1,99,6.364
+HMM Hunter,1,1.0,17,261,1,35,3.914
+Naive Sensor Baseline,1,1.0,17,261,1,30,6.267
+Random Baseline,1,1.0,17,261,1,30,6.267
+HMM Hunter,1,1.0,18,268,1,29,2.621
+Naive Sensor Baseline,1,1.0,18,268,0,100,8.92
+Random Baseline,1,1.0,18,268,0,100,8.92
+HMM Hunter,1,1.0,19,275,1,11,2.182
+Naive Sensor Baseline,1,1.0,19,275,0,100,6.27
+Random Baseline,1,1.0,19,275,0,100,6.27
+HMM Hunter,1,1.5,0,142,1,2,1.5
+Naive Sensor Baseline,1,1.5,0,142,1,1,2.0
+Random Baseline,1,1.5,0,142,1,1,2.0
+HMM Hunter,1,1.5,1,149,1,9,3.333
+Naive Sensor Baseline,1,1.5,1,149,1,10,4.1
+Random Baseline,1,1.5,1,149,1,10,4.1
+HMM Hunter,1,1.5,2,156,1,31,3.677
+Naive Sensor Baseline,1,1.5,2,156,1,78,6.09
+Random Baseline,1,1.5,2,156,1,78,6.09
+HMM Hunter,1,1.5,3,163,1,13,6.385
+Naive Sensor Baseline,1,1.5,3,163,0,100,8.08
+Random Baseline,1,1.5,3,163,0,100,8.08
+HMM Hunter,1,1.5,4,170,1,71,4.493
+Naive Sensor Baseline,1,1.5,4,170,0,100,10.29
+Random Baseline,1,1.5,4,170,0,100,10.29
+HMM Hunter,1,1.5,5,177,1,47,2.723
+Naive Sensor Baseline,1,1.5,5,177,0,100,8.23
+Random Baseline,1,1.5,5,177,0,100,8.23
+HMM Hunter,1,1.5,6,184,1,22,4.045
+Naive Sensor Baseline,1,1.5,6,184,1,39,5.59
+Random Baseline,1,1.5,6,184,1,39,5.59
+HMM Hunter,1,1.5,7,191,1,11,1.545
+Naive Sensor Baseline,1,1.5,7,191,1,10,2.6
+Random Baseline,1,1.5,7,191,1,10,2.6
+HMM Hunter,1,1.5,8,198,1,11,3.818
+Naive Sensor Baseline,1,1.5,8,198,1,10,4.0
+Random Baseline,1,1.5,8,198,1,10,4.0
+HMM Hunter,1,1.5,9,205,1,20,4.3
+Naive Sensor Baseline,1,1.5,9,205,1,97,5.206
+Random Baseline,1,1.5,9,205,1,97,5.206
+HMM Hunter,1,1.5,10,212,1,1,1.0
+Naive Sensor Baseline,1,1.5,10,212,1,1,1.0
+Random Baseline,1,1.5,10,212,1,1,1.0
+HMM Hunter,1,1.5,11,219,1,42,5.571
+Naive Sensor Baseline,1,1.5,11,219,1,9,4.333
+Random Baseline,1,1.5,11,219,1,9,4.333
+HMM Hunter,1,1.5,12,226,1,14,2.857
+Naive Sensor Baseline,1,1.5,12,226,0,100,8.4
+Random Baseline,1,1.5,12,226,0,100,8.4
+HMM Hunter,1,1.5,13,233,1,2,3.0
+Naive Sensor Baseline,1,1.5,13,233,1,2,2.0
+Random Baseline,1,1.5,13,233,1,2,2.0
+HMM Hunter,1,1.5,14,240,1,18,2.889
+Naive Sensor Baseline,1,1.5,14,240,0,100,6.57
+Random Baseline,1,1.5,14,240,0,100,6.57
+HMM Hunter,1,1.5,15,247,1,38,2.605
+Naive Sensor Baseline,1,1.5,15,247,1,18,5.389
+Random Baseline,1,1.5,15,247,1,18,5.389
+HMM Hunter,1,1.5,16,254,1,21,4.143
+Naive Sensor Baseline,1,1.5,16,254,1,99,6.364
+Random Baseline,1,1.5,16,254,1,99,6.364
+HMM Hunter,1,1.5,17,261,1,17,4.235
+Naive Sensor Baseline,1,1.5,17,261,1,30,6.267
+Random Baseline,1,1.5,17,261,1,30,6.267
+HMM Hunter,1,1.5,18,268,1,25,3.24
+Naive Sensor Baseline,1,1.5,18,268,0,100,8.92
+Random Baseline,1,1.5,18,268,0,100,8.92
+HMM Hunter,1,1.5,19,275,1,18,3.778
+Naive Sensor Baseline,1,1.5,19,275,0,100,6.27
+Random Baseline,1,1.5,19,275,0,100,6.27
+HMM Hunter,1,2.0,0,142,1,2,1.5
+Naive Sensor Baseline,1,2.0,0,142,1,1,2.0
+Random Baseline,1,2.0,0,142,1,1,2.0
+HMM Hunter,1,2.0,1,149,1,9,3.222
+Naive Sensor Baseline,1,2.0,1,149,1,10,4.1
+Random Baseline,1,2.0,1,149,1,10,4.1
+HMM Hunter,1,2.0,2,156,1,36,3.472
+Naive Sensor Baseline,1,2.0,2,156,1,78,6.09
+Random Baseline,1,2.0,2,156,1,78,6.09
+HMM Hunter,1,2.0,3,163,1,16,5.562
+Naive Sensor Baseline,1,2.0,3,163,0,100,8.08
+Random Baseline,1,2.0,3,163,0,100,8.08
+HMM Hunter,1,2.0,4,170,1,33,4.848
+Naive Sensor Baseline,1,2.0,4,170,0,100,10.29
+Random Baseline,1,2.0,4,170,0,100,10.29
+HMM Hunter,1,2.0,5,177,1,21,2.905
+Naive Sensor Baseline,1,2.0,5,177,0,100,8.23
+Random Baseline,1,2.0,5,177,0,100,8.23
+HMM Hunter,1,2.0,6,184,1,15,4.733
+Naive Sensor Baseline,1,2.0,6,184,1,39,5.59
+Random Baseline,1,2.0,6,184,1,39,5.59
+HMM Hunter,1,2.0,7,191,1,10,1.8
+Naive Sensor Baseline,1,2.0,7,191,1,10,2.6
+Random Baseline,1,2.0,7,191,1,10,2.6
+HMM Hunter,1,2.0,8,198,1,14,3.286
+Naive Sensor Baseline,1,2.0,8,198,1,10,4.0
+Random Baseline,1,2.0,8,198,1,10,4.0
+HMM Hunter,1,2.0,9,205,1,20,4.85
+Naive Sensor Baseline,1,2.0,9,205,1,97,5.206
+Random Baseline,1,2.0,9,205,1,97,5.206
+HMM Hunter,1,2.0,10,212,1,1,1.0
+Naive Sensor Baseline,1,2.0,10,212,1,1,1.0
+Random Baseline,1,2.0,10,212,1,1,1.0
+HMM Hunter,1,2.0,11,219,1,54,6.481
+Naive Sensor Baseline,1,2.0,11,219,1,9,4.333
+Random Baseline,1,2.0,11,219,1,9,4.333
+HMM Hunter,1,2.0,12,226,1,14,2.929
+Naive Sensor Baseline,1,2.0,12,226,0,100,8.4
+Random Baseline,1,2.0,12,226,0,100,8.4
+HMM Hunter,1,2.0,13,233,1,2,3.5
+Naive Sensor Baseline,1,2.0,13,233,1,2,2.0
+Random Baseline,1,2.0,13,233,1,2,2.0
+HMM Hunter,1,2.0,14,240,1,18,2.889
+Naive Sensor Baseline,1,2.0,14,240,0,100,6.57
+Random Baseline,1,2.0,14,240,0,100,6.57
+HMM Hunter,1,2.0,15,247,1,9,2.889
+Naive Sensor Baseline,1,2.0,15,247,1,18,5.389
+Random Baseline,1,2.0,15,247,1,18,5.389
+HMM Hunter,1,2.0,16,254,1,16,2.25
+Naive Sensor Baseline,1,2.0,16,254,1,99,6.364
+Random Baseline,1,2.0,16,254,1,99,6.364
+HMM Hunter,1,2.0,17,261,1,30,3.3
+Naive Sensor Baseline,1,2.0,17,261,1,30,6.267
+Random Baseline,1,2.0,17,261,1,30,6.267
+HMM Hunter,1,2.0,18,268,1,71,3.296
+Naive Sensor Baseline,1,2.0,18,268,0,100,8.92
+Random Baseline,1,2.0,18,268,0,100,8.92
+HMM Hunter,1,2.0,19,275,1,11,3.364
+Naive Sensor Baseline,1,2.0,19,275,0,100,6.27
+Random Baseline,1,2.0,19,275,0,100,6.27
+HMM Hunter,1,3.0,0,142,1,2,1.5
+Naive Sensor Baseline,1,3.0,0,142,1,1,2.0
+Random Baseline,1,3.0,0,142,1,1,2.0
+HMM Hunter,1,3.0,1,149,1,6,5.167
+Naive Sensor Baseline,1,3.0,1,149,1,10,4.1
+Random Baseline,1,3.0,1,149,1,10,4.1
+HMM Hunter,1,3.0,2,156,1,31,3.581
+Naive Sensor Baseline,1,3.0,2,156,1,78,6.09
+Random Baseline,1,3.0,2,156,1,78,6.09
+HMM Hunter,1,3.0,3,163,1,16,5.688
+Naive Sensor Baseline,1,3.0,3,163,0,100,8.08
+Random Baseline,1,3.0,3,163,0,100,8.08
+HMM Hunter,1,3.0,4,170,1,73,4.301
+Naive Sensor Baseline,1,3.0,4,170,0,100,10.29
+Random Baseline,1,3.0,4,170,0,100,10.29
+HMM Hunter,1,3.0,5,177,1,23,3.13
+Naive Sensor Baseline,1,3.0,5,177,0,100,8.23
+Random Baseline,1,3.0,5,177,0,100,8.23
+HMM Hunter,1,3.0,6,184,1,20,4.6
+Naive Sensor Baseline,1,3.0,6,184,1,39,5.59
+Random Baseline,1,3.0,6,184,1,39,5.59
+HMM Hunter,1,3.0,7,191,1,5,1.6
+Naive Sensor Baseline,1,3.0,7,191,1,10,2.6
+Random Baseline,1,3.0,7,191,1,10,2.6
+HMM Hunter,1,3.0,8,198,1,13,3.231
+Naive Sensor Baseline,1,3.0,8,198,1,10,4.0
+Random Baseline,1,3.0,8,198,1,10,4.0
+HMM Hunter,1,3.0,9,205,1,13,6.077
+Naive Sensor Baseline,1,3.0,9,205,1,97,5.206
+Random Baseline,1,3.0,9,205,1,97,5.206
+HMM Hunter,1,3.0,10,212,1,1,1.0
+Naive Sensor Baseline,1,3.0,10,212,1,1,1.0
+Random Baseline,1,3.0,10,212,1,1,1.0
+HMM Hunter,1,3.0,11,219,1,46,5.543
+Naive Sensor Baseline,1,3.0,11,219,1,9,4.333
+Random Baseline,1,3.0,11,219,1,9,4.333
+HMM Hunter,1,3.0,12,226,1,14,2.786
+Naive Sensor Baseline,1,3.0,12,226,0,100,8.4
+Random Baseline,1,3.0,12,226,0,100,8.4
+HMM Hunter,1,3.0,13,233,1,2,4.0
+Naive Sensor Baseline,1,3.0,13,233,1,2,2.0
+Random Baseline,1,3.0,13,233,1,2,2.0
+HMM Hunter,1,3.0,14,240,1,60,3.017
+Naive Sensor Baseline,1,3.0,14,240,0,100,6.57
+Random Baseline,1,3.0,14,240,0,100,6.57
+HMM Hunter,1,3.0,15,247,1,10,3.4
+Naive Sensor Baseline,1,3.0,15,247,1,18,5.389
+Random Baseline,1,3.0,15,247,1,18,5.389
+HMM Hunter,1,3.0,16,254,1,85,4.659
+Naive Sensor Baseline,1,3.0,16,254,1,99,6.364
+Random Baseline,1,3.0,16,254,1,99,6.364
+HMM Hunter,1,3.0,17,261,1,32,3.438
+Naive Sensor Baseline,1,3.0,17,261,1,30,6.267
+Random Baseline,1,3.0,17,261,1,30,6.267
+HMM Hunter,1,3.0,18,268,1,82,3.317
+Naive Sensor Baseline,1,3.0,18,268,0,100,8.92
+Random Baseline,1,3.0,18,268,0,100,8.92
+HMM Hunter,1,3.0,19,275,1,18,4.556
+Naive Sensor Baseline,1,3.0,19,275,0,100,6.27
+Random Baseline,1,3.0,19,275,0,100,6.27
+HMM Hunter,2,0.5,0,242,1,13,3.692
+Naive Sensor Baseline,2,0.5,0,242,1,48,6.292
+Random Baseline,2,0.5,0,242,1,48,6.292
+HMM Hunter,2,0.5,1,249,1,6,5.333
+Naive Sensor Baseline,2,0.5,1,249,0,100,6.61
+Random Baseline,2,0.5,1,249,0,100,6.61
+HMM Hunter,2,0.5,2,256,1,22,3.409
+Naive Sensor Baseline,2,0.5,2,256,0,100,8.32
+Random Baseline,2,0.5,2,256,0,100,8.32
+HMM Hunter,2,0.5,3,263,1,14,4.571
+Naive Sensor Baseline,2,0.5,3,263,0,100,6.4
+Random Baseline,2,0.5,3,263,0,100,6.4
+HMM Hunter,2,0.5,4,270,1,11,2.455
+Naive Sensor Baseline,2,0.5,4,270,0,100,4.7
+Random Baseline,2,0.5,4,270,0,100,4.7
+HMM Hunter,2,0.5,5,277,1,3,1.667
+Naive Sensor Baseline,2,0.5,5,277,1,8,2.0
+Random Baseline,2,0.5,5,277,1,8,2.0
+HMM Hunter,2,0.5,6,284,1,15,3.467
+Naive Sensor Baseline,2,0.5,6,284,0,100,7.33
+Random Baseline,2,0.5,6,284,0,100,7.33
+HMM Hunter,2,0.5,7,291,1,12,2.5
+Naive Sensor Baseline,2,0.5,7,291,0,100,10.06
+Random Baseline,2,0.5,7,291,0,100,10.06
+HMM Hunter,2,0.5,8,298,1,14,3.714
+Naive Sensor Baseline,2,0.5,8,298,1,29,4.724
+Random Baseline,2,0.5,8,298,1,29,4.724
+HMM Hunter,2,0.5,9,305,1,17,2.412
+Naive Sensor Baseline,2,0.5,9,305,1,17,3.118
+Random Baseline,2,0.5,9,305,1,17,3.118
+HMM Hunter,2,0.5,10,312,1,6,1.5
+Naive Sensor Baseline,2,0.5,10,312,0,100,5.74
+Random Baseline,2,0.5,10,312,0,100,5.74
+HMM Hunter,2,0.5,11,319,1,18,3.444
+Naive Sensor Baseline,2,0.5,11,319,0,100,8.84
+Random Baseline,2,0.5,11,319,0,100,8.84
+HMM Hunter,2,0.5,12,326,1,5,3.0
+Naive Sensor Baseline,2,0.5,12,326,1,5,2.2
+Random Baseline,2,0.5,12,326,1,5,2.2
+HMM Hunter,2,0.5,13,333,1,16,5.312
+Naive Sensor Baseline,2,0.5,13,333,0,100,7.41
+Random Baseline,2,0.5,13,333,0,100,7.41
+HMM Hunter,2,0.5,14,340,1,10,1.5
+Naive Sensor Baseline,2,0.5,14,340,1,19,3.316
+Random Baseline,2,0.5,14,340,1,19,3.316
+HMM Hunter,2,0.5,15,347,1,17,1.647
+Naive Sensor Baseline,2,0.5,15,347,0,100,10.73
+Random Baseline,2,0.5,15,347,0,100,10.73
+HMM Hunter,2,0.5,16,354,1,10,4.7
+Naive Sensor Baseline,2,0.5,16,354,1,31,5.323
+Random Baseline,2,0.5,16,354,1,31,5.323
+HMM Hunter,2,0.5,17,361,1,13,4.692
+Naive Sensor Baseline,2,0.5,17,361,1,25,4.68
+Random Baseline,2,0.5,17,361,1,25,4.68
+HMM Hunter,2,0.5,18,368,1,16,2.625
+Naive Sensor Baseline,2,0.5,18,368,0,100,9.47
+Random Baseline,2,0.5,18,368,0,100,9.47
+HMM Hunter,2,0.5,19,375,1,33,5.0
+Naive Sensor Baseline,2,0.5,19,375,0,100,8.52
+Random Baseline,2,0.5,19,375,0,100,8.52
+HMM Hunter,2,1.0,0,242,1,13,3.846
+Naive Sensor Baseline,2,1.0,0,242,1,48,6.292
+Random Baseline,2,1.0,0,242,1,48,6.292
+HMM Hunter,2,1.0,1,249,1,12,3.833
+Naive Sensor Baseline,2,1.0,1,249,0,100,6.61
+Random Baseline,2,1.0,1,249,0,100,6.61
+HMM Hunter,2,1.0,2,256,1,15,3.467
+Naive Sensor Baseline,2,1.0,2,256,0,100,8.32
+Random Baseline,2,1.0,2,256,0,100,8.32
+HMM Hunter,2,1.0,3,263,1,17,3.412
+Naive Sensor Baseline,2,1.0,3,263,0,100,6.4
+Random Baseline,2,1.0,3,263,0,100,6.4
+HMM Hunter,2,1.0,4,270,1,12,3.417
+Naive Sensor Baseline,2,1.0,4,270,0,100,4.7
+Random Baseline,2,1.0,4,270,0,100,4.7
+HMM Hunter,2,1.0,5,277,1,3,2.333
+Naive Sensor Baseline,2,1.0,5,277,1,8,2.0
+Random Baseline,2,1.0,5,277,1,8,2.0
+HMM Hunter,2,1.0,6,284,1,65,3.415
+Naive Sensor Baseline,2,1.0,6,284,0,100,7.33
+Random Baseline,2,1.0,6,284,0,100,7.33
+HMM Hunter,2,1.0,7,291,1,16,3.25
+Naive Sensor Baseline,2,1.0,7,291,0,100,10.06
+Random Baseline,2,1.0,7,291,0,100,10.06
+HMM Hunter,2,1.0,8,298,1,13,4.154
+Naive Sensor Baseline,2,1.0,8,298,1,29,4.724
+Random Baseline,2,1.0,8,298,1,29,4.724
+HMM Hunter,2,1.0,9,305,1,10,2.9
+Naive Sensor Baseline,2,1.0,9,305,1,17,3.118
+Random Baseline,2,1.0,9,305,1,17,3.118
+HMM Hunter,2,1.0,10,312,1,6,1.833
+Naive Sensor Baseline,2,1.0,10,312,0,100,5.74
+Random Baseline,2,1.0,10,312,0,100,5.74
+HMM Hunter,2,1.0,11,319,1,17,4.235
+Naive Sensor Baseline,2,1.0,11,319,0,100,8.84
+Random Baseline,2,1.0,11,319,0,100,8.84
+HMM Hunter,2,1.0,12,326,1,3,2.667
+Naive Sensor Baseline,2,1.0,12,326,1,5,2.2
+Random Baseline,2,1.0,12,326,1,5,2.2
+HMM Hunter,2,1.0,13,333,1,16,5.062
+Naive Sensor Baseline,2,1.0,13,333,0,100,7.41
+Random Baseline,2,1.0,13,333,0,100,7.41
+HMM Hunter,2,1.0,14,340,1,12,2.5
+Naive Sensor Baseline,2,1.0,14,340,1,19,3.316
+Random Baseline,2,1.0,14,340,1,19,3.316
+HMM Hunter,2,1.0,15,347,1,19,2.211
+Naive Sensor Baseline,2,1.0,15,347,0,100,10.73
+Random Baseline,2,1.0,15,347,0,100,10.73
+HMM Hunter,2,1.0,16,354,1,10,4.8
+Naive Sensor Baseline,2,1.0,16,354,1,31,5.323
+Random Baseline,2,1.0,16,354,1,31,5.323
+HMM Hunter,2,1.0,17,361,1,13,5.385
+Naive Sensor Baseline,2,1.0,17,361,1,25,4.68
+Random Baseline,2,1.0,17,361,1,25,4.68
+HMM Hunter,2,1.0,18,368,1,16,2.812
+Naive Sensor Baseline,2,1.0,18,368,0,100,9.47
+Random Baseline,2,1.0,18,368,0,100,9.47
+HMM Hunter,2,1.0,19,375,1,40,3.975
+Naive Sensor Baseline,2,1.0,19,375,0,100,8.52
+Random Baseline,2,1.0,19,375,0,100,8.52
+HMM Hunter,2,1.5,0,242,1,13,4.462
+Naive Sensor Baseline,2,1.5,0,242,1,48,6.292
+Random Baseline,2,1.5,0,242,1,48,6.292
+HMM Hunter,2,1.5,1,249,1,14,5.929
+Naive Sensor Baseline,2,1.5,1,249,0,100,6.61
+Random Baseline,2,1.5,1,249,0,100,6.61
+HMM Hunter,2,1.5,2,256,1,31,3.903
+Naive Sensor Baseline,2,1.5,2,256,0,100,8.32
+Random Baseline,2,1.5,2,256,0,100,8.32
+HMM Hunter,2,1.5,3,263,1,19,4.684
+Naive Sensor Baseline,2,1.5,3,263,0,100,6.4
+Random Baseline,2,1.5,3,263,0,100,6.4
+HMM Hunter,2,1.5,4,270,1,13,3.308
+Naive Sensor Baseline,2,1.5,4,270,0,100,4.7
+Random Baseline,2,1.5,4,270,0,100,4.7
+HMM Hunter,2,1.5,5,277,1,3,2.333
+Naive Sensor Baseline,2,1.5,5,277,1,8,2.0
+Random Baseline,2,1.5,5,277,1,8,2.0
+HMM Hunter,2,1.5,6,284,1,52,4.077
+Naive Sensor Baseline,2,1.5,6,284,0,100,7.33
+Random Baseline,2,1.5,6,284,0,100,7.33
+HMM Hunter,2,1.5,7,291,1,46,3.196
+Naive Sensor Baseline,2,1.5,7,291,0,100,10.06
+Random Baseline,2,1.5,7,291,0,100,10.06
+HMM Hunter,2,1.5,8,298,1,9,4.556
+Naive Sensor Baseline,2,1.5,8,298,1,29,4.724
+Random Baseline,2,1.5,8,298,1,29,4.724
+HMM Hunter,2,1.5,9,305,1,9,3.222
+Naive Sensor Baseline,2,1.5,9,305,1,17,3.118
+Random Baseline,2,1.5,9,305,1,17,3.118
+HMM Hunter,2,1.5,10,312,1,6,1.833
+Naive Sensor Baseline,2,1.5,10,312,0,100,5.74
+Random Baseline,2,1.5,10,312,0,100,5.74
+HMM Hunter,2,1.5,11,319,1,12,5.333
+Naive Sensor Baseline,2,1.5,11,319,0,100,8.84
+Random Baseline,2,1.5,11,319,0,100,8.84
+HMM Hunter,2,1.5,12,326,1,3,2.667
+Naive Sensor Baseline,2,1.5,12,326,1,5,2.2
+Random Baseline,2,1.5,12,326,1,5,2.2
+HMM Hunter,2,1.5,13,333,1,14,4.857
+Naive Sensor Baseline,2,1.5,13,333,0,100,7.41
+Random Baseline,2,1.5,13,333,0,100,7.41
+HMM Hunter,2,1.5,14,340,1,15,1.867
+Naive Sensor Baseline,2,1.5,14,340,1,19,3.316
+Random Baseline,2,1.5,14,340,1,19,3.316
+HMM Hunter,2,1.5,15,347,1,19,2.105
+Naive Sensor Baseline,2,1.5,15,347,0,100,10.73
+Random Baseline,2,1.5,15,347,0,100,10.73
+HMM Hunter,2,1.5,16,354,1,22,3.273
+Naive Sensor Baseline,2,1.5,16,354,1,31,5.323
+Random Baseline,2,1.5,16,354,1,31,5.323
+HMM Hunter,2,1.5,17,361,1,15,5.133
+Naive Sensor Baseline,2,1.5,17,361,1,25,4.68
+Random Baseline,2,1.5,17,361,1,25,4.68
+HMM Hunter,2,1.5,18,368,1,16,2.812
+Naive Sensor Baseline,2,1.5,18,368,0,100,9.47
+Random Baseline,2,1.5,18,368,0,100,9.47
+HMM Hunter,2,1.5,19,375,1,40,3.775
+Naive Sensor Baseline,2,1.5,19,375,0,100,8.52
+Random Baseline,2,1.5,19,375,0,100,8.52
+HMM Hunter,2,2.0,0,242,1,13,4.308
+Naive Sensor Baseline,2,2.0,0,242,1,48,6.292
+Random Baseline,2,2.0,0,242,1,48,6.292
+HMM Hunter,2,2.0,1,249,1,14,5.571
+Naive Sensor Baseline,2,2.0,1,249,0,100,6.61
+Random Baseline,2,2.0,1,249,0,100,6.61
+HMM Hunter,2,2.0,2,256,1,31,4.29
+Naive Sensor Baseline,2,2.0,2,256,0,100,8.32
+Random Baseline,2,2.0,2,256,0,100,8.32
+HMM Hunter,2,2.0,3,263,1,31,4.645
+Naive Sensor Baseline,2,2.0,3,263,0,100,6.4
+Random Baseline,2,2.0,3,263,0,100,6.4
+HMM Hunter,2,2.0,4,270,1,13,3.692
+Naive Sensor Baseline,2,2.0,4,270,0,100,4.7
+Random Baseline,2,2.0,4,270,0,100,4.7
+HMM Hunter,2,2.0,5,277,1,3,2.0
+Naive Sensor Baseline,2,2.0,5,277,1,8,2.0
+Random Baseline,2,2.0,5,277,1,8,2.0
+HMM Hunter,2,2.0,6,284,1,63,3.873
+Naive Sensor Baseline,2,2.0,6,284,0,100,7.33
+Random Baseline,2,2.0,6,284,0,100,7.33
+HMM Hunter,2,2.0,7,291,1,46,3.283
+Naive Sensor Baseline,2,2.0,7,291,0,100,10.06
+Random Baseline,2,2.0,7,291,0,100,10.06
+HMM Hunter,2,2.0,8,298,1,9,4.0
+Naive Sensor Baseline,2,2.0,8,298,1,29,4.724
+Random Baseline,2,2.0,8,298,1,29,4.724
+HMM Hunter,2,2.0,9,305,1,3,3.333
+Naive Sensor Baseline,2,2.0,9,305,1,17,3.118
+Random Baseline,2,2.0,9,305,1,17,3.118
+HMM Hunter,2,2.0,10,312,1,8,2.75
+Naive Sensor Baseline,2,2.0,10,312,0,100,5.74
+Random Baseline,2,2.0,10,312,0,100,5.74
+HMM Hunter,2,2.0,11,319,1,13,4.846
+Naive Sensor Baseline,2,2.0,11,319,0,100,8.84
+Random Baseline,2,2.0,11,319,0,100,8.84
+HMM Hunter,2,2.0,12,326,1,3,2.667
+Naive Sensor Baseline,2,2.0,12,326,1,5,2.2
+Random Baseline,2,2.0,12,326,1,5,2.2
+HMM Hunter,2,2.0,13,333,1,16,5.25
+Naive Sensor Baseline,2,2.0,13,333,0,100,7.41
+Random Baseline,2,2.0,13,333,0,100,7.41
+HMM Hunter,2,2.0,14,340,1,17,2.0
+Naive Sensor Baseline,2,2.0,14,340,1,19,3.316
+Random Baseline,2,2.0,14,340,1,19,3.316
+HMM Hunter,2,2.0,15,347,1,46,2.522
+Naive Sensor Baseline,2,2.0,15,347,0,100,10.73
+Random Baseline,2,2.0,15,347,0,100,10.73
+HMM Hunter,2,2.0,16,354,1,37,2.973
+Naive Sensor Baseline,2,2.0,16,354,1,31,5.323
+Random Baseline,2,2.0,16,354,1,31,5.323
+HMM Hunter,2,2.0,17,361,1,15,5.2
+Naive Sensor Baseline,2,2.0,17,361,1,25,4.68
+Random Baseline,2,2.0,17,361,1,25,4.68
+HMM Hunter,2,2.0,18,368,1,16,3.062
+Naive Sensor Baseline,2,2.0,18,368,0,100,9.47
+Random Baseline,2,2.0,18,368,0,100,9.47
+HMM Hunter,2,2.0,19,375,1,24,5.583
+Naive Sensor Baseline,2,2.0,19,375,0,100,8.52
+Random Baseline,2,2.0,19,375,0,100,8.52
+HMM Hunter,2,3.0,0,242,1,44,5.795
+Naive Sensor Baseline,2,3.0,0,242,1,48,6.292
+Random Baseline,2,3.0,0,242,1,48,6.292
+HMM Hunter,2,3.0,1,249,1,15,4.867
+Naive Sensor Baseline,2,3.0,1,249,0,100,6.61
+Random Baseline,2,3.0,1,249,0,100,6.61
+HMM Hunter,2,3.0,2,256,1,32,4.812
+Naive Sensor Baseline,2,3.0,2,256,0,100,8.32
+Random Baseline,2,3.0,2,256,0,100,8.32
+HMM Hunter,2,3.0,3,263,1,20,5.05
+Naive Sensor Baseline,2,3.0,3,263,0,100,6.4
+Random Baseline,2,3.0,3,263,0,100,6.4
+HMM Hunter,2,3.0,4,270,1,36,5.444
+Naive Sensor Baseline,2,3.0,4,270,0,100,4.7
+Random Baseline,2,3.0,4,270,0,100,4.7
+HMM Hunter,2,3.0,5,277,1,3,2.0
+Naive Sensor Baseline,2,3.0,5,277,1,8,2.0
+Random Baseline,2,3.0,5,277,1,8,2.0
+HMM Hunter,2,3.0,6,284,1,51,5.235
+Naive Sensor Baseline,2,3.0,6,284,0,100,7.33
+Random Baseline,2,3.0,6,284,0,100,7.33
+HMM Hunter,2,3.0,7,291,1,33,5.727
+Naive Sensor Baseline,2,3.0,7,291,0,100,10.06
+Random Baseline,2,3.0,7,291,0,100,10.06
+HMM Hunter,2,3.0,8,298,1,9,3.444
+Naive Sensor Baseline,2,3.0,8,298,1,29,4.724
+Random Baseline,2,3.0,8,298,1,29,4.724
+HMM Hunter,2,3.0,9,305,1,4,2.5
+Naive Sensor Baseline,2,3.0,9,305,1,17,3.118
+Random Baseline,2,3.0,9,305,1,17,3.118
+HMM Hunter,2,3.0,10,312,1,58,3.621
+Naive Sensor Baseline,2,3.0,10,312,0,100,5.74
+Random Baseline,2,3.0,10,312,0,100,5.74
+HMM Hunter,2,3.0,11,319,1,13,4.385
+Naive Sensor Baseline,2,3.0,11,319,0,100,8.84
+Random Baseline,2,3.0,11,319,0,100,8.84
+HMM Hunter,2,3.0,12,326,1,33,3.455
+Naive Sensor Baseline,2,3.0,12,326,1,5,2.2
+Random Baseline,2,3.0,12,326,1,5,2.2
+HMM Hunter,2,3.0,13,333,1,24,5.875
+Naive Sensor Baseline,2,3.0,13,333,0,100,7.41
+Random Baseline,2,3.0,13,333,0,100,7.41
+HMM Hunter,2,3.0,14,340,1,15,2.4
+Naive Sensor Baseline,2,3.0,14,340,1,19,3.316
+Random Baseline,2,3.0,14,340,1,19,3.316
+HMM Hunter,2,3.0,15,347,1,45,2.556
+Naive Sensor Baseline,2,3.0,15,347,0,100,10.73
+Random Baseline,2,3.0,15,347,0,100,10.73
+HMM Hunter,2,3.0,16,354,1,12,4.25
+Naive Sensor Baseline,2,3.0,16,354,1,31,5.323
+Random Baseline,2,3.0,16,354,1,31,5.323
+HMM Hunter,2,3.0,17,361,1,17,5.235
+Naive Sensor Baseline,2,3.0,17,361,1,25,4.68
+Random Baseline,2,3.0,17,361,1,25,4.68
+HMM Hunter,2,3.0,18,368,1,16,3.562
+Naive Sensor Baseline,2,3.0,18,368,0,100,9.47
+Random Baseline,2,3.0,18,368,0,100,9.47
+HMM Hunter,2,3.0,19,375,1,41,4.61
+Naive Sensor Baseline,2,3.0,19,375,0,100,8.52
+Random Baseline,2,3.0,19,375,0,100,8.52
+HMM Hunter,3,0.5,0,342,1,20,2.1
+Naive Sensor Baseline,3,0.5,0,342,0,100,11.88
+Random Baseline,3,0.5,0,342,0,100,11.88
+HMM Hunter,3,0.5,1,349,1,18,1.889
+Naive Sensor Baseline,3,0.5,1,349,1,74,11.041
+Random Baseline,3,0.5,1,349,1,74,11.041
+HMM Hunter,3,0.5,2,356,1,7,1.429
+Naive Sensor Baseline,3,0.5,2,356,1,95,10.4
+Random Baseline,3,0.5,2,356,1,95,10.4
+HMM Hunter,3,0.5,3,363,1,10,1.6
+Naive Sensor Baseline,3,0.5,3,363,1,41,6.049
+Random Baseline,3,0.5,3,363,1,41,6.049
+HMM Hunter,3,0.5,4,370,1,23,2.913
+Naive Sensor Baseline,3,0.5,4,370,0,100,5.36
+Random Baseline,3,0.5,4,370,0,100,5.36
+HMM Hunter,3,0.5,5,377,1,11,4.727
+Naive Sensor Baseline,3,0.5,5,377,0,100,8.07
+Random Baseline,3,0.5,5,377,0,100,8.07
+HMM Hunter,3,0.5,6,384,1,25,5.72
+Naive Sensor Baseline,3,0.5,6,384,1,78,6.385
+Random Baseline,3,0.5,6,384,1,78,6.385
+HMM Hunter,3,0.5,7,391,1,9,3.556
+Naive Sensor Baseline,3,0.5,7,391,0,100,5.14
+Random Baseline,3,0.5,7,391,0,100,5.14
+HMM Hunter,3,0.5,8,398,1,13,3.538
+Naive Sensor Baseline,3,0.5,8,398,0,100,8.49
+Random Baseline,3,0.5,8,398,0,100,8.49
+HMM Hunter,3,0.5,9,405,1,7,4.571
+Naive Sensor Baseline,3,0.5,9,405,1,19,3.737
+Random Baseline,3,0.5,9,405,1,19,3.737
+HMM Hunter,3,0.5,10,412,1,44,2.386
+Naive Sensor Baseline,3,0.5,10,412,1,85,8.706
+Random Baseline,3,0.5,10,412,1,85,8.706
+HMM Hunter,3,0.5,11,419,1,16,2.125
+Naive Sensor Baseline,3,0.5,11,419,0,100,8.59
+Random Baseline,3,0.5,11,419,0,100,8.59
+HMM Hunter,3,0.5,12,426,1,9,4.222
+Naive Sensor Baseline,3,0.5,12,426,0,100,10.11
+Random Baseline,3,0.5,12,426,0,100,10.11
+HMM Hunter,3,0.5,13,433,1,23,3.87
+Naive Sensor Baseline,3,0.5,13,433,0,100,5.87
+Random Baseline,3,0.5,13,433,0,100,5.87
+HMM Hunter,3,0.5,14,440,1,4,2.0
+Naive Sensor Baseline,3,0.5,14,440,1,9,3.0
+Random Baseline,3,0.5,14,440,1,9,3.0
+HMM Hunter,3,0.5,15,447,1,16,3.375
+Naive Sensor Baseline,3,0.5,15,447,1,27,8.593
+Random Baseline,3,0.5,15,447,1,27,8.593
+HMM Hunter,3,0.5,16,454,1,31,2.71
+Naive Sensor Baseline,3,0.5,16,454,0,100,7.71
+Random Baseline,3,0.5,16,454,0,100,7.71
+HMM Hunter,3,0.5,17,461,1,19,2.053
+Naive Sensor Baseline,3,0.5,17,461,1,65,9.523
+Random Baseline,3,0.5,17,461,1,65,9.523
+HMM Hunter,3,0.5,18,468,1,12,2.417
+Naive Sensor Baseline,3,0.5,18,468,1,22,5.409
+Random Baseline,3,0.5,18,468,1,22,5.409
+HMM Hunter,3,0.5,19,475,1,19,3.421
+Naive Sensor Baseline,3,0.5,19,475,0,100,6.19
+Random Baseline,3,0.5,19,475,0,100,6.19
+HMM Hunter,3,1.0,0,342,1,27,2.185
+Naive Sensor Baseline,3,1.0,0,342,0,100,11.88
+Random Baseline,3,1.0,0,342,0,100,11.88
+HMM Hunter,3,1.0,1,349,1,16,2.312
+Naive Sensor Baseline,3,1.0,1,349,1,74,11.041
+Random Baseline,3,1.0,1,349,1,74,11.041
+HMM Hunter,3,1.0,2,356,1,35,3.4
+Naive Sensor Baseline,3,1.0,2,356,1,95,10.4
+Random Baseline,3,1.0,2,356,1,95,10.4
+HMM Hunter,3,1.0,3,363,1,10,1.9
+Naive Sensor Baseline,3,1.0,3,363,1,41,6.049
+Random Baseline,3,1.0,3,363,1,41,6.049
+HMM Hunter,3,1.0,4,370,1,18,3.167
+Naive Sensor Baseline,3,1.0,4,370,0,100,5.36
+Random Baseline,3,1.0,4,370,0,100,5.36
+HMM Hunter,3,1.0,5,377,1,23,4.696
+Naive Sensor Baseline,3,1.0,5,377,0,100,8.07
+Random Baseline,3,1.0,5,377,0,100,8.07
+HMM Hunter,3,1.0,6,384,1,31,3.774
+Naive Sensor Baseline,3,1.0,6,384,1,78,6.385
+Random Baseline,3,1.0,6,384,1,78,6.385
+HMM Hunter,3,1.0,7,391,1,7,3.571
+Naive Sensor Baseline,3,1.0,7,391,0,100,5.14
+Random Baseline,3,1.0,7,391,0,100,5.14
+HMM Hunter,3,1.0,8,398,1,17,3.235
+Naive Sensor Baseline,3,1.0,8,398,0,100,8.49
+Random Baseline,3,1.0,8,398,0,100,8.49
+HMM Hunter,3,1.0,9,405,1,7,4.714
+Naive Sensor Baseline,3,1.0,9,405,1,19,3.737
+Random Baseline,3,1.0,9,405,1,19,3.737
+HMM Hunter,3,1.0,10,412,1,17,2.118
+Naive Sensor Baseline,3,1.0,10,412,1,85,8.706
+Random Baseline,3,1.0,10,412,1,85,8.706
+HMM Hunter,3,1.0,11,419,1,16,2.625
+Naive Sensor Baseline,3,1.0,11,419,0,100,8.59
+Random Baseline,3,1.0,11,419,0,100,8.59
+HMM Hunter,3,1.0,12,426,1,13,5.462
+Naive Sensor Baseline,3,1.0,12,426,0,100,10.11
+Random Baseline,3,1.0,12,426,0,100,10.11
+HMM Hunter,3,1.0,13,433,1,20,5.55
+Naive Sensor Baseline,3,1.0,13,433,0,100,5.87
+Random Baseline,3,1.0,13,433,0,100,5.87
+HMM Hunter,3,1.0,14,440,1,6,2.833
+Naive Sensor Baseline,3,1.0,14,440,1,9,3.0
+Random Baseline,3,1.0,14,440,1,9,3.0
+HMM Hunter,3,1.0,15,447,1,22,3.364
+Naive Sensor Baseline,3,1.0,15,447,1,27,8.593
+Random Baseline,3,1.0,15,447,1,27,8.593
+HMM Hunter,3,1.0,16,454,1,23,3.0
+Naive Sensor Baseline,3,1.0,16,454,0,100,7.71
+Random Baseline,3,1.0,16,454,0,100,7.71
+HMM Hunter,3,1.0,17,461,1,17,2.353
+Naive Sensor Baseline,3,1.0,17,461,1,65,9.523
+Random Baseline,3,1.0,17,461,1,65,9.523
+HMM Hunter,3,1.0,18,468,1,12,1.417
+Naive Sensor Baseline,3,1.0,18,468,1,22,5.409
+Random Baseline,3,1.0,18,468,1,22,5.409
+HMM Hunter,3,1.0,19,475,1,26,3.115
+Naive Sensor Baseline,3,1.0,19,475,0,100,6.19
+Random Baseline,3,1.0,19,475,0,100,6.19
+HMM Hunter,3,1.5,0,342,1,27,2.222
+Naive Sensor Baseline,3,1.5,0,342,0,100,11.88
+Random Baseline,3,1.5,0,342,0,100,11.88
+HMM Hunter,3,1.5,1,349,1,23,2.304
+Naive Sensor Baseline,3,1.5,1,349,1,74,11.041
+Random Baseline,3,1.5,1,349,1,74,11.041
+HMM Hunter,3,1.5,2,356,1,58,4.276
+Naive Sensor Baseline,3,1.5,2,356,1,95,10.4
+Random Baseline,3,1.5,2,356,1,95,10.4
+HMM Hunter,3,1.5,3,363,1,27,5.593
+Naive Sensor Baseline,3,1.5,3,363,1,41,6.049
+Random Baseline,3,1.5,3,363,1,41,6.049
+HMM Hunter,3,1.5,4,370,1,8,4.25
+Naive Sensor Baseline,3,1.5,4,370,0,100,5.36
+Random Baseline,3,1.5,4,370,0,100,5.36
+HMM Hunter,3,1.5,5,377,1,26,5.808
+Naive Sensor Baseline,3,1.5,5,377,0,100,8.07
+Random Baseline,3,1.5,5,377,0,100,8.07
+HMM Hunter,3,1.5,6,384,1,19,3.789
+Naive Sensor Baseline,3,1.5,6,384,1,78,6.385
+Random Baseline,3,1.5,6,384,1,78,6.385
+HMM Hunter,3,1.5,7,391,1,13,4.0
+Naive Sensor Baseline,3,1.5,7,391,0,100,5.14
+Random Baseline,3,1.5,7,391,0,100,5.14
+HMM Hunter,3,1.5,8,398,1,12,3.0
+Naive Sensor Baseline,3,1.5,8,398,0,100,8.49
+Random Baseline,3,1.5,8,398,0,100,8.49
+HMM Hunter,3,1.5,9,405,1,11,6.182
+Naive Sensor Baseline,3,1.5,9,405,1,19,3.737
+Random Baseline,3,1.5,9,405,1,19,3.737
+HMM Hunter,3,1.5,10,412,1,17,2.176
+Naive Sensor Baseline,3,1.5,10,412,1,85,8.706
+Random Baseline,3,1.5,10,412,1,85,8.706
+HMM Hunter,3,1.5,11,419,1,16,2.438
+Naive Sensor Baseline,3,1.5,11,419,0,100,8.59
+Random Baseline,3,1.5,11,419,0,100,8.59
+HMM Hunter,3,1.5,12,426,1,18,3.889
+Naive Sensor Baseline,3,1.5,12,426,0,100,10.11
+Random Baseline,3,1.5,12,426,0,100,10.11
+HMM Hunter,3,1.5,13,433,1,28,4.071
+Naive Sensor Baseline,3,1.5,13,433,0,100,5.87
+Random Baseline,3,1.5,13,433,0,100,5.87
+HMM Hunter,3,1.5,14,440,1,7,2.714
+Naive Sensor Baseline,3,1.5,14,440,1,9,3.0
+Random Baseline,3,1.5,14,440,1,9,3.0
+HMM Hunter,3,1.5,15,447,1,26,3.731
+Naive Sensor Baseline,3,1.5,15,447,1,27,8.593
+Random Baseline,3,1.5,15,447,1,27,8.593
+HMM Hunter,3,1.5,16,454,1,78,3.551
+Naive Sensor Baseline,3,1.5,16,454,0,100,7.71
+Random Baseline,3,1.5,16,454,0,100,7.71
+HMM Hunter,3,1.5,17,461,1,18,2.556
+Naive Sensor Baseline,3,1.5,17,461,1,65,9.523
+Random Baseline,3,1.5,17,461,1,65,9.523
+HMM Hunter,3,1.5,18,468,1,16,3.5
+Naive Sensor Baseline,3,1.5,18,468,1,22,5.409
+Random Baseline,3,1.5,18,468,1,22,5.409
+HMM Hunter,3,1.5,19,475,1,28,3.321
+Naive Sensor Baseline,3,1.5,19,475,0,100,6.19
+Random Baseline,3,1.5,19,475,0,100,6.19
+HMM Hunter,3,2.0,0,342,1,27,2.556
+Naive Sensor Baseline,3,2.0,0,342,0,100,11.88
+Random Baseline,3,2.0,0,342,0,100,11.88
+HMM Hunter,3,2.0,1,349,1,19,2.632
+Naive Sensor Baseline,3,2.0,1,349,1,74,11.041
+Random Baseline,3,2.0,1,349,1,74,11.041
+HMM Hunter,3,2.0,2,356,1,64,2.953
+Naive Sensor Baseline,3,2.0,2,356,1,95,10.4
+Random Baseline,3,2.0,2,356,1,95,10.4
+HMM Hunter,3,2.0,3,363,1,19,5.895
+Naive Sensor Baseline,3,2.0,3,363,1,41,6.049
+Random Baseline,3,2.0,3,363,1,41,6.049
+HMM Hunter,3,2.0,4,370,1,55,3.909
+Naive Sensor Baseline,3,2.0,4,370,0,100,5.36
+Random Baseline,3,2.0,4,370,0,100,5.36
+HMM Hunter,3,2.0,5,377,1,28,3.036
+Naive Sensor Baseline,3,2.0,5,377,0,100,8.07
+Random Baseline,3,2.0,5,377,0,100,8.07
+HMM Hunter,3,2.0,6,384,1,89,4.449
+Naive Sensor Baseline,3,2.0,6,384,1,78,6.385
+Random Baseline,3,2.0,6,384,1,78,6.385
+HMM Hunter,3,2.0,7,391,1,16,4.375
+Naive Sensor Baseline,3,2.0,7,391,0,100,5.14
+Random Baseline,3,2.0,7,391,0,100,5.14
+HMM Hunter,3,2.0,8,398,1,13,3.385
+Naive Sensor Baseline,3,2.0,8,398,0,100,8.49
+Random Baseline,3,2.0,8,398,0,100,8.49
+HMM Hunter,3,2.0,9,405,1,10,5.8
+Naive Sensor Baseline,3,2.0,9,405,1,19,3.737
+Random Baseline,3,2.0,9,405,1,19,3.737
+HMM Hunter,3,2.0,10,412,1,18,2.389
+Naive Sensor Baseline,3,2.0,10,412,1,85,8.706
+Random Baseline,3,2.0,10,412,1,85,8.706
+HMM Hunter,3,2.0,11,419,1,16,2.562
+Naive Sensor Baseline,3,2.0,11,419,0,100,8.59
+Random Baseline,3,2.0,11,419,0,100,8.59
+HMM Hunter,3,2.0,12,426,1,18,4.111
+Naive Sensor Baseline,3,2.0,12,426,0,100,10.11
+Random Baseline,3,2.0,12,426,0,100,10.11
+HMM Hunter,3,2.0,13,433,1,43,3.767
+Naive Sensor Baseline,3,2.0,13,433,0,100,5.87
+Random Baseline,3,2.0,13,433,0,100,5.87
+HMM Hunter,3,2.0,14,440,1,6,2.5
+Naive Sensor Baseline,3,2.0,14,440,1,9,3.0
+Random Baseline,3,2.0,14,440,1,9,3.0
+HMM Hunter,3,2.0,15,447,1,16,4.938
+Naive Sensor Baseline,3,2.0,15,447,1,27,8.593
+Random Baseline,3,2.0,15,447,1,27,8.593
+HMM Hunter,3,2.0,16,454,1,50,4.68
+Naive Sensor Baseline,3,2.0,16,454,0,100,7.71
+Random Baseline,3,2.0,16,454,0,100,7.71
+HMM Hunter,3,2.0,17,461,1,18,2.611
+Naive Sensor Baseline,3,2.0,17,461,1,65,9.523
+Random Baseline,3,2.0,17,461,1,65,9.523
+HMM Hunter,3,2.0,18,468,1,16,4.375
+Naive Sensor Baseline,3,2.0,18,468,1,22,5.409
+Random Baseline,3,2.0,18,468,1,22,5.409
+HMM Hunter,3,2.0,19,475,1,19,4.368
+Naive Sensor Baseline,3,2.0,19,475,0,100,6.19
+Random Baseline,3,2.0,19,475,0,100,6.19
+HMM Hunter,3,3.0,0,342,1,40,3.225
+Naive Sensor Baseline,3,3.0,0,342,0,100,11.88
+Random Baseline,3,3.0,0,342,0,100,11.88
+HMM Hunter,3,3.0,1,349,1,19,2.632
+Naive Sensor Baseline,3,3.0,1,349,1,74,11.041
+Random Baseline,3,3.0,1,349,1,74,11.041
+HMM Hunter,3,3.0,2,356,1,52,3.788
+Naive Sensor Baseline,3,3.0,2,356,1,95,10.4
+Random Baseline,3,3.0,2,356,1,95,10.4
+HMM Hunter,3,3.0,3,363,1,39,6.538
+Naive Sensor Baseline,3,3.0,3,363,1,41,6.049
+Random Baseline,3,3.0,3,363,1,41,6.049
+HMM Hunter,3,3.0,4,370,1,63,4.857
+Naive Sensor Baseline,3,3.0,4,370,0,100,5.36
+Random Baseline,3,3.0,4,370,0,100,5.36
+HMM Hunter,3,3.0,5,377,1,23,3.739
+Naive Sensor Baseline,3,3.0,5,377,0,100,8.07
+Random Baseline,3,3.0,5,377,0,100,8.07
+HMM Hunter,3,3.0,6,384,1,32,3.75
+Naive Sensor Baseline,3,3.0,6,384,1,78,6.385
+Random Baseline,3,3.0,6,384,1,78,6.385
+HMM Hunter,3,3.0,7,391,1,11,4.636
+Naive Sensor Baseline,3,3.0,7,391,0,100,5.14
+Random Baseline,3,3.0,7,391,0,100,5.14
+HMM Hunter,3,3.0,8,398,1,18,5.722
+Naive Sensor Baseline,3,3.0,8,398,0,100,8.49
+Random Baseline,3,3.0,8,398,0,100,8.49
+HMM Hunter,3,3.0,9,405,1,37,5.27
+Naive Sensor Baseline,3,3.0,9,405,1,19,3.737
+Random Baseline,3,3.0,9,405,1,19,3.737
+HMM Hunter,3,3.0,10,412,1,17,2.529
+Naive Sensor Baseline,3,3.0,10,412,1,85,8.706
+Random Baseline,3,3.0,10,412,1,85,8.706
+HMM Hunter,3,3.0,11,419,1,16,2.812
+Naive Sensor Baseline,3,3.0,11,419,0,100,8.59
+Random Baseline,3,3.0,11,419,0,100,8.59
+HMM Hunter,3,3.0,12,426,1,19,2.842
+Naive Sensor Baseline,3,3.0,12,426,0,100,10.11
+Random Baseline,3,3.0,12,426,0,100,10.11
+HMM Hunter,3,3.0,13,433,1,32,3.688
+Naive Sensor Baseline,3,3.0,13,433,0,100,5.87
+Random Baseline,3,3.0,13,433,0,100,5.87
+HMM Hunter,3,3.0,14,440,1,8,2.625
+Naive Sensor Baseline,3,3.0,14,440,1,9,3.0
+Random Baseline,3,3.0,14,440,1,9,3.0
+HMM Hunter,3,3.0,15,447,0,100,4.53
+Naive Sensor Baseline,3,3.0,15,447,1,27,8.593
+Random Baseline,3,3.0,15,447,1,27,8.593
+HMM Hunter,3,3.0,16,454,1,36,3.667
+Naive Sensor Baseline,3,3.0,16,454,0,100,7.71
+Random Baseline,3,3.0,16,454,0,100,7.71
+HMM Hunter,3,3.0,17,461,1,17,3.176
+Naive Sensor Baseline,3,3.0,17,461,1,65,9.523
+Random Baseline,3,3.0,17,461,1,65,9.523
+HMM Hunter,3,3.0,18,468,1,36,5.167
+Naive Sensor Baseline,3,3.0,18,468,1,22,5.409
+Random Baseline,3,3.0,18,468,1,22,5.409
+HMM Hunter,3,3.0,19,475,1,52,4.346
+Naive Sensor Baseline,3,3.0,19,475,0,100,6.19
+Random Baseline,3,3.0,19,475,0,100,6.19
+HMM Hunter,4,0.5,0,442,1,7,5.429
+Naive Sensor Baseline,4,0.5,0,442,1,35,4.2
+Random Baseline,4,0.5,0,442,1,35,4.2
+HMM Hunter,4,0.5,1,449,1,20,3.75
+Naive Sensor Baseline,4,0.5,1,449,0,100,11.39
+Random Baseline,4,0.5,1,449,0,100,11.39
+HMM Hunter,4,0.5,2,456,1,11,4.364
+Naive Sensor Baseline,4,0.5,2,456,0,100,8.57
+Random Baseline,4,0.5,2,456,0,100,8.57
+HMM Hunter,4,0.5,3,463,1,19,2.474
+Naive Sensor Baseline,4,0.5,3,463,0,100,7.83
+Random Baseline,4,0.5,3,463,0,100,7.83
+HMM Hunter,4,0.5,4,470,1,14,3.857
+Naive Sensor Baseline,4,0.5,4,470,1,14,8.429
+Random Baseline,4,0.5,4,470,1,14,8.429
+HMM Hunter,4,0.5,5,477,1,24,3.25
+Naive Sensor Baseline,4,0.5,5,477,1,23,4.565
+Random Baseline,4,0.5,5,477,1,23,4.565
+HMM Hunter,4,0.5,6,484,1,27,2.37
+Naive Sensor Baseline,4,0.5,6,484,0,100,7.26
+Random Baseline,4,0.5,6,484,0,100,7.26
+HMM Hunter,4,0.5,7,491,1,9,7.222
+Naive Sensor Baseline,4,0.5,7,491,0,100,10.34
+Random Baseline,4,0.5,7,491,0,100,10.34
+HMM Hunter,4,0.5,8,498,1,14,4.214
+Naive Sensor Baseline,4,0.5,8,498,0,100,5.28
+Random Baseline,4,0.5,8,498,0,100,5.28
+HMM Hunter,4,0.5,9,505,1,16,3.0
+Naive Sensor Baseline,4,0.5,9,505,1,74,5.689
+Random Baseline,4,0.5,9,505,1,74,5.689
+HMM Hunter,4,0.5,10,512,1,6,4.167
+Naive Sensor Baseline,4,0.5,10,512,0,100,5.88
+Random Baseline,4,0.5,10,512,0,100,5.88
+HMM Hunter,4,0.5,11,519,1,18,2.944
+Naive Sensor Baseline,4,0.5,11,519,1,51,9.314
+Random Baseline,4,0.5,11,519,1,51,9.314
+HMM Hunter,4,0.5,12,526,1,7,4.0
+Naive Sensor Baseline,4,0.5,12,526,0,100,4.09
+Random Baseline,4,0.5,12,526,0,100,4.09
+HMM Hunter,4,0.5,13,533,1,8,2.5
+Naive Sensor Baseline,4,0.5,13,533,0,100,6.27
+Random Baseline,4,0.5,13,533,0,100,6.27
+HMM Hunter,4,0.5,14,540,1,7,2.571
+Naive Sensor Baseline,4,0.5,14,540,1,38,4.974
+Random Baseline,4,0.5,14,540,1,38,4.974
+HMM Hunter,4,0.5,15,547,1,4,3.0
+Naive Sensor Baseline,4,0.5,15,547,1,42,3.357
+Random Baseline,4,0.5,15,547,1,42,3.357
+HMM Hunter,4,0.5,16,554,1,13,3.769
+Naive Sensor Baseline,4,0.5,16,554,0,100,7.15
+Random Baseline,4,0.5,16,554,0,100,7.15
+HMM Hunter,4,0.5,17,561,1,5,2.4
+Naive Sensor Baseline,4,0.5,17,561,1,37,3.081
+Random Baseline,4,0.5,17,561,1,37,3.081
+HMM Hunter,4,0.5,18,568,1,21,4.81
+Naive Sensor Baseline,4,0.5,18,568,0,100,5.36
+Random Baseline,4,0.5,18,568,0,100,5.36
+HMM Hunter,4,0.5,19,575,1,16,2.625
+Naive Sensor Baseline,4,0.5,19,575,0,100,10.69
+Random Baseline,4,0.5,19,575,0,100,10.69
+HMM Hunter,4,1.0,0,442,1,9,5.444
+Naive Sensor Baseline,4,1.0,0,442,1,35,4.2
+Random Baseline,4,1.0,0,442,1,35,4.2
+HMM Hunter,4,1.0,1,449,1,20,3.75
+Naive Sensor Baseline,4,1.0,1,449,0,100,11.39
+Random Baseline,4,1.0,1,449,0,100,11.39
+HMM Hunter,4,1.0,2,456,1,32,3.875
+Naive Sensor Baseline,4,1.0,2,456,0,100,8.57
+Random Baseline,4,1.0,2,456,0,100,8.57
+HMM Hunter,4,1.0,3,463,1,16,3.438
+Naive Sensor Baseline,4,1.0,3,463,0,100,7.83
+Random Baseline,4,1.0,3,463,0,100,7.83
+HMM Hunter,4,1.0,4,470,1,16,4.562
+Naive Sensor Baseline,4,1.0,4,470,1,14,8.429
+Random Baseline,4,1.0,4,470,1,14,8.429
+HMM Hunter,4,1.0,5,477,1,16,5.0
+Naive Sensor Baseline,4,1.0,5,477,1,23,4.565
+Random Baseline,4,1.0,5,477,1,23,4.565
+HMM Hunter,4,1.0,6,484,1,19,2.368
+Naive Sensor Baseline,4,1.0,6,484,0,100,7.26
+Random Baseline,4,1.0,6,484,0,100,7.26
+HMM Hunter,4,1.0,7,491,1,9,7.222
+Naive Sensor Baseline,4,1.0,7,491,0,100,10.34
+Random Baseline,4,1.0,7,491,0,100,10.34
+HMM Hunter,4,1.0,8,498,1,35,3.743
+Naive Sensor Baseline,4,1.0,8,498,0,100,5.28
+Random Baseline,4,1.0,8,498,0,100,5.28
+HMM Hunter,4,1.0,9,505,1,29,3.552
+Naive Sensor Baseline,4,1.0,9,505,1,74,5.689
+Random Baseline,4,1.0,9,505,1,74,5.689
+HMM Hunter,4,1.0,10,512,1,8,4.125
+Naive Sensor Baseline,4,1.0,10,512,0,100,5.88
+Random Baseline,4,1.0,10,512,0,100,5.88
+HMM Hunter,4,1.0,11,519,1,37,3.216
+Naive Sensor Baseline,4,1.0,11,519,1,51,9.314
+Random Baseline,4,1.0,11,519,1,51,9.314
+HMM Hunter,4,1.0,12,526,1,20,4.5
+Naive Sensor Baseline,4,1.0,12,526,0,100,4.09
+Random Baseline,4,1.0,12,526,0,100,4.09
+HMM Hunter,4,1.0,13,533,1,8,2.625
+Naive Sensor Baseline,4,1.0,13,533,0,100,6.27
+Random Baseline,4,1.0,13,533,0,100,6.27
+HMM Hunter,4,1.0,14,540,1,9,3.111
+Naive Sensor Baseline,4,1.0,14,540,1,38,4.974
+Random Baseline,4,1.0,14,540,1,38,4.974
+HMM Hunter,4,1.0,15,547,1,4,3.75
+Naive Sensor Baseline,4,1.0,15,547,1,42,3.357
+Random Baseline,4,1.0,15,547,1,42,3.357
+HMM Hunter,4,1.0,16,554,1,18,5.167
+Naive Sensor Baseline,4,1.0,16,554,0,100,7.15
+Random Baseline,4,1.0,16,554,0,100,7.15
+HMM Hunter,4,1.0,17,561,1,13,1.538
+Naive Sensor Baseline,4,1.0,17,561,1,37,3.081
+Random Baseline,4,1.0,17,561,1,37,3.081
+HMM Hunter,4,1.0,18,568,1,22,4.909
+Naive Sensor Baseline,4,1.0,18,568,0,100,5.36
+Random Baseline,4,1.0,18,568,0,100,5.36
+HMM Hunter,4,1.0,19,575,1,24,2.417
+Naive Sensor Baseline,4,1.0,19,575,0,100,10.69
+Random Baseline,4,1.0,19,575,0,100,10.69
+HMM Hunter,4,1.5,0,442,1,7,6.571
+Naive Sensor Baseline,4,1.5,0,442,1,35,4.2
+Random Baseline,4,1.5,0,442,1,35,4.2
+HMM Hunter,4,1.5,1,449,1,23,2.913
+Naive Sensor Baseline,4,1.5,1,449,0,100,11.39
+Random Baseline,4,1.5,1,449,0,100,11.39
+HMM Hunter,4,1.5,2,456,1,26,4.038
+Naive Sensor Baseline,4,1.5,2,456,0,100,8.57
+Random Baseline,4,1.5,2,456,0,100,8.57
+HMM Hunter,4,1.5,3,463,1,34,3.0
+Naive Sensor Baseline,4,1.5,3,463,0,100,7.83
+Random Baseline,4,1.5,3,463,0,100,7.83
+HMM Hunter,4,1.5,4,470,1,56,3.25
+Naive Sensor Baseline,4,1.5,4,470,1,14,8.429
+Random Baseline,4,1.5,4,470,1,14,8.429
+HMM Hunter,4,1.5,5,477,1,16,4.5
+Naive Sensor Baseline,4,1.5,5,477,1,23,4.565
+Random Baseline,4,1.5,5,477,1,23,4.565
+HMM Hunter,4,1.5,6,484,1,48,2.292
+Naive Sensor Baseline,4,1.5,6,484,0,100,7.26
+Random Baseline,4,1.5,6,484,0,100,7.26
+HMM Hunter,4,1.5,7,491,1,16,4.562
+Naive Sensor Baseline,4,1.5,7,491,0,100,10.34
+Random Baseline,4,1.5,7,491,0,100,10.34
+HMM Hunter,4,1.5,8,498,1,64,3.375
+Naive Sensor Baseline,4,1.5,8,498,0,100,5.28
+Random Baseline,4,1.5,8,498,0,100,5.28
+HMM Hunter,4,1.5,9,505,1,20,4.6
+Naive Sensor Baseline,4,1.5,9,505,1,74,5.689
+Random Baseline,4,1.5,9,505,1,74,5.689
+HMM Hunter,4,1.5,10,512,1,17,4.059
+Naive Sensor Baseline,4,1.5,10,512,0,100,5.88
+Random Baseline,4,1.5,10,512,0,100,5.88
+HMM Hunter,4,1.5,11,519,1,20,3.8
+Naive Sensor Baseline,4,1.5,11,519,1,51,9.314
+Random Baseline,4,1.5,11,519,1,51,9.314
+HMM Hunter,4,1.5,12,526,1,20,4.75
+Naive Sensor Baseline,4,1.5,12,526,0,100,4.09
+Random Baseline,4,1.5,12,526,0,100,4.09
+HMM Hunter,4,1.5,13,533,1,8,2.75
+Naive Sensor Baseline,4,1.5,13,533,0,100,6.27
+Random Baseline,4,1.5,13,533,0,100,6.27
+HMM Hunter,4,1.5,14,540,1,9,2.889
+Naive Sensor Baseline,4,1.5,14,540,1,38,4.974
+Random Baseline,4,1.5,14,540,1,38,4.974
+HMM Hunter,4,1.5,15,547,1,17,3.294
+Naive Sensor Baseline,4,1.5,15,547,1,42,3.357
+Random Baseline,4,1.5,15,547,1,42,3.357
+HMM Hunter,4,1.5,16,554,1,18,5.444
+Naive Sensor Baseline,4,1.5,16,554,0,100,7.15
+Random Baseline,4,1.5,16,554,0,100,7.15
+HMM Hunter,4,1.5,17,561,1,9,1.889
+Naive Sensor Baseline,4,1.5,17,561,1,37,3.081
+Random Baseline,4,1.5,17,561,1,37,3.081
+HMM Hunter,4,1.5,18,568,1,22,4.909
+Naive Sensor Baseline,4,1.5,18,568,0,100,5.36
+Random Baseline,4,1.5,18,568,0,100,5.36
+HMM Hunter,4,1.5,19,575,1,42,3.333
+Naive Sensor Baseline,4,1.5,19,575,0,100,10.69
+Random Baseline,4,1.5,19,575,0,100,10.69
+HMM Hunter,4,2.0,0,442,1,9,6.778
+Naive Sensor Baseline,4,2.0,0,442,1,35,4.2
+Random Baseline,4,2.0,0,442,1,35,4.2
+HMM Hunter,4,2.0,1,449,1,29,2.345
+Naive Sensor Baseline,4,2.0,1,449,0,100,11.39
+Random Baseline,4,2.0,1,449,0,100,11.39
+HMM Hunter,4,2.0,2,456,1,37,4.919
+Naive Sensor Baseline,4,2.0,2,456,0,100,8.57
+Random Baseline,4,2.0,2,456,0,100,8.57
+HMM Hunter,4,2.0,3,463,1,16,3.75
+Naive Sensor Baseline,4,2.0,3,463,0,100,7.83
+Random Baseline,4,2.0,3,463,0,100,7.83
+HMM Hunter,4,2.0,4,470,1,27,4.667
+Naive Sensor Baseline,4,2.0,4,470,1,14,8.429
+Random Baseline,4,2.0,4,470,1,14,8.429
+HMM Hunter,4,2.0,5,477,1,19,4.947
+Naive Sensor Baseline,4,2.0,5,477,1,23,4.565
+Random Baseline,4,2.0,5,477,1,23,4.565
+HMM Hunter,4,2.0,6,484,1,51,2.627
+Naive Sensor Baseline,4,2.0,6,484,0,100,7.26
+Random Baseline,4,2.0,6,484,0,100,7.26
+HMM Hunter,4,2.0,7,491,1,16,4.625
+Naive Sensor Baseline,4,2.0,7,491,0,100,10.34
+Random Baseline,4,2.0,7,491,0,100,10.34
+HMM Hunter,4,2.0,8,498,1,25,4.04
+Naive Sensor Baseline,4,2.0,8,498,0,100,5.28
+Random Baseline,4,2.0,8,498,0,100,5.28
+HMM Hunter,4,2.0,9,505,1,18,4.889
+Naive Sensor Baseline,4,2.0,9,505,1,74,5.689
+Random Baseline,4,2.0,9,505,1,74,5.689
+HMM Hunter,4,2.0,10,512,1,20,4.05
+Naive Sensor Baseline,4,2.0,10,512,0,100,5.88
+Random Baseline,4,2.0,10,512,0,100,5.88
+HMM Hunter,4,2.0,11,519,1,20,3.8
+Naive Sensor Baseline,4,2.0,11,519,1,51,9.314
+Random Baseline,4,2.0,11,519,1,51,9.314
+HMM Hunter,4,2.0,12,526,1,60,3.983
+Naive Sensor Baseline,4,2.0,12,526,0,100,4.09
+Random Baseline,4,2.0,12,526,0,100,4.09
+HMM Hunter,4,2.0,13,533,1,11,4.0
+Naive Sensor Baseline,4,2.0,13,533,0,100,6.27
+Random Baseline,4,2.0,13,533,0,100,6.27
+HMM Hunter,4,2.0,14,540,1,9,2.889
+Naive Sensor Baseline,4,2.0,14,540,1,38,4.974
+Random Baseline,4,2.0,14,540,1,38,4.974
+HMM Hunter,4,2.0,15,547,1,13,4.0
+Naive Sensor Baseline,4,2.0,15,547,1,42,3.357
+Random Baseline,4,2.0,15,547,1,42,3.357
+HMM Hunter,4,2.0,16,554,1,17,5.882
+Naive Sensor Baseline,4,2.0,16,554,0,100,7.15
+Random Baseline,4,2.0,16,554,0,100,7.15
+HMM Hunter,4,2.0,17,561,1,4,2.5
+Naive Sensor Baseline,4,2.0,17,561,1,37,3.081
+Random Baseline,4,2.0,17,561,1,37,3.081
+HMM Hunter,4,2.0,18,568,1,24,4.208
+Naive Sensor Baseline,4,2.0,18,568,0,100,5.36
+Random Baseline,4,2.0,18,568,0,100,5.36
+HMM Hunter,4,2.0,19,575,1,18,3.611
+Naive Sensor Baseline,4,2.0,19,575,0,100,10.69
+Random Baseline,4,2.0,19,575,0,100,10.69
+HMM Hunter,4,3.0,0,442,1,64,5.422
+Naive Sensor Baseline,4,3.0,0,442,1,35,4.2
+Random Baseline,4,3.0,0,442,1,35,4.2
+HMM Hunter,4,3.0,1,449,1,42,2.571
+Naive Sensor Baseline,4,3.0,1,449,0,100,11.39
+Random Baseline,4,3.0,1,449,0,100,11.39
+HMM Hunter,4,3.0,2,456,1,38,4.421
+Naive Sensor Baseline,4,3.0,2,456,0,100,8.57
+Random Baseline,4,3.0,2,456,0,100,8.57
+HMM Hunter,4,3.0,3,463,1,16,3.688
+Naive Sensor Baseline,4,3.0,3,463,0,100,7.83
+Random Baseline,4,3.0,3,463,0,100,7.83
+HMM Hunter,4,3.0,4,470,1,15,5.667
+Naive Sensor Baseline,4,3.0,4,470,1,14,8.429
+Random Baseline,4,3.0,4,470,1,14,8.429
+HMM Hunter,4,3.0,5,477,1,49,4.143
+Naive Sensor Baseline,4,3.0,5,477,1,23,4.565
+Random Baseline,4,3.0,5,477,1,23,4.565
+HMM Hunter,4,3.0,6,484,1,56,3.589
+Naive Sensor Baseline,4,3.0,6,484,0,100,7.26
+Random Baseline,4,3.0,6,484,0,100,7.26
+HMM Hunter,4,3.0,7,491,1,16,4.688
+Naive Sensor Baseline,4,3.0,7,491,0,100,10.34
+Random Baseline,4,3.0,7,491,0,100,10.34
+HMM Hunter,4,3.0,8,498,1,30,3.9
+Naive Sensor Baseline,4,3.0,8,498,0,100,5.28
+Random Baseline,4,3.0,8,498,0,100,5.28
+HMM Hunter,4,3.0,9,505,1,50,5.6
+Naive Sensor Baseline,4,3.0,9,505,1,74,5.689
+Random Baseline,4,3.0,9,505,1,74,5.689
+HMM Hunter,4,3.0,10,512,1,20,4.75
+Naive Sensor Baseline,4,3.0,10,512,0,100,5.88
+Random Baseline,4,3.0,10,512,0,100,5.88
+HMM Hunter,4,3.0,11,519,1,55,4.109
+Naive Sensor Baseline,4,3.0,11,519,1,51,9.314
+Random Baseline,4,3.0,11,519,1,51,9.314
+HMM Hunter,4,3.0,12,526,1,67,4.567
+Naive Sensor Baseline,4,3.0,12,526,0,100,4.09
+Random Baseline,4,3.0,12,526,0,100,4.09
+HMM Hunter,4,3.0,13,533,1,37,3.595
+Naive Sensor Baseline,4,3.0,13,533,0,100,6.27
+Random Baseline,4,3.0,13,533,0,100,6.27
+HMM Hunter,4,3.0,14,540,1,5,4.2
+Naive Sensor Baseline,4,3.0,14,540,1,38,4.974
+Random Baseline,4,3.0,14,540,1,38,4.974
+HMM Hunter,4,3.0,15,547,1,4,7.0
+Naive Sensor Baseline,4,3.0,15,547,1,42,3.357
+Random Baseline,4,3.0,15,547,1,42,3.357
+HMM Hunter,4,3.0,16,554,1,30,5.2
+Naive Sensor Baseline,4,3.0,16,554,0,100,7.15
+Random Baseline,4,3.0,16,554,0,100,7.15
+HMM Hunter,4,3.0,17,561,1,4,3.25
+Naive Sensor Baseline,4,3.0,17,561,1,37,3.081
+Random Baseline,4,3.0,17,561,1,37,3.081
+HMM Hunter,4,3.0,18,568,1,8,4.625
+Naive Sensor Baseline,4,3.0,18,568,0,100,5.36
+Random Baseline,4,3.0,18,568,0,100,5.36
+HMM Hunter,4,3.0,19,575,1,24,2.917
+Naive Sensor Baseline,4,3.0,19,575,0,100,10.69
+Random Baseline,4,3.0,19,575,0,100,10.69
