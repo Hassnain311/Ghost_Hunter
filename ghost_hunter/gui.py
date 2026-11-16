@@ -138,8 +138,9 @@ class PygameVisualizer:
         self.window_w = max(960, self.grid_margin_x * 2 + self.grid_pixel_w + self.sidebar_w + 14)
         self.window_h = max(660, self.grid_margin_y * 2 + self.grid_pixel_h)
 
-        self.is_fullscreen = False
-        self.screen = pygame.display.set_mode((self.window_w, self.window_h), pygame.RESIZABLE)
+        # Start in fullscreen by default; [F] toggles back to windowed
+        self.is_fullscreen = True
+        self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         pygame.display.set_caption("Ghost Hunter · Probabilistic AI Tracking (HMM)")
         self.clock = pygame.time.Clock()
 
@@ -286,14 +287,24 @@ class PygameVisualizer:
         pygame.draw.rect(self.screen, border_color, rect, width=1, border_radius=10)
 
     def render(self, belief_grid: Optional[np.ndarray] = None, mode_label: str = "Demo") -> None:
-        """Renders grid canvas, cards, tokens, A* path overlay, and telemetry."""
+        """Renders grid canvas, cards, tokens, A* path overlay, and telemetry.
+        Automatically centres the layout in fullscreen so the grid + sidebar
+        fill the actual screen resolution instead of being glued to the top-left.
+        """
+        scr_w = self.screen.get_width()
+        scr_h = self.screen.get_height()
         self.screen.fill(COLOR_WINDOW_BG)
 
         elapsed = time.time() - self.start_time
         pulse = 0.5 + 0.5 * math.sin(elapsed * 5.0)
 
-        ox = self.grid_margin_x
-        oy = self.grid_margin_y
+        # Total content width = grid + sidebar gap + sidebar
+        content_w = self.grid_pixel_w + 18 + self.sidebar_w + self.grid_margin_x
+        content_h = max(self.grid_pixel_h + self.grid_margin_y * 2, 660)
+
+        # Centre the whole layout in the actual screen
+        ox = max(self.grid_margin_x, (scr_w - content_w) // 2)
+        oy = max(self.grid_margin_y, (scr_h - content_h) // 2)
 
         max_prob = float(np.max(belief_grid)) if belief_grid is not None else 0.0
 
