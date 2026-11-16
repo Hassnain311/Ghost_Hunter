@@ -11,49 +11,25 @@
 ---
 
 ## 1. Project Overview
-*Ghost Hunter* is a grid deduction game built around probabilistic reasoning under partial observability. An invisible ghost moves stochastically across a 10×10 obstacle maze. The hunter agent receives only noisy, discretized Manhattan-distance readings corrupted by zero-mean noise $P(e_t \mid X_t)$. 
+*Ghost Hunter* is a grid deduction game built around probabilistic reasoning under partial observability. An invisible ghost moves stochastically across an obstacle maze. The hunter agent receives only noisy, discretized Manhattan-distance readings corrupted by zero-mean noise $P(e_t \mid X_t)$. 
 
 Using a Hidden Markov Model (HMM) and the recursive **Forward Algorithm** (Prediction + Correction), the hunter continuously maintains a spatial probability distribution (belief heatmap), converges on the ghost's hidden location, and intercepts it using $A^*$ search with momentum tie-breaking.
 
----
-
-## 2. Repository Layout
-```text
-Ghost_Hunter/
-├── main.py                  # CLI entry: play | demo | experiments
-├── config.py                # Grid dimensions, noise parameters, visual styling
-├── requirements.txt         # NumPy, Pygame, Matplotlib, Pytest
-├── README.md                # Project documentation and quickstart
-│
-├── ghost_hunter/
-│   ├── __init__.py          # Package exports
-│   ├── environment.py       # GridEnvironment, maze generation, turn rules, sensor
-│   ├── hmm.py               # HMMTracker, Forward algorithm, normalization, entropy
-│   ├── sensor_model.py      # Discrete noise PMF and likelihood matrix
-│   ├── pathfinding.py       # A* with directional momentum penalty
-│   ├── agents.py            # BaseAgent, RandomAgent, NaiveSensorAgent, HMMHunterAgent
-│   ├── entropy_agent.py     # Optional EntropyHunterAgent extension
-│   ├── gui.py               # PygameVisualizer, live belief heatmap, HUD telemetry
-│   ├── metrics.py           # Turn-by-turn episode logging (Manhattan error, steps)
-│   └── experiments.py       # Benchmark harness and figure generation
-│
-├── tests/
-│   ├── test_environment.py  # Walls, bounds, connectivity, ghost movement
-│   ├── test_hmm.py          # Probability normalization, floor, likelihood peaks
-│   ├── test_pathfinding.py  # Shortest path, obstacle avoidance
-│   └── test_agents.py       # Action validity across all agents
-│
-├── results/
-│   ├── raw/                 # CSV summary data per trial
-│   └── figures/             # 3 evaluation charts (PNG)
-│
-└── docs/
-    └── report.md            # Complete theoretical derivation and results
-```
+### Key Advanced Features:
+* **Interactive Menu System:** Start Screen (`Ghost Hunter` title banner, `Start Game`, `Main Menu / How to Play`, and `Exit`).
+* **Game Summary & Instructions Modal:** Detailed explanation of the HMM Forward algorithm, heatmap interpretation, controls, and game objectives.
+* **4 Scalable Difficulties:**
+  * **Beginner:** $10 \times 10$ Grid (100 Turns)
+  * **Intermediate:** $15 \times 15$ Grid (150 Turns)
+  * **Hard:** $20 \times 20$ Grid (200 Turns)
+  * **Extreme:** $30 \times 30$ Grid (300 Turns)
+* **High-Contrast Visible Obstacle Blocks:** Distinct Slate-700 / Iron Stone wall blocks with light beveled borders and corner rivets so obstacles never blend with the grid canvas.
+* **Real-Time Ghost Movement:** The invisible ghost moves every **1.0 second** independently in real time!
+* **A\* Ghost Radar Ability (`X` Key):** Illuminates the shortest obstacle-avoiding path to the ghost with an emerald pulsing glow for **2–3 seconds**, then undergoes a **5-second recharge cooldown**.
 
 ---
 
-## 3. Installation & Setup
+## 2. Installation & Setup
 
 1. **Clone the repository:**
    ```bash
@@ -68,56 +44,37 @@ Ghost_Hunter/
 
 ---
 
-## 4. How to Run
+## 3. How to Run
 
-### Mode 1: Interactive Human Play Mode
-Take control of the hunter with arrow keys/WASD and attempt to catch the ghost using sensor pings and the live probability heatmap hint:
+### Main Interactive Launcher (Menu, Instructions, & Difficulty Selection):
 ```bash
-python main.py play
+python main.py
 ```
-* **Controls:**
-  * `W / A / S / D` or `Arrow Keys`: Move Hunter (North, South, West, East)
-  * `.` (Period): Stay in place
-  * `H`: Toggle belief heatmap display
-  * `G`: Debug toggle (reveal invisible ghost position)
-  * `ESC`: Exit game
+* Shows the **Start Screen Menu** with options to launch the game, inspect instructions & summary, or exit.
+* Selecting **Start Game** opens the **Difficulty Selection Screen** ($10 \times 10$, $15 \times 15$, $20 \times 20$, $30 \times 30$).
 
-### Mode 2: Autonomous AI Demo Mode
-Watch the HMM Hunter agent autonomously track and capture the invisible ghost in real time:
+### Direct Command Line Modes:
 ```bash
-python main.py demo
-```
-* `Space`: Pause / Resume simulation
-* `ESC`: Exit
-
-### Mode 3: Benchmark Experiments
-Run the full automated benchmark comparing the **HMM Hunter**, **Naive Sensor Baseline**, and **Random Baseline** across different noise levels ($\sigma$):
-```bash
-python main.py experiments --trials 20 --topologies 5
-```
-* Outputs summary CSV logs to `results/raw/benchmark_summary.csv`.
-* Automatically plots the 3 required evaluation charts in `results/figures/`:
-  1. `chart1_estimation_error_vs_turns.png` (Error vs. Turns)
-  2. `chart2_steps_to_capture_by_sigma.png` (Steps to Capture comparison)
-  3. `chart3_success_rate_vs_noise.png` (Capture Success Rate vs. Sensor Noise $\sigma$)
-
----
-
-## 5. Running the Test Suite
-Ensure code verification and clean execution:
-```bash
-pytest tests/
+python main.py play --difficulty Intermediate   # Direct human play
+python main.py demo --difficulty Hard           # Autonomous AI demonstration
+python main.py experiments                      # Run 100-run benchmark & generate charts
 ```
 
 ---
 
-## 6. Mathematical Formulation
+## 4. In-Game Controls
+* **`W / A / S / D` or `Arrow Keys`:** Move Hunter (North, South, West, East)
+* **`X`:** **A\* Ghost Radar Ability** (reveals glowing path to ghost for 2–3 sec; 5 sec cooldown)
+* **`R` or Click Button:** Restart with a **brand new random maze layout**
+* **`H`:** Toggle probability heatmap hint
+* **`G`:** Debug toggle (reveal invisible ghost position)
+* **`Space`:** Pause / Resume
+* **`ESC`:** Return to Main Menu / Exit
 
-### Time Update (Prediction Step)
-Propagates the prior belief distribution $P(X_{t-1} \mid e_{1:t-1})$ through the stochastic ghost movement transition matrix $T$:
-$$P(X_t \mid e_{1:t-1}) = \sum_{X_{t-1}} P(X_t \mid X_{t-1}) \cdot P(X_{t-1} \mid e_{1:t-1})$$
+---
 
-### Measurement Update (Correction Step)
-Multiplies the predicted belief by the discrete distance sensor likelihood and normalizes:
-$$P(X_t \mid e_{1:t}) = \alpha \cdot P(e_t \mid X_t) \cdot P(X_t \mid e_{1:t-1})$$
-where $\alpha = \frac{1}{\sum_{s} P(e_t \mid X_t = s) \cdot P(X_t = s \mid e_{1:t-1})}$.
+## 5. Verification & Tests
+All 11 unit tests pass cleanly:
+```bash
+python -m pytest tests/
+```

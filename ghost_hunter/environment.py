@@ -1,7 +1,9 @@
 """
 Grid Environment for Ghost Hunter.
-Manages the maze layout, obstacle walls, ghost stochastic transitions,
+Manages the maze layout, obstacle walls, evasive/stochastic ghost transitions,
 hunter movement, noisy distance emissions, and terminal state checks.
+Supports configurable grid dimensions (Beginner 10x10, Intermediate 15x15,
+Hard 20x20, Extreme 30x30).
 """
 
 from typing import Any
@@ -17,20 +19,35 @@ from config import (
 from ghost_hunter.sensor_model import manhattan_distance, sample_sensor_reading
 
 
-def generate_maze(seed: int, density: float = 0.16) -> tuple[set[tuple[int, int]], set[tuple[int, int]]]:
+def generate_maze(
+    seed: int,
+    density: float = 0.16,
+    width: int = GRID_WIDTH,
+    height: int = GRID_HEIGHT
+) -> tuple[set[tuple[int, int]], set[tuple[int, int]]]:
     """
-    Generates a deterministic 10x10 maze topology ensuring a single connected component
+    Generates a deterministic maze topology ensuring a single connected component
     for all free cells so that the ghost and hunter are never partitioned.
+    Works for any grid dimensions (10x10, 15x15, 20x20, 30x30).
     
     Returns:
         free_cells: set of navigable (r, c) coordinates
         walls: set of impassable (r, c) coordinates
     """
     rng = np.random.default_rng(seed)
-    all_cells = {(r, c) for r in range(GRID_HEIGHT) for c in range(GRID_WIDTH)}
+    all_cells = {(r, c) for r in range(height) for c in range(width)}
     
-    # We never place walls on corners or designated center start positions
-    protected_cells = {(0, 0), (GRID_HEIGHT - 1, GRID_WIDTH - 1), (0, GRID_WIDTH - 1), (GRID_HEIGHT - 1, 0), (4, 4), (4, 5), (5, 4), (5, 5)}
+    mid_r, mid_c = height // 2, width // 2
+    protected_cells = {
+        (0, 0),
+        (height - 1, width - 1),
+        (0, width - 1),
+        (height - 1, 0),
+        (mid_r, mid_c),
+        (mid_r, max(0, mid_c - 1)),
+        (max(0, mid_r - 1), mid_c),
+        (max(0, mid_r - 1), max(0, mid_c - 1))
+    }
     candidate_cells = list(all_cells - protected_cells)
     
     walls: set[tuple[int, int]] = set()
@@ -42,11 +59,9 @@ def generate_maze(seed: int, density: float = 0.16) -> tuple[set[tuple[int, int]
         if len(walls) >= num_walls:
             break
         
-        # Test if adding this wall maintains full connectivity of all free cells
         test_walls = walls | {candidate_tuple}
         test_free = all_cells - test_walls
         
-        # Check connectivity via BFS from (0, 0)
         start = (0, 0)
         visited = set()
         queue = deque([start])
@@ -71,11 +86,14 @@ def generate_maze(seed: int, density: float = 0.16) -> tuple[set[tuple[int, int]
 
 def get_ghost_transition_probabilities(
     current_pos: tuple[int, int],
-    free_cells: set[tuple[int, int]]
+    free_cells: set[tuple[int, int]],
+    hunter_pos: tuple[int, int] = None
 ) -> dict[tuple[int, int], float]:
     """
-    Shared transition model used by both GridEnvironment and HMMTracker.
-    Ghost moves uniformly at random to valid adjacent free cells or stays in place.
+    Ghost transition model with smart evasive bias:
+    - Moves to adjacent valid free cells or stays.
+    - When hunter is near (<= 3 blocks), ghost biases slightly away from the hunter,
+      making the ghost significantly more difficult to corner and catch!
     """
     r, c = current_pos
     valid_destinations = []
@@ -88,9 +106,26 @@ def get_ghost_transition_probabilities(
     num_moves = len(valid_destinations)
     if num_moves == 0:
         return {current_pos: 1.0}
-        
-    prob = 1.0 / num_moves
-    return {dest: prob for dest in valid_destinations}
+
+    # If no hunter pos provided, uniform random
+    if hunter_pos is None:
+        prob = 1.0 / num_moves
+        return {dest: prob for dest in valid_destinations}
+
+    # Evasive weighting: destinations that increase or maintain distance from hunter get higher weight
+    weights = []
+    current_dist = manhattan_distance(current_pos, hunter_pos)
+    for dest in valid_destinations:
+        d = manhattan_distance(dest, hunter_pos)
+        if d > current_dist:
+            weights.append(2.0)  # Flee bias
+        elif d == current_dist:
+            weights.append(1.0)
+        else:
+            weights.append(0.5)  # Moving toward hunter is penalized
+
+    total_w = sum(weights)
+    return {dest: weights[i] / total_w for i, dest in enumerate(valid_destinations)}
 
 
 class GridEnvironment:
@@ -111,12 +146,14 @@ class GridEnvironment:
         height: int = GRID_HEIGHT,
         walls: set[tuple[int, int]] = None,
         sensor_sigma: float = DEFAULT_SENSOR_SIGMA,
-        seed: int = 42
+        seed: int = 42,
+        turn_limit: int = TURN_LIMIT_T_MAX
     ):
         self.width = width
         self.height = height
         self.sensor_sigma = sensor_sigma
         self.seed = seed
+        self.turn_limit = turn_limit
         self.rng = np.random.default_rng(seed)
         
         all_cells = {(r, c) for r in range(self.height) for c in range(self.width)}
@@ -140,13 +177,11 @@ class GridEnvironment:
         self.turn = 0
         self.captured = False
         
-        # Place hunter
         if hunter_start in self.free_cells:
             self.hunter_pos = hunter_start
         else:
             self.hunter_pos = sorted(list(self.free_cells))[0]
             
-        # Place ghost
         if ghost_start is not None and ghost_start in self.free_cells:
             self.true_ghost_pos = ghost_start
         else:
@@ -154,7 +189,6 @@ class GridEnvironment:
             chosen_idx = self.rng.integers(0, len(free_list))
             self.true_ghost_pos = free_list[chosen_idx]
             
-        # Initial sensor reading
         dist = manhattan_distance(self.hunter_pos, self.true_ghost_pos)
         self.last_reading = sample_sensor_reading(dist, self.sensor_sigma, self.rng)
         
@@ -176,21 +210,55 @@ class GridEnvironment:
         return valid
 
     def move_ghost(self) -> None:
-        """Moves the ghost according to the shared transition model."""
-        transitions = get_ghost_transition_probabilities(self.true_ghost_pos, self.free_cells)
+        """Moves the ghost with evasive intelligence against the hunter."""
+        transitions = get_ghost_transition_probabilities(self.true_ghost_pos, self.free_cells, self.hunter_pos)
         destinations = list(transitions.keys())
         probabilities = [transitions[d] for d in destinations]
         
         chosen_idx = self.rng.choice(len(destinations), p=probabilities)
         self.true_ghost_pos = destinations[chosen_idx]
 
+    def ghost_step_only(self) -> tuple[dict[str, Any], bool, dict[str, Any]]:
+        """
+        Called when ghost moves in real-time (every 1 second) independent of hunter step.
+        """
+        if self.captured:
+            return {
+                "reading": self.last_reading,
+                "hunter_pos": self.hunter_pos,
+                "wall_hit": False,
+                "turn": self.turn
+            }, True, {"captured": True, "true_ghost_pos": self.true_ghost_pos}
+
+        self.move_ghost()
+
+        # Capture check: did ghost walk into hunter?
+        if self.hunter_pos == self.true_ghost_pos:
+            self.captured = True
+            done = True
+            dist = 0
+            self.last_reading = sample_sensor_reading(dist, self.sensor_sigma, self.rng)
+            obs = {
+                "reading": self.last_reading,
+                "hunter_pos": self.hunter_pos,
+                "wall_hit": False,
+                "turn": self.turn
+            }
+            return obs, done, {"captured": True, "true_ghost_pos": self.true_ghost_pos}
+
+        dist = manhattan_distance(self.hunter_pos, self.true_ghost_pos)
+        self.last_reading = sample_sensor_reading(dist, self.sensor_sigma, self.rng)
+        obs = {
+            "reading": self.last_reading,
+            "hunter_pos": self.hunter_pos,
+            "wall_hit": False,
+            "turn": self.turn
+        }
+        return obs, False, {"captured": False, "true_ghost_pos": self.true_ghost_pos}
+
     def step(self, action: tuple[int, int]) -> tuple[dict[str, Any], bool, dict[str, Any]]:
         """
         Executes one full turn in the environment.
-        Returns:
-            observation: dict with sensor reading, hunter_pos, wall_hit
-            done: bool (captured or turn limit reached)
-            info: dict with capture status and true positions (for metrics logging)
         """
         self.turn += 1
         wall_hit = False
@@ -201,7 +269,7 @@ class GridEnvironment:
         if target_pos in self.free_cells:
             self.hunter_pos = target_pos
         else:
-            wall_hit = True # Hunter stays in place and receives collision signal
+            wall_hit = True
             
         # 2. Capture check 1
         if self.hunter_pos == self.true_ghost_pos:
@@ -217,10 +285,10 @@ class GridEnvironment:
             }
             return obs, done, {"captured": True, "true_ghost_pos": self.true_ghost_pos}
 
-        # 3. Ghost moves
+        # 3. Ghost moves (evasively)
         self.move_ghost()
         
-        # 4. Capture check 2 (Ghost walked into hunter's cell)
+        # 4. Capture check 2
         if self.hunter_pos == self.true_ghost_pos:
             self.captured = True
             done = True
@@ -234,8 +302,7 @@ class GridEnvironment:
             }
             return obs, done, {"captured": True, "true_ghost_pos": self.true_ghost_pos}
 
-        # Check turn limit
-        done = (self.turn >= TURN_LIMIT_T_MAX)
+        done = (self.turn >= self.turn_limit)
         
         # 5. Emit noisy distance sensor reading
         dist = manhattan_distance(self.hunter_pos, self.true_ghost_pos)
