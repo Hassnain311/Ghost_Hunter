@@ -153,8 +153,10 @@ class PygameVisualizer:
         self.font_badge = pygame.font.SysFont(font_family, 12, bold=True)
         self.font_btn = pygame.font.SysFont(font_family, 16, bold=True)
 
-        # Heatmap and Ghost visibility are both OFF by default!
-        # Heatmap turns on with [H]; Ghost turns on with [G]
+        # Default state at game start:
+        # - Yellow pointer is visible from the start (tracks HMM MAP estimate)
+        # - Heatmap is OFF by default (toggled with [H])
+        # - Ghost is invisible by default (revealed on capture or with [G])
         self.show_heatmap = False
         self.reveal_ghost = False
         self.paused = False
@@ -354,17 +356,15 @@ class PygameVisualizer:
                 pygame.draw.circle(self.screen, (255, 255, 255), (gx + 4, gy - 2), 2)
 
         # -------------------------------------------------------------
-        # 3b. Yellow Gun-Point / Target Reticle Marker
-        # Displayed ONLY when either heatmap [H] or ghost reveal [G] is active!
-        # When [G] is active: locks onto the exact ghost position.
-        # When [H] is active (and ghost not revealed): locks onto the peak MAP belief cell.
+        # 3b. Yellow Gun-Point / Target Reticle Pointer
+        # Shown from the start of the game!
+        # It ALWAYS points to the HMM's highest probability belief cell (MAP estimate),
+        # representing the AI hunter's current estimated location of the ghost.
+        # It does NOT cheat by putting it directly on the true ghost location!
         # -------------------------------------------------------------
-        if self.reveal_ghost or self.env.captured or (self.show_heatmap and belief_grid is not None):
-            if self.reveal_ghost or self.env.captured:
-                tr, tc = self.env.true_ghost_pos
-            else:
-                raw_map = np.unravel_index(np.argmax(belief_grid), belief_grid.shape)
-                tr, tc = int(raw_map[0]), int(raw_map[1])
+        if belief_grid is not None:
+            raw_map = np.unravel_index(np.argmax(belief_grid), belief_grid.shape)
+            tr, tc = int(raw_map[0]), int(raw_map[1])
 
             tx = ox + tc * self.cell_size + self.cell_size // 2
             ty = oy + tr * self.cell_size + self.cell_size // 2
@@ -472,7 +472,7 @@ class PygameVisualizer:
 
         if belief_grid is not None:
             raw_map = np.unravel_index(np.argmax(belief_grid), belief_grid.shape)
-            map_pos = f"({int(raw_map[0])}, {int(raw_map[1])})" if self.show_heatmap else "Hidden (Press H)"
+            map_pos = f"({int(raw_map[0])}, {int(raw_map[1])})"
             true_dist = manhattan_distance(self.env.hunter_pos, self.env.true_ghost_pos)
             map_err = manhattan_distance((int(raw_map[0]), int(raw_map[1])), self.env.true_ghost_pos)
 
@@ -481,7 +481,7 @@ class PygameVisualizer:
 
             hmm_rows = [
                 ("Most Likely Cell", map_pos),
-                ("Peak Confidence", f"{max_prob * 100:.1f}%" if self.show_heatmap else "Hidden"),
+                ("Peak Confidence", f"{max_prob * 100:.1f}%"),
                 ("Belief Entropy", f"{entropy:.2f} bits"),
                 ("True Distance", f"{true_dist if (self.reveal_ghost or self.env.captured) else 'Hidden (Press G)'}"),
                 ("Ghost Position", f"{self.env.true_ghost_pos if (self.reveal_ghost or self.env.captured) else 'Hidden (Press G)'}")
