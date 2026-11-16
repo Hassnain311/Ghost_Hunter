@@ -114,6 +114,16 @@ def run_game_loop(
                 agent.update_belief(obs)
                 last_ghost_move_time = now
 
+        # --- Dynamic A* Path Tracking (Follows moving ghost during active radar) ---
+        if gui.is_astar_active() and not env.captured:
+            path_to_ghost = astar(
+                start=env.hunter_pos,
+                goal=env.true_ghost_pos,
+                walls=env.walls,
+                grid_dims=(env.height, env.width)
+            )
+            gui.astar_path = path_to_ghost
+
         # --- Mode-Specific Action ---
         if mode == "play":
             # Human player directional move

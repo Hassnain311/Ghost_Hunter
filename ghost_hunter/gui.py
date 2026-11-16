@@ -138,7 +138,8 @@ class PygameVisualizer:
         self.window_w = max(960, self.grid_margin_x * 2 + self.grid_pixel_w + self.sidebar_w + 14)
         self.window_h = max(660, self.grid_margin_y * 2 + self.grid_pixel_h)
 
-        self.screen = pygame.display.set_mode((self.window_w, self.window_h))
+        self.is_fullscreen = False
+        self.screen = pygame.display.set_mode((self.window_w, self.window_h), pygame.RESIZABLE)
         pygame.display.set_caption("Ghost Hunter · Probabilistic AI Tracking (HMM)")
         self.clock = pygame.time.Clock()
 
@@ -184,7 +185,22 @@ class PygameVisualizer:
 
         self.window_w = max(960, self.grid_margin_x * 2 + self.grid_pixel_w + self.sidebar_w + 14)
         self.window_h = max(660, self.grid_margin_y * 2 + self.grid_pixel_h)
-        self.screen = pygame.display.set_mode((self.window_w, self.window_h))
+        if self.is_fullscreen:
+            self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        else:
+            self.screen = pygame.display.set_mode((self.window_w, self.window_h), pygame.RESIZABLE)
+
+    def toggle_fullscreen(self) -> None:
+        """Toggles between fullscreen and windowed mode."""
+        self.is_fullscreen = not self.is_fullscreen
+        if self.is_fullscreen:
+            self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+        else:
+            self.screen = pygame.display.set_mode((self.window_w, self.window_h), pygame.RESIZABLE)
+
+    def is_astar_active(self) -> bool:
+        """Returns True if the A* path hint is currently illuminated."""
+        return time.time() < self.astar_active_until
 
     def trigger_astar_hint(self, path: list[tuple[int, int]]) -> bool:
         """Activates A* path hint for 3s if cooldown (5s) has expired."""
@@ -233,7 +249,12 @@ class PygameVisualizer:
                         self.show_heatmap = not self.show_heatmap
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    menu_triggered = True
+                    if self.is_fullscreen:
+                        self.toggle_fullscreen()
+                    else:
+                        menu_triggered = True
+                elif event.key == pygame.K_f:
+                    self.toggle_fullscreen()
                 elif event.key == pygame.K_r:
                     restart_triggered = True
                 elif event.key == pygame.K_x:
@@ -497,7 +518,7 @@ class PygameVisualizer:
 
         # --- Card 4: KEYBOARD SHORTCUTS & A* RADAR ---
         sy += c3_h + 10
-        c4_h = 160
+        c4_h = 180
         card4_rect = pygame.Rect(sx, sy, card_w, c4_h)
         self._draw_card(card4_rect, CARD4_BG, CARD4_BORDER)
 
@@ -521,10 +542,11 @@ class PygameVisualizer:
         self.screen.blit(radar_surf, (r_pill_rect.centerx - radar_surf.get_width() // 2, r_pill_rect.centery - radar_surf.get_height() // 2))
 
         shortcuts = [
-            ("[X]", "A* Ghost Radar (2-3s glow, 5s CD)"),
+            ("[X]", "A* Ghost Radar (3s glow, 5s CD)"),
             ("[H]", "Toggle Heatmap"),
             ("[G]", "Reveal Ghost Position (Default: OFF)"),
             ("[R]", "Restart & Generate New Maze"),
+            ("[F]", "Toggle Fullscreen"),
             ("[Space]", "Pause / Resume"),
             ("[W,A,S,D]", "Move (Human Play Mode)")
         ]
@@ -550,17 +572,20 @@ class PygameVisualizer:
         - No institutional FAST-NUCES branding
         """
         btn_w, btn_h = 320, 52
-        center_x = self.window_w // 2
-
-        btn_start = pygame.Rect(center_x - btn_w // 2, 280, btn_w, btn_h)
-        btn_menu = pygame.Rect(center_x - btn_w // 2, 350, btn_w, btn_h)
-        btn_exit = pygame.Rect(center_x - btn_w // 2, 420, btn_w, btn_h)
 
         while True:
+            # Recompute center each frame (handles fullscreen resize)
+            center_x = self.screen.get_width() // 2
+            win_h = self.screen.get_height()
+
+            btn_start = pygame.Rect(center_x - btn_w // 2, int(win_h * 0.42), btn_w, btn_h)
+            btn_menu  = pygame.Rect(center_x - btn_w // 2, int(win_h * 0.42) + 70, btn_w, btn_h)
+            btn_exit  = pygame.Rect(center_x - btn_w // 2, int(win_h * 0.42) + 140, btn_w, btn_h)
+
             mouse_pos = pygame.mouse.get_pos()
             hover_start = btn_start.collidepoint(mouse_pos)
-            hover_menu = btn_menu.collidepoint(mouse_pos)
-            hover_exit = btn_exit.collidepoint(mouse_pos)
+            hover_menu  = btn_menu.collidepoint(mouse_pos)
+            hover_exit  = btn_exit.collidepoint(mouse_pos)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -573,19 +598,25 @@ class PygameVisualizer:
                     elif hover_exit:
                         return "exit"
                 elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
+                    if event.key == pygame.K_f:
+                        self.toggle_fullscreen()
+                    elif event.key == pygame.K_ESCAPE:
                         return "exit"
                     elif event.key == pygame.K_RETURN:
                         return "start"
 
             self.screen.fill(COLOR_WINDOW_BG)
 
+            # Recompute center for drawing (consistent with button positions above)
+            center_x = self.screen.get_width() // 2
+            win_h = self.screen.get_height()
+
             # Pure clean title without any boxes or artifacts
             hero_title = self.font_hero.render("GHOST HUNTER", True, (30, 41, 59))
             sub_hero = self.font_subtitle.render("Probabilistic State Estimation & Tracking with Hidden Markov Models", True, (100, 116, 139))
 
-            self.screen.blit(hero_title, (center_x - hero_title.get_width() // 2, 120))
-            self.screen.blit(sub_hero, (center_x - sub_hero.get_width() // 2, 175))
+            self.screen.blit(hero_title, (center_x - hero_title.get_width() // 2, int(win_h * 0.18)))
+            self.screen.blit(sub_hero, (center_x - sub_hero.get_width() // 2, int(win_h * 0.27)))
 
             # Button 1: START (Warm Gold)
             c_start = BTN_PRIMARY_HOVER if hover_start else BTN_PRIMARY_BG
@@ -605,9 +636,11 @@ class PygameVisualizer:
             txt_e = self.font_btn.render("EXIT", True, (255, 255, 255))
             self.screen.blit(txt_e, (btn_exit.centerx - txt_e.get_width() // 2, btn_exit.centery - txt_e.get_height() // 2))
 
-            # Footer
+            # Footer hint
+            hint_fs = self.font_body.render("Press [F] to toggle Fullscreen", True, (148, 163, 184))
             footer = self.font_body.render("Click Start to choose difficulty · Click Main Menu for instructions · Click Exit to quit", True, (148, 163, 184))
-            self.screen.blit(footer, (center_x - footer.get_width() // 2, self.window_h - 40))
+            self.screen.blit(footer, (center_x - footer.get_width() // 2, win_h - 55))
+            self.screen.blit(hint_fs, (center_x - hint_fs.get_width() // 2, win_h - 32))
 
             pygame.display.flip()
             self.clock.tick(30)
@@ -619,9 +652,12 @@ class PygameVisualizer:
         """
         Renders Main Menu instructions and game summary modal in Times New Roman.
         """
-        btn_back = pygame.Rect(self.window_w // 2 - 100, self.window_h - 65, 200, 42)
-
         while True:
+            win_w = self.screen.get_width()
+            win_h = self.screen.get_height()
+            center_x = win_w // 2
+            btn_back = pygame.Rect(center_x - 100, win_h - 65, 200, 42)
+
             mouse_pos = pygame.mouse.get_pos()
             hover_back = btn_back.collidepoint(mouse_pos)
 
@@ -630,16 +666,19 @@ class PygameVisualizer:
                     return
                 elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and hover_back:
                     return
-                elif event.type == pygame.KEYDOWN and (event.key == pygame.K_ESCAPE or event.key == pygame.K_RETURN):
-                    return
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_f:
+                        self.toggle_fullscreen()
+                    elif event.key == pygame.K_ESCAPE or event.key == pygame.K_RETURN:
+                        return
 
             self.screen.fill(COLOR_WINDOW_BG)
 
-            t = self.font_title.render("MAIN MENU — GAME SUMMARY & INSTRUCTIONS", True, (30, 41, 59))
-            self.screen.blit(t, (self.window_w // 2 - t.get_width() // 2, 25))
+            t = self.font_title.render("MAIN MENU - GAME SUMMARY & INSTRUCTIONS", True, (30, 41, 59))
+            self.screen.blit(t, (center_x - t.get_width() // 2, 25))
 
             # Card 1: What Does The Game Do?
-            card1 = pygame.Rect(40, 70, self.window_w - 80, 135)
+            card1 = pygame.Rect(40, 70, win_w - 80, 135)
             self._draw_card(card1, CARD1_BG, CARD1_BORDER)
             s_title = self.font_subtitle.render("WHAT DOES THIS GAME DO?", True, (30, 41, 59))
             self.screen.blit(s_title, (55, 80))
@@ -711,21 +750,22 @@ class PygameVisualizer:
         """
         Renders difficulty selector in Times New Roman.
         """
-        center_x = self.window_w // 2
         card_w = 480
         card_h = 64
-
         diff_keys = ["Beginner", "Intermediate", "Hard", "Extreme"]
-        btn_rects = []
-        start_y = 175
-
-        for i, key in enumerate(diff_keys):
-            rect = pygame.Rect(center_x - card_w // 2, start_y + i * 82, card_w, card_h)
-            btn_rects.append((key, rect))
-
-        btn_back = pygame.Rect(center_x - 100, self.window_h - 65, 200, 42)
 
         while True:
+            # Recompute layout every frame so it adapts to fullscreen
+            center_x = self.screen.get_width() // 2
+            win_h = self.screen.get_height()
+            start_y = int(win_h * 0.26)
+
+            btn_rects = []
+            for i, key in enumerate(diff_keys):
+                rect = pygame.Rect(center_x - card_w // 2, start_y + i * 82, card_w, card_h)
+                btn_rects.append((key, rect))
+
+            btn_back = pygame.Rect(center_x - 100, win_h - 65, 200, 42)
             mouse_pos = pygame.mouse.get_pos()
             hover_back = btn_back.collidepoint(mouse_pos)
 
@@ -739,7 +779,9 @@ class PygameVisualizer:
                         if rect.collidepoint(mouse_pos):
                             return key
                 elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
+                    if event.key == pygame.K_f:
+                        self.toggle_fullscreen()
+                    elif event.key == pygame.K_ESCAPE:
                         return None
                     elif event.key == pygame.K_1:
                         return "Beginner"
@@ -754,23 +796,21 @@ class PygameVisualizer:
 
             t = self.font_hero.render("SELECT DIFFICULTY", True, (30, 41, 59))
             sub = self.font_subtitle.render("Choose grid scale to configure maze dimensions and search space", True, (100, 116, 139))
-            self.screen.blit(t, (center_x - t.get_width() // 2, 70))
-            self.screen.blit(sub, (center_x - sub.get_width() // 2, 125))
+            self.screen.blit(t, (center_x - t.get_width() // 2, int(win_h * 0.10)))
+            self.screen.blit(sub, (center_x - sub.get_width() // 2, int(win_h * 0.19)))
 
             colors_map = {
-                "Beginner": ((241, 245, 249), (203, 213, 225), (202, 138, 4)),
+                "Beginner":     ((241, 245, 249), (203, 213, 225), (202, 138, 4)),
                 "Intermediate": ((248, 250, 252), (203, 213, 225), (180, 83, 9)),
-                "Hard": ((254, 252, 232), (254, 240, 138), (161, 98, 7)),
-                "Extreme": ((254, 242, 242), (254, 202, 202), (185, 28, 28))
+                "Hard":         ((254, 252, 232), (254, 240, 138), (161, 98, 7)),
+                "Extreme":      ((254, 242, 242), (254, 202, 202), (185, 28, 28))
             }
 
             for key, rect in btn_rects:
                 is_hovered = rect.collidepoint(mouse_pos)
                 bg_col, border_col, accent_col = colors_map[key]
-
                 if is_hovered:
                     bg_col = lerp_rgb(bg_col, (255, 255, 255), 0.5)
-
                 self._draw_card(rect, bg_col, border_col)
 
                 cfg = DIFFICULTY_CONFIGS[key]
@@ -787,6 +827,9 @@ class PygameVisualizer:
             pygame.draw.rect(self.screen, c_back, btn_back, border_radius=8)
             b_txt = self.font_btn.render("BACK", True, (255, 255, 255))
             self.screen.blit(b_txt, (btn_back.centerx - b_txt.get_width() // 2, btn_back.centery - b_txt.get_height() // 2))
+
+            hint = self.font_body.render("Press [F] to toggle Fullscreen  |  [1] Beginner  [2] Intermediate  [3] Hard  [4] Extreme", True, (148, 163, 184))
+            self.screen.blit(hint, (center_x - hint.get_width() // 2, win_h - 32))
 
             pygame.display.flip()
             self.clock.tick(30)
