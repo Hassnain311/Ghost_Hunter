@@ -193,37 +193,43 @@ class PygameVisualizer:
         else:
             self.screen = pygame.display.set_mode((self.window_w, self.window_h), pygame.RESIZABLE)
 
-    def _compute_layout(self) -> tuple[int, int, int, int, int, int]:
-        """Dynamically compute layout to fill the entire screen.
+    def _compute_layout(self) -> tuple[int, int, int, int, int, int, int]:
+        """Dynamically compute layout to fill the entire screen seamlessly.
 
-        The sidebar takes exactly 30% of screen width (capped at 420px).
-        The grid fills ALL remaining space on the left.
-        Returns (cell_size, grid_ox, grid_oy, grid_pixel_w, grid_pixel_h, sidebar_w).
+        - Grid is vertically centered with top/bottom margin.
+        - Cell size is calculated to make the square grid as large as possible.
+        - Left margin and gap between grid and sidebar are balanced.
+        - Sidebar dynamically spans all remaining width to the right edge with a clean margin,
+          so no empty whitespace is left on the right!
+        Returns (cell_size, grid_ox, grid_oy, grid_pixel_w, grid_pixel_h, sidebar_sx, sidebar_w).
         """
         scr_w = self.screen.get_width()
         scr_h = self.screen.get_height()
-        margin = 16
+        margin = 18
+        gap = 18
 
-        # Sidebar: 30% of screen width, min 300, max 440
-        sb_w = max(300, min(440, int(scr_w * 0.30)))
+        # 1. Height-driven square grid calculation (grid fills full vertical height minus margins)
+        max_grid_h = scr_h - margin * 2
+        cs_from_h = max(1, max_grid_h // self.env.height)
 
-        # Grid occupies everything left of the sidebar (minus small margin gaps)
-        grid_area_w = scr_w - sb_w - margin * 3   # left margin + gap + right edge
-        grid_area_h = scr_h - margin * 2           # top + bottom margin
+        # Ensure grid leaves at least 320px for sidebar on the right
+        max_grid_w = scr_w - 320 - gap - margin * 2
+        cs_from_w = max(1, max_grid_w // self.env.width)
 
-        # Largest cell size so ALL cells fit in both dimensions
-        cs_w = max(1, grid_area_w // self.env.width)
-        cs_h = max(1, grid_area_h // self.env.height)
-        cs   = max(6, min(cs_w, cs_h))
-
-        gpw = self.env.width  * cs
+        cs = max(8, min(cs_from_h, cs_from_w))
+        gpw = self.env.width * cs
         gph = self.env.height * cs
 
-        # Grid: left-aligned with margin; vertically centred
+        # Grid position
         ox = margin
         oy = max(margin, (scr_h - gph) // 2)
 
-        return cs, ox, oy, gpw, gph, sb_w
+        # 2. Sidebar position & width:
+        # Starts right after the grid + gap, and extends ALL the way to the right edge!
+        sx = ox + gpw + gap
+        sb_w = max(280, scr_w - sx - margin)
+
+        return cs, ox, oy, gpw, gph, sx, sb_w
 
     def toggle_fullscreen(self) -> None:
         """Toggles between fullscreen and windowed mode."""
@@ -331,7 +337,7 @@ class PygameVisualizer:
         pulse = 0.5 + 0.5 * math.sin(elapsed * 5.0)
 
         # Compute layout from live screen size (fills fullscreen automatically)
-        cs, ox, oy, gpw, gph, card_w = self._compute_layout()
+        cs, ox, oy, gpw, gph, sx, card_w = self._compute_layout()
 
         max_prob = float(np.max(belief_grid)) if belief_grid is not None else 0.0
 
@@ -430,10 +436,9 @@ class PygameVisualizer:
             pygame.draw.line(self.screen, COLOR_TARGET_MARKER, (tx + gap, ty), (tx + arm, ty), 2)
 
         # -------------------------------------------------------------
-        # 4. Dashboard Cards (Sidebar) — fills full screen height
+        # 4. Dashboard Cards (Sidebar) — fills full screen height and width
         # -------------------------------------------------------------
         scr_h = self.screen.get_height()
-        sx = ox + gpw + 16
         sy = oy
 
         # Distribute available vertical space across the 4 cards
