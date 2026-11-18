@@ -18,10 +18,9 @@ DIFFICULTY_CONFIGS: dict[str, dict] = {
         "turn_limit": 100,
         "density": 0.16,
         "ghost_speed": 1.0,         # Moves every 1.0s
-        "astar_charges": 5,          # 5 A* uses available
-        "glimpse_interval": 10.0,    # Glimpse appears every 10s
+        "glimpse_interval": 8.0,     # Glimpse appears every 8 seconds
         "glimpse_duration": 0.8,     # Visible for 0.8s (<= 1s)
-        "description": "10x10 Grid · Perfect for learning (Ghost: 1.0s, 5 A* Radar charges)"
+        "description": "10x10 Grid · Perfect for learning (Ghost: 1.0s, Unlimited A* Radar)"
     },
     "Intermediate": {
         "width": 15,
@@ -30,10 +29,9 @@ DIFFICULTY_CONFIGS: dict[str, dict] = {
         "turn_limit": 150,
         "density": 0.18,
         "ghost_speed": 0.75,        # Faster: moves every 0.75s
-        "astar_charges": 3,          # 3 A* uses available
-        "glimpse_interval": 12.0,    # Glimpse appears every 12s
-        "glimpse_duration": 0.7,     # Visible for 0.7s (<= 1s)
-        "description": "15x15 Grid · Swift ghost (Ghost: 0.75s, 3 A* Radar charges)"
+        "glimpse_interval": 8.0,     # Glimpse appears every 8 seconds
+        "glimpse_duration": 0.8,     # Visible for 0.8s (<= 1s)
+        "description": "15x15 Grid · Swift ghost (Ghost: 0.75s, Unlimited A* Radar)"
     },
     "Hard": {
         "width": 20,
@@ -42,10 +40,9 @@ DIFFICULTY_CONFIGS: dict[str, dict] = {
         "turn_limit": 200,
         "density": 0.20,
         "ghost_speed": 0.55,        # Rapid: moves every 0.55s
-        "astar_charges": 2,          # 2 A* uses available
-        "glimpse_interval": 14.0,    # Glimpse appears every 14s
-        "glimpse_duration": 0.6,     # Visible for 0.6s (<= 1s)
-        "description": "20x20 Grid · Agile ghost (Ghost: 0.55s, 2 A* Radar charges)"
+        "glimpse_interval": 8.0,     # Glimpse appears every 8 seconds
+        "glimpse_duration": 0.7,     # Visible for 0.7s (<= 1s)
+        "description": "20x20 Grid · Agile ghost (Ghost: 0.55s, Unlimited A* Radar)"
     },
     "Extreme": {
         "width": 30,
@@ -54,10 +51,9 @@ DIFFICULTY_CONFIGS: dict[str, dict] = {
         "turn_limit": 300,
         "density": 0.22,
         "ghost_speed": 0.40,        # Blazing fast: moves every 0.40s
-        "astar_charges": 1,          # Only 1 A* use available!
-        "glimpse_interval": 16.0,    # Glimpse appears every 16s
-        "glimpse_duration": 0.5,     # Visible for 0.5s (<= 1s)
-        "description": "30x30 Grid · Hyper-speed phantom (Ghost: 0.40s, 1 A* Radar charge)"
+        "glimpse_interval": 8.0,     # Glimpse appears every 8 seconds
+        "glimpse_duration": 0.6,     # Visible for 0.6s (<= 1s)
+        "description": "30x30 Grid · Hyper-speed phantom (Ghost: 0.40s, Unlimited A* Radar)"
     }
 }
 

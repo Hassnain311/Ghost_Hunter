@@ -67,9 +67,8 @@ def run_game_loop(
     # Resize window to fit difficulty scale
     gui.resize_for_difficulty(env, cell_size)
 
-    # Initialize difficulty-specific A* charges and periodic glimpse timing
-    gui.astar_remaining_charges = astar_charges
-    gui.astar_max_charges = astar_charges
+    # Initialize A* usage counter and periodic glimpse timing (every 8s)
+    gui.astar_use_count = 0
     gui.glimpse_interval = glimpse_interval
     gui.glimpse_duration = glimpse_duration
     gui.ghost_glimpse_until = 0.0
@@ -104,7 +103,7 @@ def run_game_loop(
             gui.env = env
             gui.astar_path = []
             gui.astar_active_until = 0.0
-            gui.astar_remaining_charges = astar_charges
+            gui.astar_use_count = 0
             gui.ghost_glimpse_until = 0.0
             gui.next_glimpse_time = time.time() + glimpse_interval
             last_ghost_move_time = time.time()

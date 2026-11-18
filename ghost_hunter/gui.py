@@ -176,13 +176,12 @@ class PygameVisualizer:
         self.astar_path: list[tuple[int, int]] = []
         self.astar_active_until: float = 0.0
         self.astar_cooldown_until: float = 0.0
-        self.astar_remaining_charges: int = 5
-        self.astar_max_charges: int = 5
+        self.astar_use_count: int = 0
 
-        # Periodic brief ghost visibility (glimpse mechanism <= 1.0 sec)
+        # Periodic brief ghost visibility (glimpse mechanism <= 1.0 sec every 8s)
         self.ghost_glimpse_until: float = 0.0
         self.next_glimpse_time: float = 0.0
-        self.glimpse_interval: float = 10.0
+        self.glimpse_interval: float = 8.0
         self.glimpse_duration: float = 0.8
 
         # Continuous smooth movement tracking for key hold (WASD / Arrows)
@@ -256,29 +255,25 @@ class PygameVisualizer:
         return time.time() < self.astar_active_until
 
     def trigger_astar_hint(self, path: list[tuple[int, int]]) -> bool:
-        """Activates A* path hint for 3s if cooldown (5s) has expired and charges remain."""
+        """Activates A* path hint for 3s if cooldown (5s) has expired. Unlimited uses with counter."""
         now = time.time()
-        if self.astar_remaining_charges <= 0:
-            return False
         if now < self.astar_cooldown_until:
             return False
-        self.astar_remaining_charges -= 1
+        self.astar_use_count += 1
         self.astar_path = path
         self.astar_active_until = now + ASTAR_HINT_DURATION_SEC
         self.astar_cooldown_until = now + ASTAR_HINT_DURATION_SEC + ASTAR_HINT_COOLDOWN_SEC
         return True
 
     def get_astar_status(self) -> tuple[str, float]:
-        """Returns ('ACTIVE', remaining_sec) or ('COOLDOWN', remaining_sec) or ('EMPTY', 0.0) or ('READY', charges)."""
+        """Returns ('ACTIVE', remaining_sec) or ('COOLDOWN', remaining_sec) or ('READY', total_uses)."""
         now = time.time()
         if now < self.astar_active_until:
             return "ACTIVE", max(0.0, self.astar_active_until - now)
         elif now < self.astar_cooldown_until:
             return "COOLDOWN", max(0.0, self.astar_cooldown_until - now)
-        elif self.astar_remaining_charges <= 0:
-            return "DEPLETED", 0.0
         else:
-            return "READY", float(self.astar_remaining_charges)
+            return "READY", float(self.astar_use_count)
 
     def is_ghost_visible(self) -> bool:
         """Ghost is visible if captured, debug reveal [G] is active, or temporary glimpse is active."""
@@ -553,7 +548,8 @@ class PygameVisualizer:
             ("Turn Step",       f"{self.env.turn} / {self.env.turn_limit}"),
             ("Sensor Reading",  f"{self.env.last_reading} units"),
             ("Sensor Noise (σ)", f"{self.env.sensor_sigma:.1f}"),
-            ("Hunter Position", f"({int(self.env.hunter_pos[0])}, {int(self.env.hunter_pos[1])})")
+            ("Hunter Position", f"({int(self.env.hunter_pos[0])}, {int(self.env.hunter_pos[1])})"),
+            ("A* Uses Count",   f"{self.astar_use_count} times")
         ]
         row_step = max(18, (c2_h - 36) // len(telemetry_rows))
         row_y = sy + 32
@@ -600,17 +596,14 @@ class PygameVisualizer:
 
         radar_status, status_val = self.get_astar_status()
         if radar_status == "ACTIVE":
-            radar_badge = f"ACTIVE ({status_val:.1f}s)"
+            radar_badge = f"ACTIVE ({status_val:.1f}s) | USES: {self.astar_use_count}"
             radar_badge_color = (234, 179, 8)
         elif radar_status == "COOLDOWN":
-            radar_badge = f"RECHARGING ({status_val:.1f}s)"
+            radar_badge = f"RECHARGING ({status_val:.1f}s) | USES: {self.astar_use_count}"
             radar_badge_color = (185, 28, 28)
-        elif radar_status == "DEPLETED":
-            radar_badge = "RADAR: 0 LEFT"
-            radar_badge_color = (100, 116, 139)
         else:
-            radar_badge = f"RADAR [X]: {int(status_val)} LEFT"
-            radar_badge_color = (16, 185, 129)   # Vibrant green when charges ready!
+            radar_badge = f"READY [X] | USES: {self.astar_use_count}"
+            radar_badge_color = (16, 185, 129)   # Vibrant green when ready
 
         k_lbl = self.font_subtitle.render("Keyboard Controls", True, CARD4_TITLE)
         self.screen.blit(k_lbl, (sx + 14, sy + 8))
@@ -621,7 +614,7 @@ class PygameVisualizer:
         self.screen.blit(radar_surf, (r_pill_rect.centerx - radar_surf.get_width() // 2, r_pill_rect.centery - radar_surf.get_height() // 2))
 
         shortcuts = [
-            ("[X]",        f"A* Radar ({self.astar_remaining_charges}/{self.astar_max_charges} Left)"),
+            ("[X]",        f"A* Ghost Radar (Used: {self.astar_use_count} times)"),
             ("[H]",        "Toggle Heatmap"),
             ("[G]",        "Reveal Ghost Position"),
             ("[R]",        "Restart & New Maze"),
