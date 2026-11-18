@@ -43,6 +43,10 @@ def run_game_loop(
     cell_size = cfg["cell_size"]
     turn_limit = cfg["turn_limit"]
     density = cfg["density"]
+    ghost_speed = cfg.get("ghost_speed", GHOST_MOVE_INTERVAL_SEC)
+    astar_charges = cfg.get("astar_charges", 3)
+    glimpse_interval = cfg.get("glimpse_interval", 10.0)
+    glimpse_duration = cfg.get("glimpse_duration", 0.8)
 
     current_seed = seed
     free_cells, walls = generate_maze(seed=current_seed, density=density, width=grid_w, height=grid_h)
@@ -62,6 +66,14 @@ def run_game_loop(
 
     # Resize window to fit difficulty scale
     gui.resize_for_difficulty(env, cell_size)
+
+    # Initialize difficulty-specific A* charges and periodic glimpse timing
+    gui.astar_remaining_charges = astar_charges
+    gui.astar_max_charges = astar_charges
+    gui.glimpse_interval = glimpse_interval
+    gui.glimpse_duration = glimpse_duration
+    gui.ghost_glimpse_until = 0.0
+    gui.next_glimpse_time = time.time() + glimpse_interval
 
     last_ghost_move_time = time.time()
     last_demo_step_time = time.time()
@@ -92,10 +104,19 @@ def run_game_loop(
             gui.env = env
             gui.astar_path = []
             gui.astar_active_until = 0.0
+            gui.astar_remaining_charges = astar_charges
+            gui.ghost_glimpse_until = 0.0
+            gui.next_glimpse_time = time.time() + glimpse_interval
             last_ghost_move_time = time.time()
             continue
 
         now = time.time()
+
+        # --- Periodic Automatic Ghost Glimpse (<= 1.0 sec) ---
+        if not gui.paused and not env.captured:
+            if now >= gui.next_glimpse_time:
+                gui.ghost_glimpse_until = now + glimpse_duration
+                gui.next_glimpse_time = now + glimpse_interval
 
         # --- A* Radar Ability Trigger (X Key) ---
         if astar_requested and not env.captured:
@@ -107,9 +128,9 @@ def run_game_loop(
             )
             gui.trigger_astar_hint(path_to_ghost)
 
-        # --- Real-Time Ghost Movement (every 1.0 second) ---
+        # --- Real-Time Ghost Movement (speed scales with difficulty) ---
         if not gui.paused and not env.captured and env.turn < env.turn_limit:
-            if now - last_ghost_move_time >= GHOST_MOVE_INTERVAL_SEC:
+            if now - last_ghost_move_time >= ghost_speed:
                 obs, done, info = env.ghost_step_only()
                 agent.update_belief(obs)
                 last_ghost_move_time = now
