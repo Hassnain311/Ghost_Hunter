@@ -157,9 +157,9 @@ class PygameVisualizer:
 
         # Default state at game start:
         # - Yellow pointer is visible from the start (tracks HMM MAP estimate)
-        # - Heatmap is OFF by default (toggled with [H])
+        # - Heatmap is ON by default (toggled with [H])
         # - Ghost is invisible by default (revealed on capture or with [G])
-        self.show_heatmap = False
+        self.show_heatmap = True
         self.reveal_ghost = False
         self.paused = False
         self.start_time = time.time()
