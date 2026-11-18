@@ -178,9 +178,11 @@ class PygameVisualizer:
         self.astar_cooldown_until: float = 0.0
 
     def resize_for_difficulty(self, env: GridEnvironment, cell_size: int) -> None:
-        """Adapts window size to the selected difficulty grid."""
+        """Stores the new grid environment. Cell size is recomputed dynamically
+        in render() based on actual screen resolution so the grid always fills
+        the full screen properly."""
         self.env = env
-        self.cell_size = cell_size
+        self.base_cell_size = cell_size   # fallback / windowed reference size
         self.grid_pixel_w = env.width * cell_size
         self.grid_pixel_h = env.height * cell_size
 
@@ -190,6 +192,38 @@ class PygameVisualizer:
             self.screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
         else:
             self.screen = pygame.display.set_mode((self.window_w, self.window_h), pygame.RESIZABLE)
+
+    def _compute_layout(self) -> tuple[int, int, int, int, int, int]:
+        """Dynamically compute layout to fill the entire screen.
+
+        The sidebar takes exactly 30% of screen width (capped at 420px).
+        The grid fills ALL remaining space on the left.
+        Returns (cell_size, grid_ox, grid_oy, grid_pixel_w, grid_pixel_h, sidebar_w).
+        """
+        scr_w = self.screen.get_width()
+        scr_h = self.screen.get_height()
+        margin = 16
+
+        # Sidebar: 30% of screen width, min 300, max 440
+        sb_w = max(300, min(440, int(scr_w * 0.30)))
+
+        # Grid occupies everything left of the sidebar (minus small margin gaps)
+        grid_area_w = scr_w - sb_w - margin * 3   # left margin + gap + right edge
+        grid_area_h = scr_h - margin * 2           # top + bottom margin
+
+        # Largest cell size so ALL cells fit in both dimensions
+        cs_w = max(1, grid_area_w // self.env.width)
+        cs_h = max(1, grid_area_h // self.env.height)
+        cs   = max(6, min(cs_w, cs_h))
+
+        gpw = self.env.width  * cs
+        gph = self.env.height * cs
+
+        # Grid: left-aligned with margin; vertically centred
+        ox = margin
+        oy = max(margin, (scr_h - gph) // 2)
+
+        return cs, ox, oy, gpw, gph, sb_w
 
     def toggle_fullscreen(self) -> None:
         """Toggles between fullscreen and windowed mode."""
@@ -288,23 +322,16 @@ class PygameVisualizer:
 
     def render(self, belief_grid: Optional[np.ndarray] = None, mode_label: str = "Demo") -> None:
         """Renders grid canvas, cards, tokens, A* path overlay, and telemetry.
-        Automatically centres the layout in fullscreen so the grid + sidebar
-        fill the actual screen resolution instead of being glued to the top-left.
+        Cell size and sidebar width are computed dynamically to FILL the actual
+        screen resolution — works identically in windowed and fullscreen.
         """
-        scr_w = self.screen.get_width()
-        scr_h = self.screen.get_height()
         self.screen.fill(COLOR_WINDOW_BG)
 
         elapsed = time.time() - self.start_time
         pulse = 0.5 + 0.5 * math.sin(elapsed * 5.0)
 
-        # Total content width = grid + sidebar gap + sidebar
-        content_w = self.grid_pixel_w + 18 + self.sidebar_w + self.grid_margin_x
-        content_h = max(self.grid_pixel_h + self.grid_margin_y * 2, 660)
-
-        # Centre the whole layout in the actual screen
-        ox = max(self.grid_margin_x, (scr_w - content_w) // 2)
-        oy = max(self.grid_margin_y, (scr_h - content_h) // 2)
+        # Compute layout from live screen size (fills fullscreen automatically)
+        cs, ox, oy, gpw, gph, card_w = self._compute_layout()
 
         max_prob = float(np.max(belief_grid)) if belief_grid is not None else 0.0
 
@@ -314,30 +341,30 @@ class PygameVisualizer:
         # -------------------------------------------------------------
         # 1. Grid Canvas (Dark Charcoal interior with Silver frame)
         # -------------------------------------------------------------
-        grid_frame = pygame.Rect(ox - 3, oy - 3, self.grid_pixel_w + 6, self.grid_pixel_h + 6)
+        grid_frame = pygame.Rect(ox - 3, oy - 3, gpw + 6, gph + 6)
         pygame.draw.rect(self.screen, COLOR_GRID_BG, grid_frame, border_radius=12)
         pygame.draw.rect(self.screen, COLOR_GRID_OUTER_FRAME, grid_frame, width=2, border_radius=12)
 
         for r in range(self.env.height):
             for c in range(self.env.width):
-                rx = ox + c * self.cell_size
-                ry = oy + r * self.cell_size
-                cell_rect = pygame.Rect(rx, ry, self.cell_size, self.cell_size)
+                rx = ox + c * cs
+                ry = oy + r * cs
+                cell_rect = pygame.Rect(rx, ry, cs, cs)
 
                 if (r, c) in self.env.walls:
-                    # Distinct High-Contrast Wall: Metallic Slate with bright silver border & gold rivet
                     pygame.draw.rect(self.screen, COLOR_WALL, cell_rect)
-                    inner_margin = max(2, self.cell_size // 10)
-                    inner_w = self.cell_size - inner_margin * 2
+                    inner_margin = max(2, cs // 10)
+                    inner_w = cs - inner_margin * 2
                     inner_wall = pygame.Rect(rx + inner_margin, ry + inner_margin, inner_w, inner_w)
                     pygame.draw.rect(self.screen, COLOR_WALL_INNER, inner_wall, border_radius=4)
                     pygame.draw.rect(self.screen, COLOR_WALL_ACCENT, inner_wall, width=1, border_radius=4)
-
-                    if self.cell_size >= 24:
-                        pygame.draw.line(self.screen, COLOR_WALL_ACCENT, (rx + inner_margin + 3, ry + self.cell_size - inner_margin - 3), (rx + self.cell_size - inner_margin - 3, ry + inner_margin + 3), 1)
-                        rivet_r = max(1, self.cell_size // 18)
+                    if cs >= 20:
+                        pygame.draw.line(self.screen, COLOR_WALL_ACCENT,
+                                         (rx + inner_margin + 3, ry + cs - inner_margin - 3),
+                                         (rx + cs - inner_margin - 3, ry + inner_margin + 3), 1)
+                        rivet_r = max(1, cs // 18)
                         pygame.draw.circle(self.screen, COLOR_WALL_RIVET, (rx + inner_margin + 4, ry + inner_margin + 4), rivet_r)
-                        pygame.draw.circle(self.screen, COLOR_WALL_RIVET, (rx + self.cell_size - inner_margin - 4, ry + self.cell_size - inner_margin - 4), rivet_r)
+                        pygame.draw.circle(self.screen, COLOR_WALL_RIVET, (rx + cs - inner_margin - 4, ry + cs - inner_margin - 4), rivet_r)
                 else:
                     if self.show_heatmap and belief_grid is not None:
                         prob = float(belief_grid[r, c])
@@ -345,7 +372,6 @@ class PygameVisualizer:
                     else:
                         tile_color = COLOR_GRID_SURFACE
 
-                    # A* Glowing Path Overlay (Gold Amber glow)
                     if is_astar_active and (r, c) in astar_cells:
                         path_glow = lerp_rgb(COLOR_ASTAR_PATH, COLOR_ASTAR_PATH_PULSE, pulse)
                         tile_color = lerp_rgb(tile_color, path_glow, 0.85)
@@ -354,32 +380,31 @@ class PygameVisualizer:
                     pygame.draw.rect(self.screen, COLOR_GRID_LINE, cell_rect, width=1)
 
                     if is_astar_active and (r, c) in astar_cells:
-                        dot_x = rx + self.cell_size // 2
-                        dot_y = ry + self.cell_size // 2
-                        pygame.draw.circle(self.screen, (255, 255, 255), (dot_x, dot_y), max(2, self.cell_size // 8))
+                        dot_x = rx + cs // 2
+                        dot_y = ry + cs // 2
+                        pygame.draw.circle(self.screen, (255, 255, 255), (dot_x, dot_y), max(2, cs // 8))
 
         # -------------------------------------------------------------
         # 2. Hunter Token (Cyan Blue Disc)
         # -------------------------------------------------------------
         hr, hc = self.env.hunter_pos
-        hx = ox + hc * self.cell_size + self.cell_size // 2
-        hy = oy + hr * self.cell_size + self.cell_size // 2
+        hx = ox + hc * cs + cs // 2
+        hy = oy + hr * cs + cs // 2
 
-        token_r = max(4, self.cell_size // 3)
+        token_r = max(4, cs // 3)
         glow_rad = int(token_r * 1.25)
         pygame.draw.circle(self.screen, COLOR_HUNTER_RING, (hx, hy), glow_rad, 2)
         pygame.draw.circle(self.screen, COLOR_HUNTER, (hx, hy), token_r)
         pygame.draw.circle(self.screen, (255, 255, 255), (hx, hy), max(2, token_r // 3))
 
         # -------------------------------------------------------------
-        # 3. Ghost Token (Invisible by Default; shown on capture or [G] debug)
+        # 3. Ghost Token (Invisible by Default; shown on capture or [G])
         # -------------------------------------------------------------
         if self.env.captured or self.reveal_ghost:
             gr, gc = self.env.true_ghost_pos
-            gx = ox + gc * self.cell_size + self.cell_size // 2
-            gy = oy + gr * self.cell_size + self.cell_size // 2
-
-            ghost_token_r = max(4, self.cell_size // 3)
+            gx = ox + gc * cs + cs // 2
+            gy = oy + gr * cs + cs // 2
+            ghost_token_r = max(4, cs // 3)
             ghost_rad = int(ghost_token_r * 1.3)
             pygame.draw.circle(self.screen, COLOR_GHOST_AURA, (gx, gy), ghost_rad, 2)
             pygame.draw.circle(self.screen, COLOR_GHOST, (gx, gy), ghost_token_r)
@@ -388,43 +413,42 @@ class PygameVisualizer:
                 pygame.draw.circle(self.screen, (255, 255, 255), (gx + 4, gy - 2), 2)
 
         # -------------------------------------------------------------
-        # 3b. Yellow Gun-Point / Target Reticle Pointer
-        # Shown from the start of the game!
-        # It ALWAYS points to the HMM's highest probability belief cell (MAP estimate),
-        # representing the AI hunter's current estimated location of the ghost.
-        # It does NOT cheat by putting it directly on the true ghost location!
+        # 3b. Yellow Target Reticle — always tracks HMM MAP estimate
         # -------------------------------------------------------------
         if belief_grid is not None:
             raw_map = np.unravel_index(np.argmax(belief_grid), belief_grid.shape)
             tr, tc = int(raw_map[0]), int(raw_map[1])
-
-            tx = ox + tc * self.cell_size + self.cell_size // 2
-            ty = oy + tr * self.cell_size + self.cell_size // 2
-            reticle_r = max(6, int(self.cell_size * 0.38))
-
-            # Outer ring
+            tx = ox + tc * cs + cs // 2
+            ty = oy + tr * cs + cs // 2
+            reticle_r = max(6, int(cs * 0.38))
             pygame.draw.circle(self.screen, COLOR_TARGET_MARKER, (tx, ty), reticle_r, 2)
-            # Inner crosshair tick marks
             gap = max(2, reticle_r // 3)
             arm = max(4, reticle_r + 4)
-            # Top tick
             pygame.draw.line(self.screen, COLOR_TARGET_MARKER, (tx, ty - gap), (tx, ty - arm), 2)
-            # Bottom tick
             pygame.draw.line(self.screen, COLOR_TARGET_MARKER, (tx, ty + gap), (tx, ty + arm), 2)
-            # Left tick
             pygame.draw.line(self.screen, COLOR_TARGET_MARKER, (tx - gap, ty), (tx - arm, ty), 2)
-            # Right tick
             pygame.draw.line(self.screen, COLOR_TARGET_MARKER, (tx + gap, ty), (tx + arm, ty), 2)
 
         # -------------------------------------------------------------
-        # 4. Dashboard Cards (Sidebar)
+        # 4. Dashboard Cards (Sidebar) — fills full screen height
         # -------------------------------------------------------------
-        sx = ox + self.grid_pixel_w + 18
+        scr_h = self.screen.get_height()
+        sx = ox + gpw + 16
         sy = oy
-        card_w = self.sidebar_w
+
+        # Distribute available vertical space across the 4 cards
+        total_sidebar_h = gph          # match grid height exactly
+        gap = 10
+        total_gaps = gap * 3
+        usable_h = total_sidebar_h - total_gaps
+
+        # Fixed proportions (must sum to 1.0)
+        c1_h = max(130, int(usable_h * 0.22))
+        c2_h = max(120, int(usable_h * 0.20))
+        c3_h = max(135, int(usable_h * 0.23))
+        c4_h = usable_h - c1_h - c2_h - c3_h   # remainder goes to shortcuts
 
         # --- Card 1: GHOST HUNTER Header Card ---
-        c1_h = 142
         card1_rect = pygame.Rect(sx, sy, card_w, c1_h)
         self._draw_card(card1_rect, CARD1_BG, CARD1_BORDER)
 
@@ -433,7 +457,7 @@ class PygameVisualizer:
 
         # Mode Pill
         tag_text = f"{self.env.width}x{self.env.height} · {mode_label.upper()}"
-        tag_bg = pygame.Rect(sx + 14, sy + 38, 150, 24)
+        tag_bg = pygame.Rect(sx + 14, sy + 38, 160, 24)
         pygame.draw.rect(self.screen, TAG_PILL_BG, tag_bg, border_radius=6)
         tag_surf = self.font_badge.render(tag_text, True, TAG_PILL_TEXT)
         self.screen.blit(tag_surf, (tag_bg.centerx - tag_surf.get_width() // 2, tag_bg.centery - tag_surf.get_height() // 2))
@@ -448,21 +472,22 @@ class PygameVisualizer:
         self.screen.blit(st_surf, (st_bg.centerx - st_surf.get_width() // 2, st_bg.centery - st_surf.get_height() // 2))
 
         # Restart & Menu Buttons
-        self.restart_btn_rect = pygame.Rect(sx + 14, sy + 68, (card_w - 34) // 2 + 10, 26)
+        btn_y = sy + 68
+        self.restart_btn_rect = pygame.Rect(sx + 14, btn_y, (card_w - 34) // 2 + 10, 26)
         btn_bg = BTN_SECONDARY_HOVER if self.restart_hovered else BTN_SECONDARY_BG
         pygame.draw.rect(self.screen, btn_bg, self.restart_btn_rect, border_radius=6)
         btn_surf = self.font_badge.render("RESTART [R]", True, (255, 255, 255))
         self.screen.blit(btn_surf, (self.restart_btn_rect.centerx - btn_surf.get_width() // 2, self.restart_btn_rect.centery - btn_surf.get_height() // 2))
 
-        self.menu_btn_rect = pygame.Rect(self.restart_btn_rect.right + 8, sy + 68, card_w - self.restart_btn_rect.width - 36, 26)
+        self.menu_btn_rect = pygame.Rect(self.restart_btn_rect.right + 8, btn_y, card_w - self.restart_btn_rect.width - 36, 26)
         m_bg = (100, 116, 139) if self.menu_btn_hovered else (71, 85, 105)
         pygame.draw.rect(self.screen, m_bg, self.menu_btn_rect, border_radius=6)
         menu_surf = self.font_badge.render("MENU [Esc]", True, (255, 255, 255))
         self.screen.blit(menu_surf, (self.menu_btn_rect.centerx - menu_surf.get_width() // 2, self.menu_btn_rect.centery - menu_surf.get_height() // 2))
 
-        # Heatmap On/Off Indicator Button
-        self.heatmap_toggle_rect = pygame.Rect(sx + 14, sy + 102, card_w - 28, 28)
-        hm_status_text = "Heatmap: ON (Press H to Toggle)" if self.show_heatmap else "Heatmap: OFF (Press H to Enable)"
+        # Heatmap toggle button
+        self.heatmap_toggle_rect = pygame.Rect(sx + 14, sy + 102, card_w - 28, c1_h - 110)
+        hm_status_text = "Heatmap: ON  [H]" if self.show_heatmap else "Heatmap: OFF  [H] to Enable"
         hm_btn_bg = (254, 240, 138) if self.show_heatmap else (226, 232, 240)
         hm_txt_col = (133, 77, 14) if self.show_heatmap else (71, 85, 105)
         pygame.draw.rect(self.screen, hm_btn_bg, self.heatmap_toggle_rect, border_radius=6)
@@ -470,35 +495,31 @@ class PygameVisualizer:
         self.screen.blit(hm_surf, (self.heatmap_toggle_rect.centerx - hm_surf.get_width() // 2, self.heatmap_toggle_rect.centery - hm_surf.get_height() // 2))
 
         # --- Card 2: MISSION TELEMETRY ---
-        sy += c1_h + 10
-        c2_h = 132
+        sy += c1_h + gap
         card2_rect = pygame.Rect(sx, sy, card_w, c2_h)
         self._draw_card(card2_rect, CARD2_BG, CARD2_BORDER)
-
         t_lbl = self.font_subtitle.render("Mission Telemetry", True, CARD2_TITLE)
         self.screen.blit(t_lbl, (sx + 14, sy + 8))
 
         telemetry_rows = [
-            ("Turn Step", f"{self.env.turn} / {self.env.turn_limit}"),
-            ("Sensor Reading", f"{self.env.last_reading} units"),
+            ("Turn Step",       f"{self.env.turn} / {self.env.turn_limit}"),
+            ("Sensor Reading",  f"{self.env.last_reading} units"),
             ("Sensor Noise (σ)", f"{self.env.sensor_sigma:.1f}"),
             ("Hunter Position", f"({int(self.env.hunter_pos[0])}, {int(self.env.hunter_pos[1])})")
         ]
-
+        row_step = max(18, (c2_h - 36) // len(telemetry_rows))
         row_y = sy + 32
         for lbl, val in telemetry_rows:
             l_surf = self.font_body.render(lbl, True, CARD2_LABEL)
             v_surf = self.font_mono.render(val, True, CARD2_VALUE)
             self.screen.blit(l_surf, (sx + 14, row_y))
             self.screen.blit(v_surf, (sx + card_w - v_surf.get_width() - 14, row_y))
-            row_y += 22
+            row_y += row_step
 
         # --- Card 3: HMM BELIEF STATE ---
-        sy += c2_h + 10
-        c3_h = 146
+        sy += c2_h + gap
         card3_rect = pygame.Rect(sx, sy, card_w, c3_h)
         self._draw_card(card3_rect, CARD3_BG, CARD3_BORDER)
-
         h_lbl = self.font_subtitle.render("HMM Belief State", True, CARD3_TITLE)
         self.screen.blit(h_lbl, (sx + 14, sy + 8))
 
@@ -506,69 +527,60 @@ class PygameVisualizer:
             raw_map = np.unravel_index(np.argmax(belief_grid), belief_grid.shape)
             map_pos = f"({int(raw_map[0])}, {int(raw_map[1])})"
             true_dist = manhattan_distance(self.env.hunter_pos, self.env.true_ghost_pos)
-            map_err = manhattan_distance((int(raw_map[0]), int(raw_map[1])), self.env.true_ghost_pos)
-
             p = belief_grid[belief_grid > 0]
             entropy = float(-np.sum(p * np.log2(p))) if len(p) > 0 else 0.0
-
             hmm_rows = [
-                ("Most Likely Cell", map_pos),
-                ("Peak Confidence", f"{max_prob * 100:.1f}%"),
-                ("Belief Entropy", f"{entropy:.2f} bits"),
-                ("True Distance", f"{true_dist if (self.reveal_ghost or self.env.captured) else 'Hidden (Press G)'}"),
-                ("Ghost Position", f"{self.env.true_ghost_pos if (self.reveal_ghost or self.env.captured) else 'Hidden (Press G)'}")
+                ("Most Likely Cell",  map_pos),
+                ("Peak Confidence",   f"{max_prob * 100:.1f}%"),
+                ("Belief Entropy",    f"{entropy:.2f} bits"),
+                ("True Distance",     f"{true_dist if (self.reveal_ghost or self.env.captured) else 'Hidden (G)'}"),
+                ("Ghost Position",    f"{self.env.true_ghost_pos if (self.reveal_ghost or self.env.captured) else 'Hidden (G)'}")
             ]
-
+            row_step3 = max(18, (c3_h - 36) // len(hmm_rows))
             h_y = sy + 30
             for lbl, val in hmm_rows:
                 l_surf = self.font_body.render(lbl, True, CARD3_LABEL)
                 v_surf = self.font_mono.render(val, True, CARD3_VALUE)
                 self.screen.blit(l_surf, (sx + 14, h_y))
                 self.screen.blit(v_surf, (sx + card_w - v_surf.get_width() - 14, h_y))
-                h_y += 21
+                h_y += row_step3
 
         # --- Card 4: KEYBOARD SHORTCUTS & A* RADAR ---
-        sy += c3_h + 10
-        c4_h = 180
+        sy += c3_h + gap
         card4_rect = pygame.Rect(sx, sy, card_w, c4_h)
         self._draw_card(card4_rect, CARD4_BG, CARD4_BORDER)
 
         radar_status, time_left = self.get_astar_status()
-        if radar_status == "ACTIVE":
-            radar_badge = f"ACTIVE ({time_left:.1f}s)"
-            radar_badge_color = (234, 179, 8)
-        elif radar_status == "COOLDOWN":
-            radar_badge = f"RECHARGING ({time_left:.1f}s)"
-            radar_badge_color = (185, 28, 28)
-        else:
-            radar_badge = "READY [X]"
-            radar_badge_color = (71, 85, 105)
+        radar_badge       = f"ACTIVE ({time_left:.1f}s)"    if radar_status == "ACTIVE"   else \
+                            f"RECHARGING ({time_left:.1f}s)" if radar_status == "COOLDOWN" else "READY [X]"
+        radar_badge_color = (234, 179, 8) if radar_status == "ACTIVE" else \
+                            (185, 28, 28) if radar_status == "COOLDOWN" else (71, 85, 105)
 
         k_lbl = self.font_subtitle.render("Keyboard Controls", True, CARD4_TITLE)
         self.screen.blit(k_lbl, (sx + 14, sy + 8))
 
-        radar_surf = self.font_badge.render(radar_badge, True, (255, 255, 255))
-        r_pill_rect = pygame.Rect(sx + card_w - radar_surf.get_width() - 24, sy + 6, radar_surf.get_width() + 14, 20)
+        radar_surf   = self.font_badge.render(radar_badge, True, (255, 255, 255))
+        r_pill_rect  = pygame.Rect(sx + card_w - radar_surf.get_width() - 24, sy + 6, radar_surf.get_width() + 14, 20)
         pygame.draw.rect(self.screen, radar_badge_color, r_pill_rect, border_radius=6)
         self.screen.blit(radar_surf, (r_pill_rect.centerx - radar_surf.get_width() // 2, r_pill_rect.centery - radar_surf.get_height() // 2))
 
         shortcuts = [
-            ("[X]", "A* Ghost Radar (3s glow, 5s CD)"),
-            ("[H]", "Toggle Heatmap"),
-            ("[G]", "Reveal Ghost Position (Default: OFF)"),
-            ("[R]", "Restart & Generate New Maze"),
-            ("[F]", "Toggle Fullscreen"),
-            ("[Space]", "Pause / Resume"),
-            ("[W,A,S,D]", "Move (Human Play Mode)")
+            ("[X]",        "A* Ghost Radar (3s glow, 5s CD)"),
+            ("[H]",        "Toggle Heatmap"),
+            ("[G]",        "Reveal Ghost Position"),
+            ("[R]",        "Restart & New Maze"),
+            ("[F]",        "Toggle Fullscreen"),
+            ("[Space]",    "Pause / Resume"),
+            ("[W,A,S,D]",  "Move (Human Play Mode)")
         ]
-
+        sc_step = max(17, (c4_h - 36) // len(shortcuts))
         sc_y = sy + 32
         for k, desc in shortcuts:
             k_surf = self.font_mono.render(k, True, CARD4_KEY)
             d_surf = self.font_body.render(desc, True, CARD4_DESC)
             self.screen.blit(k_surf, (sx + 14, sc_y))
-            self.screen.blit(d_surf, (sx + 80, sc_y))
-            sc_y += 19
+            self.screen.blit(d_surf, (sx + 90, sc_y))
+            sc_y += sc_step
 
         pygame.display.flip()
 
