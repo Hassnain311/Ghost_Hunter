@@ -177,6 +177,10 @@ class PygameVisualizer:
         self.astar_active_until: float = 0.0
         self.astar_cooldown_until: float = 0.0
 
+        # Continuous smooth movement tracking for key hold (WASD / Arrows)
+        self.last_move_time: float = 0.0
+        self.move_repeat_delay: float = 0.16   # Initial delay / repeat rate in seconds (approx 6 steps/sec)
+
     def resize_for_difficulty(self, env: GridEnvironment, cell_size: int) -> None:
         """Stores the new grid environment. Cell size is recomputed dynamically
         in render() based on actual screen resolution so the grid always fills
@@ -307,17 +311,39 @@ class PygameVisualizer:
                 elif event.key == pygame.K_SPACE:
                     self.paused = not self.paused
 
-                # Directional Controls
+                # Directional Controls (Immediate response on initial keypress)
                 elif event.key in (pygame.K_UP, pygame.K_w):
                     human_action = MOVES_DICT["UP"]
+                    self.last_move_time = time.time() + 0.10  # Initial repeat debounce
                 elif event.key in (pygame.K_DOWN, pygame.K_s):
                     human_action = MOVES_DICT["DOWN"]
+                    self.last_move_time = time.time() + 0.10
                 elif event.key in (pygame.K_LEFT, pygame.K_a):
                     human_action = MOVES_DICT["LEFT"]
+                    self.last_move_time = time.time() + 0.10
                 elif event.key in (pygame.K_RIGHT, pygame.K_d):
                     human_action = MOVES_DICT["RIGHT"]
+                    self.last_move_time = time.time() + 0.10
                 elif event.key == pygame.K_PERIOD:
                     human_action = MOVES_DICT["STAY"]
+
+        # Continuous automatic movement while holding directional keys
+        if human_action is None and not self.paused:
+            now = time.time()
+            if now - self.last_move_time >= self.move_repeat_delay:
+                keys = pygame.key.get_pressed()
+                if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+                    human_action = MOVES_DICT["RIGHT"]
+                    self.last_move_time = now
+                elif keys[pygame.K_LEFT] or keys[pygame.K_a]:
+                    human_action = MOVES_DICT["LEFT"]
+                    self.last_move_time = now
+                elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
+                    human_action = MOVES_DICT["DOWN"]
+                    self.last_move_time = now
+                elif keys[pygame.K_UP] or keys[pygame.K_w]:
+                    human_action = MOVES_DICT["UP"]
+                    self.last_move_time = now
 
         return True, human_action, restart_triggered, menu_triggered, astar_requested
 
