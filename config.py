@@ -1,7 +1,7 @@
 """
 Global Configuration and Constants for Ghost Hunter.
-Elegantly restyled with Grey, Silver, Slate, and Gold/Yellow accents.
-Uses standard serif typography (Georgia / Times New Roman) with anti-aliasing.
+Horror Theme: Darkness, Blood Red, Eerie Violet, Hellfire Amber, and Ghostly Cyan.
+Uses spooky atmospheric typography with fallback fonts.
 """
 
 # Grid & Dynamics Parameters (Defaults)
@@ -92,76 +92,81 @@ GHOST_ACTIONS: list[tuple[int, int]] = [
 ]
 
 # -----------------------------------------------------------------------------
-# Color Contrast: Silver, Slate Grey, Charcoal & Gold/Yellow Accents
+# Horror Palette: Pitch Black, Blood Red, Dark Violet & Spectral Glow
 # -----------------------------------------------------------------------------
 # Outer Canvas & Window
-COLOR_WINDOW_BG: tuple[int, int, int] = (248, 250, 252)       # Clean Soft Silver/Platinum
+COLOR_WINDOW_BG: tuple[int, int, int] = (7, 7, 12)            # Pitch Obsidian Black
 
 # Grid Canvas Area
-COLOR_GRID_OUTER_FRAME: tuple[int, int, int] = (203, 213, 225) # Silver/Chrome Border
-COLOR_GRID_BG: tuple[int, int, int] = (15, 23, 42)             # Deep Charcoal-Slate Interior
-COLOR_GRID_SURFACE: tuple[int, int, int] = (15, 23, 42)        # Empty cell background
-COLOR_GRID_LINE: tuple[int, int, int] = (30, 41, 59)           # Subtle cell border line
+COLOR_GRID_OUTER_FRAME: tuple[int, int, int] = (120, 15, 15)  # Dried Crimson / Blood Edge
+COLOR_GRID_BG: tuple[int, int, int] = (10, 10, 18)            # Deep Abyss Dark
+COLOR_GRID_SURFACE: tuple[int, int, int] = (14, 16, 26)       # Stone crypt floor tile
+COLOR_GRID_LINE: tuple[int, int, int] = (28, 20, 32)          # Faint cobweb/gloom seams
 
-# Distinct Obstacle Walls
-COLOR_WALL: tuple[int, int, int] = (71, 85, 105)               # Slate-600 Silver Stone Wall
-COLOR_WALL_INNER: tuple[int, int, int] = (51, 65, 85)          # Slate-700 Core Plate
-COLOR_WALL_ACCENT: tuple[int, int, int] = (226, 232, 240)      # High-contrast Silver Border
-COLOR_WALL_RIVET: tuple[int, int, int] = (234, 179, 8)         # Gold rivet point
+# Proximity Heatmap Colors (Manhattan Distance to HMM MAP Estimate)
+HEATMAP_DIST_1: tuple[int, int, int] = (185, 28, 28)          # Red (Distance 1)
+HEATMAP_DIST_2_3: tuple[int, int, int] = (217, 119, 6)        # Amber / Yellow-Orange (Distance 2, 3)
+HEATMAP_DIST_4_5: tuple[int, int, int] = (22, 163, 74)        # Eerie Spectral Green (Distance 4, 5)
+
+# Obstacle Walls (Crypt Cursed Obelisks)
+COLOR_WALL: tuple[int, int, int] = (32, 22, 42)               # Cursed Dark Violet Stone
+COLOR_WALL_INNER: tuple[int, int, int] = (20, 14, 30)         # Inner Obsidian Core
+COLOR_WALL_ACCENT: tuple[int, int, int] = (139, 92, 246)      # Neon Phantom Violet Runes
+COLOR_WALL_RIVET: tuple[int, int, int] = (220, 38, 38)        # Blood ruby talisman
 
 # Entities
-COLOR_HUNTER: tuple[int, int, int] = (14, 165, 233)            # Radiant Sky/Cyan Hunter
-COLOR_HUNTER_RING: tuple[int, int, int] = (186, 230, 253)      # Silver-Cyan Aura
-COLOR_GHOST: tuple[int, int, int] = (239, 68, 68)             # Crimson / Rose Ghost
-COLOR_GHOST_AURA: tuple[int, int, int] = (254, 202, 202)
-COLOR_TARGET_MARKER: tuple[int, int, int] = (250, 204, 21)     # Luminous Gold Crosshair Reticle (Yellow Pointer)
+COLOR_HUNTER: tuple[int, int, int] = (14, 165, 233)           # Radiant Ghost-Hunter Cyan
+COLOR_HUNTER_RING: tuple[int, int, int] = (56, 189, 248)      # Flashlight field / Ether Aura
+COLOR_GHOST: tuple[int, int, int] = (236, 72, 153)            # Spectral Phantom Violet/Pink
+COLOR_GHOST_AURA: tuple[int, int, int] = (168, 85, 247)       # Eerie Purple Fog
+COLOR_TARGET_MARKER: tuple[int, int, int] = (239, 68, 68)     # Crimson Hunter MAP Reticle
 
 # A* Path Glow
-COLOR_ASTAR_PATH: tuple[int, int, int] = (234, 179, 8)         # Vivid Amber Gold Path
-COLOR_ASTAR_PATH_PULSE: tuple[int, int, int] = (254, 240, 138) # Soft Yellow Glow
+COLOR_ASTAR_PATH: tuple[int, int, int] = (249, 115, 22)       # Hellfire Trail Orange
+COLOR_ASTAR_PATH_PULSE: tuple[int, int, int] = (253, 224, 71) # Molten Flare Yellow
 
-# Sidebar Cards
-CARD1_BG: tuple[int, int, int] = (241, 245, 249)               # Soft Silver Card
-CARD1_BORDER: tuple[int, int, int] = (203, 213, 225)           # Crisp Silver Border
-CARD1_TITLE: tuple[int, int, int] = (30, 41, 59)              # Deep Charcoal Header
-TAG_PILL_BG: tuple[int, int, int] = (202, 138, 4)              # Gold Pill
-TAG_PILL_TEXT: tuple[int, int, int] = (255, 255, 255)
-STATUS_ACTIVE_BG: tuple[int, int, int] = (254, 240, 138)       # Soft Gold Highlight
-STATUS_ACTIVE_TEXT: tuple[int, int, int] = (133, 77, 14)
-BTN_RESTART_BG: tuple[int, int, int] = (51, 65, 85)            # Slate Button
-BTN_RESTART_HOVER: tuple[int, int, int] = (71, 85, 105)
+# Sidebar Cards (Horror Aesthetic)
+CARD1_BG: tuple[int, int, int] = (18, 12, 24)
+CARD1_BORDER: tuple[int, int, int] = (109, 40, 217)
+CARD1_TITLE: tuple[int, int, int] = (244, 63, 94)             # Blood Rose Title
+TAG_PILL_BG: tuple[int, int, int] = (76, 29, 149)             # Necrotic Violet
+TAG_PILL_TEXT: tuple[int, int, int] = (237, 233, 254)
+STATUS_ACTIVE_BG: tuple[int, int, int] = (20, 83, 45)         # Acid Green Active
+STATUS_ACTIVE_TEXT: tuple[int, int, int] = (187, 247, 208)
+BTN_RESTART_BG: tuple[int, int, int] = (88, 28, 135)          # Deep Violet Button
+BTN_RESTART_HOVER: tuple[int, int, int] = (126, 34, 206)
 
 # Card 2: Mission Telemetry
-CARD2_BG: tuple[int, int, int] = (248, 250, 252)
-CARD2_BORDER: tuple[int, int, int] = (226, 232, 240)
-CARD2_TITLE: tuple[int, int, int] = (30, 41, 59)
-CARD2_LABEL: tuple[int, int, int] = (100, 116, 139)
-CARD2_VALUE: tuple[int, int, int] = (15, 23, 42)
+CARD2_BG: tuple[int, int, int] = (16, 14, 26)
+CARD2_BORDER: tuple[int, int, int] = (76, 29, 149)
+CARD2_TITLE: tuple[int, int, int] = (167, 139, 250)
+CARD2_LABEL: tuple[int, int, int] = (148, 163, 184)
+CARD2_VALUE: tuple[int, int, int] = (241, 245, 249)
 
 # Card 3: HMM Belief State
-CARD3_BG: tuple[int, int, int] = (254, 252, 232)
-CARD3_BORDER: tuple[int, int, int] = (254, 240, 138)
-CARD3_TITLE: tuple[int, int, int] = (161, 98, 7)
-CARD3_LABEL: tuple[int, int, int] = (113, 63, 18)
-CARD3_VALUE: tuple[int, int, int] = (26, 46, 5)
+CARD3_BG: tuple[int, int, int] = (24, 13, 20)
+CARD3_BORDER: tuple[int, int, int] = (159, 18, 57)
+CARD3_TITLE: tuple[int, int, int] = (251, 113, 133)
+CARD3_LABEL: tuple[int, int, int] = (225, 29, 72)
+CARD3_VALUE: tuple[int, int, int] = (254, 205, 211)
 
-# Card 4: Keyboard Shortcuts & Controls
-CARD4_BG: tuple[int, int, int] = (241, 245, 249)
-CARD4_BORDER: tuple[int, int, int] = (203, 213, 225)
-CARD4_TITLE: tuple[int, int, int] = (30, 41, 59)
-CARD4_KEY: tuple[int, int, int] = (180, 83, 9)
-CARD4_DESC: tuple[int, int, int] = (71, 85, 105)
+# Card 4: Controls & Status
+CARD4_BG: tuple[int, int, int] = (15, 15, 25)
+CARD4_BORDER: tuple[int, int, int] = (76, 29, 149)
+CARD4_TITLE: tuple[int, int, int] = (192, 132, 252)
+CARD4_KEY: tuple[int, int, int] = (244, 63, 94)
+CARD4_DESC: tuple[int, int, int] = (148, 163, 184)
 
 # Buttons in Menus
-BTN_PRIMARY_BG: tuple[int, int, int] = (202, 138, 4)           # Vibrant Gold Button
-BTN_PRIMARY_HOVER: tuple[int, int, int] = (234, 179, 8)        # Light Gold Hover
-BTN_SECONDARY_BG: tuple[int, int, int] = (71, 85, 105)         # Silver-Slate Button
-BTN_SECONDARY_HOVER: tuple[int, int, int] = (100, 116, 139)
-BTN_DANGER_BG: tuple[int, int, int] = (185, 28, 28)            # Crimson Red Exit
-BTN_DANGER_HOVER: tuple[int, int, int] = (220, 38, 38)
+BTN_PRIMARY_BG: tuple[int, int, int] = (159, 18, 57)          # Crimson Blood Button
+BTN_PRIMARY_HOVER: tuple[int, int, int] = (225, 29, 72)       # Bright Blood
+BTN_SECONDARY_BG: tuple[int, int, int] = (76, 29, 149)        # Deep Purple Slate
+BTN_SECONDARY_HOVER: tuple[int, int, int] = (109, 40, 217)    # Radiant Purple
+BTN_DANGER_BG: tuple[int, int, int] = (127, 29, 29)           # Dark Carmine Exit
+BTN_DANGER_HOVER: tuple[int, int, int] = (185, 28, 28)
 
-# Heatmap Colors
-HEATMAP_P0: tuple[int, int, int] = (15, 23, 42)
-HEATMAP_P1: tuple[int, int, int] = (30, 58, 138)              # Deep Blue
-HEATMAP_P2: tuple[int, int, int] = (234, 179, 8)              # Luminous Gold
-HEATMAP_P3: tuple[int, int, int] = (239, 68, 68)              # Vivid Coral Pink
+# Legacy thermal placeholders (backward compatibility)
+HEATMAP_P0: tuple[int, int, int] = (14, 16, 26)
+HEATMAP_P1: tuple[int, int, int] = (22, 163, 74)
+HEATMAP_P2: tuple[int, int, int] = (217, 119, 6)
+HEATMAP_P3: tuple[int, int, int] = (185, 28, 28)

@@ -1,11 +1,12 @@
 """
-Ghost Hunter Command Line Interface.
+Ghost Hunter Command Line Interface & Game Orchestrator.
 Supports:
-  1. Main Menu System: Title, Start, Main Menu, Exit
-  2. Difficulty Selection: Beginner (10x10), Intermediate (15x15), Hard (20x20), Extreme (30x30)
-  3. Real-Time Ghost Movement: moves every 1.0 second
-  4. A* Ghost Radar Ability: press [X] to illuminate shortest path to ghost for 2-3s (5s cooldown)
-  5. Interactive Play, Autonomous AI Demo, and Benchmark Experiments
+  1. Spooky Horror GUI with Fullscreen support
+  2. Difficulty Selection: Beginner, Intermediate, Hard, Extreme
+  3. Real-Time Ghost Movement scaling by difficulty
+  4. Always-on Manhattan Proximity Heatmap (Red=1, Yellow=2/3, Green=4/5)
+  5. Interactive Pause Menu Overlay triggered via [P] key
+  6. Unlimited A* Hellfire Radar with counter
 """
 
 import sys
@@ -32,9 +33,10 @@ def run_game_loop(
     sigma: float = DEFAULT_SENSOR_SIGMA
 ) -> str:
     """
-    Executes an active session with real-time 1.0s ghost movement and A* radar capability.
+    Executes an active session with real-time ghost movement and A* radar capability.
     Returns:
-        'menu' if user pressed Esc or clicked Menu button,
+        'menu' if user exits to main menu,
+        'difficulty' if user selects change difficulty from pause menu,
         'exit' if window was closed.
     """
     cfg = DIFFICULTY_CONFIGS[difficulty_name]
@@ -44,8 +46,7 @@ def run_game_loop(
     turn_limit = cfg["turn_limit"]
     density = cfg["density"]
     ghost_speed = cfg.get("ghost_speed", GHOST_MOVE_INTERVAL_SEC)
-    astar_charges = cfg.get("astar_charges", 3)
-    glimpse_interval = cfg.get("glimpse_interval", 10.0)
+    glimpse_interval = cfg.get("glimpse_interval", 8.0)
     glimpse_duration = cfg.get("glimpse_duration", 0.8)
 
     current_seed = seed
@@ -67,23 +68,26 @@ def run_game_loop(
     # Resize window to fit difficulty scale
     gui.resize_for_difficulty(env, cell_size)
 
-    # Initialize A* usage counter and periodic glimpse timing (every 8s)
+    # Reset game session tracking
     gui.astar_use_count = 0
     gui.glimpse_interval = glimpse_interval
     gui.glimpse_duration = glimpse_duration
     gui.ghost_glimpse_until = 0.0
     gui.next_glimpse_time = time.time() + glimpse_interval
+    gui.paused = False
 
     last_ghost_move_time = time.time()
     last_demo_step_time = time.time()
 
     running = True
     while running:
-        running, human_action, restart_requested, menu_requested, astar_requested = gui.handle_events()
+        running, human_action, restart_requested, menu_requested, astar_requested, pause_action = gui.handle_events()
         if not running:
             return "exit"
-        if menu_requested:
+        if menu_requested or pause_action == "quit_to_menu":
             return "menu"
+        if pause_action == "change_difficulty":
+            return "difficulty"
 
         # --- Restart with Brand New Maze ---
         if restart_requested:
@@ -106,6 +110,7 @@ def run_game_loop(
             gui.astar_use_count = 0
             gui.ghost_glimpse_until = 0.0
             gui.next_glimpse_time = time.time() + glimpse_interval
+            gui.paused = False
             last_ghost_move_time = time.time()
             continue
 
@@ -147,7 +152,7 @@ def run_game_loop(
         # --- Mode-Specific Action ---
         if mode == "play":
             # Human player directional move
-            if human_action is not None and not env.captured and env.turn < env.turn_limit:
+            if human_action is not None and not gui.paused and not env.captured and env.turn < env.turn_limit:
                 obs, done, info = env.step(human_action)
                 agent.update_belief(obs)
                 last_ghost_move_time = time.time()
@@ -170,47 +175,41 @@ def run_game_loop(
 def interactive_launcher():
     """
     Main interactive entry point showing:
-    1. Start Screen Menu:
-       - 'Start' -> opens Difficulty Selection
-       - 'Main Menu' -> opens Game Summary & Instructions Modal
-       - 'Exit' -> closes application
-    2. Difficulty Selection:
-       - Beginner (10x10)
-       - Intermediate (15x15)
-       - Hard (20x20)
-       - Extreme (30x30)
-    3. Game Screen
+    1. Start Screen Menu: Start, Main Menu (Grimoire), Exit
+    2. Difficulty Selection: Beginner, Intermediate, Hard, Extreme
+    3. Game Screen with live pause overlay
     """
     dummy_free, dummy_walls = generate_maze(seed=42)
     dummy_env = GridEnvironment(walls=dummy_walls)
     gui = PygameVisualizer(dummy_env)
 
     while True:
-        # Step 1: Always show the 3-button Start Screen first
         choice = gui.show_start_screen()
 
         if choice == "exit":
             break
         elif choice == "instructions":
-            # Step 2A: Main Menu instructions & summary
             gui.show_instructions_screen()
         elif choice == "start":
-            # Step 2B: Difficulty Selection Screen
-            difficulty = gui.show_difficulty_selection()
-            if difficulty is None:
-                continue  # User clicked back to start screen
+            # Difficulty loop
+            while True:
+                difficulty = gui.show_difficulty_selection()
+                if difficulty is None:
+                    break  # Return to Start Screen
 
-            # Step 3: Run Game Loop with selected grid size
-            game_result = run_game_loop(gui, difficulty_name=difficulty, mode="play")
-            if game_result == "exit":
-                break
-            # If 'menu', loop back to Start Screen
+                game_result = run_game_loop(gui, difficulty_name=difficulty, mode="play")
+                if game_result == "exit":
+                    gui.close()
+                    return
+                elif game_result == "difficulty":
+                    continue  # Prompt difficulty selection again directly
+                elif game_result == "menu":
+                    break     # Return to Start Screen
 
     gui.close()
 
 
 def main():
-    # If launched with no args, open the interactive Start Screen
     if len(sys.argv) == 1:
         interactive_launcher()
         return
@@ -223,7 +222,7 @@ def main():
         nargs="?",
         default="menu",
         choices=["menu", "play", "demo", "experiments"],
-        help="Execution mode: 'menu' (Default interactive GUI), 'play', 'demo', or 'experiments'"
+        help="Execution mode: 'menu', 'play', 'demo', or 'experiments'"
     )
     parser.add_argument("--difficulty", default="Beginner", choices=["Beginner", "Intermediate", "Hard", "Extreme"])
     parser.add_argument("--seed", type=int, default=42, help="Random seed for maze & simulation")
@@ -236,7 +235,6 @@ def main():
     if args.mode == "menu":
         interactive_launcher()
     elif args.mode in ("play", "demo"):
-        # Even with 'play', if no difficulty is passed, let user pick or play directly
         interactive_launcher()
     elif args.mode == "experiments":
         run_benchmark(num_trials=args.trials, topologies_count=args.topologies)
