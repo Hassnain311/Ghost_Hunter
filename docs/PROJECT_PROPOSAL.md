@@ -10,8 +10,8 @@
 
 | Name | Roll Number | Section | Role in the project |
 | :--- | :--- | :--- | :--- |
-| **Hassnain Arain** | **[Your Roll Number]** | **[Your Section]** | **Leader:** Probabilistic Modeling (HMM, Forward Algorithm, Sensor Models) & Experiment Evaluation |
-| **[Partner Name]** | **[Partner Roll Number]** | **[Section]** | **Member 2:** OOP Game Engine, Pygame Heatmap GUI, Agent Behaviors & Baselines |
+| **M. Hassnain** | **24k-3020** | **BSE-5A** | **Leader:** Probabilistic Modeling (HMM, Forward Algorithm, Sensor Models) & Experiment Evaluation |
+| **Syed Khalid Ali Abidi** | **24k-3005** | **BSE-5A** | **Member 2:** OOP Game Engine, Pygame Heatmap GUI, Agent Behaviors & Baselines |
 
 | Field | Detail |
 | :--- | :--- |
@@ -161,8 +161,8 @@ GameEngine / PygameVisualizer
 
 | Member | Modules / components owned | Approximate share |
 | :--- | :--- | :---: |
-| **Hassnain Arain** | HMM Core Engine (`hmm.py`), Forward Algorithm (prediction and observation updates), Sensor Noise Models, Experiment Harness & Plotting Scripts (`experiments.py`), Technical Documentation. | 50% |
-| **[Partner Name]** | OOP Game Environment (`environment.py`), Pygame GUI & Dynamic Heatmap Visualizer (`gui.py`), Agent Classes (`agents.py`: Random, Naive, HMM Hunter with $A^*$), Human Play Mode. | 50% |
+| **M. Hassnain** | HMM Core Engine (`hmm.py`), Forward Algorithm (prediction and observation updates), Sensor Noise Models, Experiment Harness & Plotting Scripts (`experiments.py`), Technical Documentation. | 50% |
+| **Syed Khalid Ali Abidi** | OOP Game Environment (`environment.py`), Pygame GUI & Dynamic Heatmap Visualizer (`gui.py`), Agent Classes (`agents.py`: Random, Naive, HMM Hunter with $A^*$), Human Play Mode. | 50% |
 
 ---
 

@@ -1,67 +1,44 @@
-"""
-Optional Extension: Entropy-Reduction Hunter Agent.
-Balances moving toward high belief regions while choosing observation positions
-that minimize conditional Shannon entropy.
-"""
+"""Optional information-seeking hunter from the project proposal."""
 
-from typing import Any
 import numpy as np
-from config import ACTION_STAY
-from ghost_hunter.agents import BaseAgent
-from ghost_hunter.hmm import HMMTracker
-from ghost_hunter.pathfinding import astar
+
+from config import GHOST_ACTIONS
+from ghost_hunter.agents import HMMHunterAgent
+from ghost_hunter.sensor_model import likelihood_by_distance
 
 
-class EntropyHunterAgent(BaseAgent):
-    """
-    Entropy-Reduction / Information Gain Hunter Agent.
-    Prioritizes disambiguating flat belief distributions before committing to chase.
-    """
+def _entropy(probabilities, axis=None):
+    return -np.sum(probabilities * np.log2(np.maximum(probabilities, 1e-300)), axis=axis)
 
-    def __init__(
-        self,
-        free_cells: set[tuple[int, int]],
-        walls: set[tuple[int, int]],
-        sigma: float = 1.0,
-        grid_dims: tuple[int, int] = (10, 10)
-    ):
-        super().__init__("Entropy Hunter", free_cells, walls)
-        self.grid_dims = grid_dims
-        self.sigma = sigma
-        self.tracker = HMMTracker(free_cells, walls, grid_dims, sigma)
 
-    def reset(self) -> None:
-        super().reset()
-        self.tracker.reset()
+class EntropyHunterAgent(HMMHunterAgent):
+    """Seek a more informative ping while the posterior is diffuse, then chase the MAP."""
 
-    def select_action(self, observation: dict[str, Any]) -> tuple[int, int]:
-        turn = observation.get("turn", 0)
-        reading = observation["reading"]
-        hunter_pos = observation["hunter_pos"]
+    def __init__(self, free_cells, walls, sigma=1.0, grid_dims=(10, 10)):
+        super().__init__(free_cells, walls, sigma, grid_dims)
+        self.name = "Entropy Hunter"
+        self._max_distance = sum(grid_dims) - 2
+        last_reading = self._max_distance + max(1, int(np.ceil(8 * sigma)))
+        rows = [likelihood_by_distance(e, sigma, self._max_distance)
+                for e in range(last_reading)]
+        # Group the tiny remaining positive tail in the final reading bin.
+        self._emissions = np.column_stack([*rows, np.maximum(0, 1 - np.sum(rows, axis=0))])
+        self._noise_entropy = _entropy(self._emissions, axis=1)
 
-        if turn > 0:
-            self.tracker.time_update()
-        self.tracker.observation_update(reading, hunter_pos)
-
-        # Target highest probability cell
-        target_cell = self.tracker.get_map_estimate()
-        if hunter_pos == target_cell:
-            self.last_action = ACTION_STAY
-            return ACTION_STAY
-
-        path = astar(
-            start=hunter_pos,
-            goal=target_cell,
-            walls=self.walls,
-            grid_dims=self.grid_dims,
-            last_action=self.last_action
-        )
-
-        if len(path) >= 2:
-            next_step = path[1]
-            action = (next_step[0] - hunter_pos[0], next_step[1] - hunter_pos[1])
-        else:
-            action = ACTION_STAY
-
-        self.last_action = action
-        return action
+    def action_from_belief(self, hunter_pos):
+        belief = self.tracker.belief_vec
+        if belief.max() >= .18:
+            return super().action_from_belief(hunter_pos)
+        best_score = -float("inf")
+        for move in GHOST_ACTIONS:
+            cell = hunter_pos[0] + move[0], hunter_pos[1] + move[1]
+            if cell not in self.free_cells:
+                continue
+            distances = self.tracker.distances_from(cell)
+            mass = np.bincount(distances, weights=belief, minlength=self._max_distance + 1)
+            gain = _entropy(mass @ self._emissions) - mass @ self._noise_entropy
+            score = gain - .15 * (belief @ distances)
+            if score > best_score:
+                best_score, chosen = score, move
+        self.last_action = chosen
+        return chosen

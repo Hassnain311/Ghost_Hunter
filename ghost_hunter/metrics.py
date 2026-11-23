@@ -23,12 +23,13 @@ class EpisodeMetrics:
 
     def log_turn(
         self,
-        estimated_pos: tuple[int, int],
+        estimated_pos: tuple[int, int] | None,
         true_ghost_pos: tuple[int, int],
-        entropy: float = 0.0
+        entropy: float | None = None
     ) -> None:
         """Records error and entropy for the current turn."""
-        err = manhattan_distance(estimated_pos, true_ghost_pos)
-        self.manhattan_errors.append(float(err))
-        self.belief_entropies.append(float(entropy))
+        if estimated_pos is not None:
+            self.manhattan_errors.append(float(manhattan_distance(estimated_pos, true_ghost_pos)))
+        if entropy is not None:
+            self.belief_entropies.append(float(entropy))
         self.total_steps += 1

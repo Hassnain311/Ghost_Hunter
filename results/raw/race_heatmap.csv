@@ -1,0 +1,5 @@
+difficulty,first_seed,races,ai_wins,player_wins,ties,timeouts,player_policy,move_interval_seconds
+Beginner,1000,200,30,167,3,0,heatmap,0.16
+Intermediate,1000,200,112,63,25,0,heatmap,0.16
+Hard,1000,200,120,63,17,0,heatmap,0.16
+Extreme,1000,200,137,55,8,0,heatmap,0.16

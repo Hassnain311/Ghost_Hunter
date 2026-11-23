@@ -51,63 +51,53 @@ class RandomAgent(BaseAgent):
         super().__init__("Random Baseline", free_cells, walls)
         self.rng = np.random.default_rng(seed)
 
-    def select_action(self, observation: dict[str, Any]) -> tuple[int, int]:
-        hunter_pos = observation["hunter_pos"]
-        r, c = hunter_pos
-        valid_actions = []
-        
-        for dr, dc in GHOST_ACTIONS:
-            nxt = (r + dr, c + dc)
-            if nxt in self.free_cells:
-                valid_actions.append((dr, dc))
-                
-        if not valid_actions:
-            self.last_action = ACTION_STAY
-            return ACTION_STAY
-            
-        chosen_idx = self.rng.integers(0, len(valid_actions))
-        action = valid_actions[chosen_idx]
-        self.last_action = action
-        return action
+    def reset(self, seed=None) -> None:
+        super().reset()
+        if seed is not None:
+            self.rng = np.random.default_rng(seed)
 
-
-class NaiveSensorAgent(BaseAgent):
-    """
-    Baseline 1: Naive Raw-Sensor Chaser.
-    Greedily takes the adjacent step that would minimize distance
-    assuming the most recent raw noisy reading was exact. Has no memory or HMM.
-    """
-
-    def __init__(self, free_cells: set[tuple[int, int]], walls: set[tuple[int, int]], seed: int = 42):
-        super().__init__("Naive Sensor Baseline", free_cells, walls)
-        self.rng = np.random.default_rng(seed)
+    def valid_actions(self, position):
+        r, c = position
+        return [move for move in GHOST_ACTIONS if (r + move[0], c + move[1]) in self.free_cells]
 
     def select_action(self, observation: dict[str, Any]) -> tuple[int, int]:
-        hunter_pos = observation["hunter_pos"]
-        raw_reading = observation["reading"]
-        r, c = hunter_pos
-        
-        # Candidate unblocked cardinal steps
-        candidates = [(-1, 0), (1, 0), (0, -1), (0, 1), (0, 0)]
-        valid_candidates = []
-        for dr, dc in candidates:
-            nxt = (r + dr, c + dc)
-            if nxt in self.free_cells:
-                valid_candidates.append((dr, dc))
-                
-        if not valid_candidates:
-            return ACTION_STAY
+        actions = self.valid_actions(observation["hunter_pos"])
+        self.last_action = actions[self.rng.integers(len(actions))] if actions else ACTION_STAY
+        return self.last_action
 
-        # If reading is 0 or 1, probe adjacent cells
-        # We greedily evaluate moves that minimize predicted remaining distance
-        # by matching direction
-        best_actions = []
-        # When relying purely on a scalar distance reading without bearings,
-        # the naive chaser picks random valid exploration moves with slight forward bias
-        chosen_idx = self.rng.integers(0, len(valid_candidates))
-        action = valid_candidates[chosen_idx]
-        self.last_action = action
-        return action
+
+class NaiveSensorAgent(RandomAgent):
+    """Estimate a cell on the current distance ring, then take a greedy legal step."""
+
+    def __init__(self, free_cells, walls, seed=42):
+        super().__init__(free_cells, walls, seed)
+        self.name = "Naive Sensor Baseline"
+        self.last_estimate = None
+        self._rings = {}
+
+    def reset(self, seed=None) -> None:
+        super().reset(seed)
+        self.last_estimate = None
+
+    def select_action(self, observation: dict[str, Any]) -> tuple[int, int]:
+        position = observation["hunter_pos"]
+        if position not in self._rings:
+            rings = {}
+            for cell in sorted(self.free_cells):
+                rings.setdefault(manhattan_distance(position, cell), []).append(cell)
+            self._rings[position] = rings
+        rings = self._rings[position]
+        reading = observation["reading"]
+        distance = reading if reading in rings else min(rings, key=lambda d: abs(d - reading))
+        candidates = rings[distance]
+        self.last_estimate = candidates[self.rng.integers(len(candidates))]
+        actions = self.valid_actions(position)
+        costs = [manhattan_distance((position[0] + dr, position[1] + dc), self.last_estimate)
+                 for dr, dc in actions]
+        best = min(costs)
+        choices = [move for move, cost in zip(actions, costs) if cost == best]
+        self.last_action = choices[self.rng.integers(len(choices))]
+        return self.last_action
 
 
 class HMMHunterAgent(BaseAgent):
@@ -143,7 +133,7 @@ class HMMHunterAgent(BaseAgent):
         
         if turn > 0:
             # Ghost moved in previous step
-            self.tracker.time_update()
+            self.tracker.time_update(hunter_pos)
             
         self.tracker.observation_update(reading, hunter_pos)
 
@@ -153,8 +143,10 @@ class HMMHunterAgent(BaseAgent):
         and plans the next step using A* pathfinding.
         """
         self.update_belief(observation)
-        hunter_pos = observation["hunter_pos"]
-        
+        return self.action_from_belief(observation["hunter_pos"])
+
+    def action_from_belief(self, hunter_pos: tuple[int, int]) -> tuple[int, int]:
+        """Plan from the current posterior without applying the same ping twice."""
         target_cell = self.tracker.get_map_estimate()
         
         # If already at target, stay or probe adjacent

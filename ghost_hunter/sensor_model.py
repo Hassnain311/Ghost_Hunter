@@ -5,6 +5,8 @@ under discretized symmetric Gaussian/triangular distance sensor noise.
 """
 
 from typing import Union
+from functools import lru_cache
+from math import erfc, sqrt
 import numpy as np
 from config import GRID_WIDTH, GRID_HEIGHT
 
@@ -46,6 +48,24 @@ def sample_sensor_reading(
     return max(0, noisy_reading)
 
 
+@lru_cache(maxsize=1024)
+def likelihood_by_distance(reading: int, sigma: float, max_distance: int) -> np.ndarray:
+    """P(reading | distance) for the same rounded, zero-clipped Gaussian sampled above."""
+    distances = range(max_distance + 1)
+    if sigma <= 1e-6:
+        values = np.arange(max_distance + 1) == reading
+    elif reading == 0:
+        scale = sqrt(2) * sigma
+        values = [.5 * erfc((d - .5) / scale) for d in distances]
+    else:
+        scale = sqrt(2) * sigma
+        offsets = (abs(reading - d) for d in distances)
+        values = [.5 * (erfc((e - .5) / scale) - erfc((e + .5) / scale)) for e in offsets]
+    result = np.asarray(values, dtype=float)
+    result.setflags(write=False)
+    return result
+
+
 def discrete_sensor_likelihood(
     reading: int,
     observer_pos: tuple[int, int],
@@ -61,27 +81,13 @@ def discrete_sensor_likelihood(
     If reading == 0, it includes the cumulative mass of all errors <= -true_dist.
     """
     height, width = grid_dims
-    likelihood_grid = np.zeros((height, width), dtype=float)
-
-    for r in range(height):
-        for c in range(width):
-            cell = (r, c)
-            if free_cells is not None and cell not in free_cells:
-                likelihood_grid[r, c] = 0.0
-                continue
-
-            true_dist = manhattan_distance(observer_pos, cell)
-
-            if reading == 0:
-                # Sum discrete probabilities for all errors where true_dist + err <= 0
-                # err <= -true_dist
-                cutoff = -true_dist
-                # Evaluate tail from -15 to cutoff
-                tail_errors = np.arange(-25, cutoff + 1)
-                tail_probs = discrete_noise_pmf(tail_errors, sigma)
-                likelihood_grid[r, c] = float(np.sum(tail_probs))
-            else:
-                error = reading - true_dist
-                likelihood_grid[r, c] = float(discrete_noise_pmf(error, sigma))
-
-    return likelihood_grid
+    rows, cols = np.ogrid[:height, :width]
+    distances = abs(rows - observer_pos[0]) + abs(cols - observer_pos[1])
+    grid = likelihood_by_distance(reading, sigma, int(distances.max()))[distances]
+    if free_cells is None:
+        return grid
+    masked = np.zeros(grid_dims)
+    if free_cells:
+        indices = tuple(zip(*free_cells))
+        masked[indices] = grid[indices]
+    return masked

@@ -1,22 +1,23 @@
-"""
-Benchmark Experiment Harness and Plotting Pipeline for Ghost Hunter.
-Runs 100 trials per configuration across 10 maze topologies and 5 noise levels.
-Generates publication-quality charts into results/figures/ and CSVs into results/raw/.
-"""
+"""Reproducible 10-by-10 evaluation of the four proposed pursuit policies."""
 
 import os
 import csv
-from typing import Type
+from collections import defaultdict
+from pathlib import Path
+from tempfile import TemporaryDirectory
 import numpy as np
+import matplotlib
+matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from config import (
     NOISE_SIGMA_LEVELS,
     TURN_LIMIT_T_MAX,
-    NUM_MAZE_TOPOLOGIES
+    NUM_BENCHMARK_TRIALS, NUM_MAZE_TOPOLOGIES
 )
 from ghost_hunter.environment import GridEnvironment, generate_maze
 from ghost_hunter.agents import BaseAgent, RandomAgent, NaiveSensorAgent, HMMHunterAgent
 from ghost_hunter.metrics import EpisodeMetrics
+from ghost_hunter.entropy_agent import EntropyHunterAgent
 
 
 def run_episode(
@@ -34,42 +35,51 @@ def run_episode(
         seed=seed
     )
     
-    agent.reset()
+    if isinstance(agent, RandomAgent):
+        agent.reset(seed)
+    else:
+        agent.reset()
     obs = env.reset()
-    
     done = False
     while not done:
-        # Determine current target / estimate for logging
-        if isinstance(agent, HMMHunterAgent):
-            est = agent.tracker.get_map_estimate()
-            entropy = agent.tracker.get_entropy()
-        else:
-            # Naive / Random use raw sensor distance circle approximation or hunter pos
-            est = agent.select_action(obs)  # doesn't matter for raw baseline
-            est = obs["hunter_pos"]
-            entropy = 0.0
-            
-        metrics.log_turn(est, env.true_ghost_pos, entropy)
-        
-        # Step agent
         action = agent.select_action(obs)
+        if isinstance(agent, HMMHunterAgent):
+            estimate = agent.tracker.get_map_estimate()
+            entropy = agent.tracker.get_entropy()
+        elif isinstance(agent, NaiveSensorAgent):
+            estimate, entropy = agent.last_estimate, None
+        else:
+            estimate, entropy = None, None
+        metrics.log_turn(estimate, env.true_ghost_pos, entropy)
         obs, done, info = env.step(action)
-        
+
     metrics.captured = info.get("captured", False)
     return metrics
 
 
 def run_benchmark(
-    num_trials: int = 20,
-    topologies_count: int = 5,
+    num_trials: int = NUM_BENCHMARK_TRIALS,
+    topologies_count: int = NUM_MAZE_TOPOLOGIES,
     output_dir: str = "results"
 ) -> str:
-    """
-    Executes the structured experiment suite:
-    Compares HMM Hunter vs Naive Sensor Baseline vs Random Walk Baseline.
-    """
-    os.makedirs(os.path.join(output_dir, "raw"), exist_ok=True)
-    os.makedirs(os.path.join(output_dir, "figures"), exist_ok=True)
+    """Run matched seeded episodes on connected layouts from open to densely walled."""
+    if num_trials < 1 or topologies_count < 1:
+        raise ValueError("The number of trials and topologies must both be positive.")
+    destination = Path(output_dir)
+    destination.mkdir(parents=True, exist_ok=True)
+    with TemporaryDirectory(prefix=".benchmark-", dir=destination) as scratch:
+        _collect_results(num_trials, topologies_count, Path(scratch))
+        for folder in ("raw", "figures"):
+            (destination / folder).mkdir(exist_ok=True)
+            for generated in (Path(scratch) / folder).iterdir():
+                generated.replace(destination / folder / generated.name)
+    print(f"Saved the benchmark CSV and three figures to {destination}")
+    return str(destination / "raw" / "benchmark_summary.csv")
+
+
+def _collect_results(num_trials, topologies_count, output_dir):
+    (output_dir / "raw").mkdir()
+    (output_dir / "figures").mkdir()
     
     csv_path = os.path.join(output_dir, "raw", "benchmark_summary.csv")
     
@@ -78,26 +88,23 @@ def run_benchmark(
     all_results = []
     
     # Pre-generate topologies to ensure all agents face identical mazes
-    topologies = [generate_maze(seed=1000 + i) for i in range(topologies_count)]
+    densities = np.linspace(0, .32, topologies_count) if topologies_count > 1 else [.16]
+    topologies = [generate_maze(seed=1000 + i, density=density) for i, density in enumerate(densities)]
     
     with open(csv_path, mode="w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow([
             "agent_name", "topology_id", "sigma", "trial", "seed",
-            "captured", "total_steps", "mean_manhattan_error"
+            "captured", "total_steps", "mean_manhattan_error", "maze_seed", "wall_count"
         ])
         
         for top_id, (free_cells, walls) in enumerate(topologies):
             for sigma in NOISE_SIGMA_LEVELS:
+                agents = [HMMHunterAgent(free_cells, walls, sigma=sigma),
+                          EntropyHunterAgent(free_cells, walls, sigma=sigma),
+                          NaiveSensorAgent(free_cells, walls), RandomAgent(free_cells, walls)]
                 for trial in range(num_trials):
-                    trial_seed = 42 + trial * 7 + top_id * 100
-                    
-                    agents: list[BaseAgent] = [
-                        HMMHunterAgent(free_cells, walls, sigma=sigma),
-                        NaiveSensorAgent(free_cells, walls, seed=trial_seed),
-                        RandomAgent(free_cells, walls, seed=trial_seed)
-                    ]
-                    
+                    trial_seed = 42 + trial * topologies_count + top_id
                     for agent in agents:
                         # Instantiate identical environment per trial
                         env = GridEnvironment(
@@ -107,11 +114,11 @@ def run_benchmark(
                         )
                         
                         m = run_episode(env, agent, top_id, sigma, trial_seed)
-                        mean_err = float(np.mean(m.manhattan_errors)) if m.manhattan_errors else 0.0
+                        mean_err = round(float(np.mean(m.manhattan_errors)), 3) if m.manhattan_errors else None
                         
                         writer.writerow([
                             m.agent_name, top_id, sigma, trial, trial_seed,
-                            1 if m.captured else 0, m.total_steps, round(mean_err, 3)
+                            1 if m.captured else 0, m.total_steps, mean_err, 1000 + top_id, len(walls)
                         ])
                         all_results.append({
                             "agent": m.agent_name,
@@ -121,101 +128,58 @@ def run_benchmark(
                             "errors": m.manhattan_errors
                         })
                         
-    print(f"Benchmark finished! Raw logs saved to {csv_path}")
     generate_charts(all_results, os.path.join(output_dir, "figures"))
-    return csv_path
 
 
 def generate_charts(results: list[dict], figures_dir: str) -> None:
-    """Generates the 3 mandatory evaluation charts + 1 bonus entropy chart."""
-    print("Generating evaluation figures...")
-    
-    # -------------------------------------------------------------
-    # Chart 1: Estimation Error vs Turn (HMM vs Raw Sensor)
-    # -------------------------------------------------------------
-    plt.figure(figsize=(8, 5))
-    max_turns = 30
-    
-    for agent_name, color, label in [
-        ("HMM Hunter", "#1f77b4", "HMM Hunter (Forward Algorithm)"),
-        ("Naive Sensor Baseline", "#ff7f0e", "Naive Raw Sensor Baseline")
-    ]:
-        agent_runs = [r["errors"] for r in results if r["agent"] == agent_name and r["sigma"] == 1.0]
-        if agent_runs:
-            curve = np.zeros(max_turns)
-            counts = np.zeros(max_turns)
-            for err_list in agent_runs:
-                for t, e in enumerate(err_list[:max_turns]):
-                    curve[t] += e
-                    counts[t] += 1
-            counts[counts == 0] = 1
-            mean_curve = curve / counts
-            plt.plot(range(1, max_turns + 1), mean_curve, marker='o', linewidth=2, color=color, label=label)
-            
-    plt.title("Chart 1: Estimation Error vs. Turn Number (σ = 1.0)", fontsize=13, fontweight='bold')
-    plt.xlabel("Turn Number", fontsize=11)
-    plt.ylabel("Mean Manhattan Distance to Ghost", fontsize=11)
-    plt.grid(True, linestyle="--", alpha=0.6)
-    plt.legend(fontsize=10)
-    plt.tight_layout()
-    chart1_path = os.path.join(figures_dir, "chart1_estimation_error_vs_turns.png")
-    plt.savefig(chart1_path, dpi=300)
-    plt.close()
-    
-    # -------------------------------------------------------------
-    # Chart 2: Mean Steps to Capture across Agents grouped by σ
-    # -------------------------------------------------------------
-    plt.figure(figsize=(9, 5.5))
+    """Generate the three evaluation figures from the recorded trial results."""
+    agents = ("HMM Hunter", "Entropy Hunter", "Naive Sensor Baseline", "Random Baseline")
+    palette = ("#126c70", "#7357a4", "#b06622", "#64748b")
+    grouped = defaultdict(list)
+    for row in results:
+        grouped[row["agent"], row["sigma"]].append(row)
     sigmas = NOISE_SIGMA_LEVELS
-    agents = ["HMM Hunter", "Naive Sensor Baseline", "Random Baseline"]
-    colors = ["#2ca02c", "#ff7f0e", "#d62728"]
-    
+
+    def save(fig, filename):
+        fig.tight_layout()
+        fig.savefig(os.path.join(figures_dir, filename), dpi=180)
+        plt.close(fig)
+
+    fig, ax = plt.subplots(figsize=(8, 5))
+    for index in (0, 2):
+        name = agents[index]
+        series = [r["errors"] for r in grouped[name, 1.0]]
+        by_turn = [[errors[t] for errors in series if len(errors) > t] for t in range(30)]
+        ax.plot(range(1, 31), [np.mean(v) if v else np.nan for v in by_turn],
+                label=name, color=palette[index], linewidth=2)
+    ax.set(title="Localization during active hunts (σ = 1.0)", xlabel="Turn",
+           ylabel="Mean Manhattan error (cells)")
+    ax.grid(axis="y", alpha=.25)
+    ax.legend()
+    save(fig, "chart1_estimation_error_vs_turns.png")
+
+    fig, ax = plt.subplots(figsize=(9, 5.5))
     x = np.arange(len(sigmas))
-    width = 0.25
-    
-    for i, agent_name in enumerate(agents):
+    width = .19
+    for index, name in enumerate(agents):
         means = []
-        for s in sigmas:
-            runs = [r["steps"] for r in results if r["agent"] == agent_name and r["sigma"] == s]
-            means.append(np.mean(runs) if runs else 0)
-        plt.bar(x + (i - 1) * width, means, width, label=agent_name, color=colors[i], alpha=0.9)
+        for sigma in sigmas:
+            catches = [r["steps"] for r in grouped[name, sigma] if r["captured"]]
+            means.append(np.mean(catches) if catches else np.nan)
+        ax.bar(x + (index - 1.5) * width, means, width, label=name, color=palette[index])
+    ax.set(title="Turns to capture in successful hunts", xlabel="Sensor noise (σ)",
+           ylabel="Mean turns among captures", xticks=x, xticklabels=sigmas)
+    ax.grid(axis="y", alpha=.25)
+    ax.legend(ncols=2)
+    save(fig, "chart2_steps_to_capture_by_sigma.png")
 
-    plt.title("Chart 2: Mean Steps to Capture Grouped by Noise σ", fontsize=13, fontweight='bold')
-    plt.xlabel("Sensor Noise Standard Deviation (σ)", fontsize=11)
-    plt.ylabel("Mean Steps to Capture (lower is better)", fontsize=11)
-    plt.xticks(x, [f"σ={s}" for s in sigmas])
-    plt.axhline(100, color="grey", linestyle=":", label="Turn Limit (100)")
-    plt.grid(True, axis="y", linestyle="--", alpha=0.6)
-    plt.legend(fontsize=10)
-    plt.tight_layout()
-    chart2_path = os.path.join(figures_dir, "chart2_steps_to_capture_by_sigma.png")
-    plt.savefig(chart2_path, dpi=300)
-    plt.close()
-
-    # -------------------------------------------------------------
-    # Chart 3: Capture Success Rate (%) vs Increasing Sensor Noise σ
-    # -------------------------------------------------------------
-    plt.figure(figsize=(8.5, 5))
-    for agent_name, color, marker in [
-        ("HMM Hunter", "#2ca02c", "o"),
-        ("Naive Sensor Baseline", "#ff7f0e", "s"),
-        ("Random Baseline", "#d62728", "^")
-    ]:
-        rates = []
-        for s in sigmas:
-            runs = [1.0 if r["captured"] else 0.0 for r in results if r["agent"] == agent_name and r["sigma"] == s]
-            rates.append(np.mean(runs) * 100.0 if runs else 0.0)
-        plt.plot(sigmas, rates, marker=marker, linewidth=2.2, label=agent_name, color=color)
-
-    plt.title("Chart 3: Capture Success Rate vs. Sensor Noise σ", fontsize=13, fontweight='bold')
-    plt.xlabel("Sensor Noise Standard Deviation (σ)", fontsize=11)
-    plt.ylabel("Capture Success Rate (%)", fontsize=11)
-    plt.ylim(-5, 105)
-    plt.grid(True, linestyle="--", alpha=0.6)
-    plt.legend(fontsize=10)
-    plt.tight_layout()
-    chart3_path = os.path.join(figures_dir, "chart3_success_rate_vs_noise.png")
-    plt.savefig(chart3_path, dpi=300)
-    plt.close()
-    
-    print(f"All 3 publication figures saved cleanly to {figures_dir}")
+    fig, ax = plt.subplots(figsize=(8.5, 5))
+    for index, name in enumerate(agents):
+        rates = [100 * np.mean([r["captured"] for r in grouped[name, sigma]]) for sigma in sigmas]
+        ax.plot(sigmas, rates, marker=("o", "D", "s", "^")[index], linewidth=2,
+                color=palette[index], label=name)
+    ax.set(title=f"Captures within {TURN_LIMIT_T_MAX} turns", xlabel="Sensor noise (σ)",
+           ylabel="Successful hunts (%)", ylim=(-2, 103), xticks=sigmas)
+    ax.grid(axis="y", alpha=.25)
+    ax.legend(ncols=2)
+    save(fig, "chart3_success_rate_vs_noise.png")

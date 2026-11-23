@@ -1,0 +1,5 @@
+difficulty,first_seed,races,ai_wins,player_wins,ties,timeouts,player_policy,move_interval_seconds
+Beginner,1000,200,20,176,4,0,radar,0.16
+Intermediate,1000,200,54,118,28,0,radar,0.16
+Hard,1000,200,93,89,18,0,radar,0.16
+Extreme,1000,200,121,67,12,0,radar,0.16

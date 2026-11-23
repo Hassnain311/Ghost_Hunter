@@ -48,7 +48,7 @@ def generate_maze(
         (max(0, mid_r - 1), mid_c),
         (max(0, mid_r - 1), max(0, mid_c - 1))
     }
-    candidate_cells = list(all_cells - protected_cells)
+    candidate_cells = sorted(all_cells - protected_cells)
     
     walls: set[tuple[int, int]] = set()
     num_walls = int(len(candidate_cells) * density)

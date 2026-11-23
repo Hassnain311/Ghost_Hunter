@@ -15,7 +15,7 @@ from config import (
     PROBABILITY_FLOOR_EPSILON
 )
 from ghost_hunter.environment import get_ghost_transition_probabilities
-from ghost_hunter.sensor_model import discrete_sensor_likelihood
+from ghost_hunter.sensor_model import likelihood_by_distance
 
 
 class HMMTracker:
@@ -43,13 +43,15 @@ class HMMTracker:
         self.cell_to_idx: dict[tuple[int, int], int] = {cell: i for i, cell in enumerate(self.cell_list)}
         self.num_states = len(self.cell_list)
         
-        # Build Transition Matrix T where T[i, j] = P(X_t = j | X_{t-1} = i)
-        self.transition_matrix = np.zeros((self.num_states, self.num_states), dtype=float)
+        self.rows, self.cols = np.asarray(self.cell_list).T
+        self._distances = {}
+        edges = []
         for i, src_cell in enumerate(self.cell_list):
             trans_dict = get_ghost_transition_probabilities(src_cell, self.free_cells)
             for dst_cell, prob in trans_dict.items():
-                j = self.cell_to_idx[dst_cell]
-                self.transition_matrix[i, j] = prob
+                edges.append((i, self.cell_to_idx[dst_cell], prob))
+        self._src, self._dst = np.asarray([(i, j) for i, j, _ in edges]).T
+        self._uniform_weights = np.asarray([p for _, _, p in edges])
                 
         # Vector of belief over free states
         self.belief_vec = np.zeros(self.num_states, dtype=float)
@@ -67,14 +69,37 @@ class HMMTracker:
         else:
             self.belief_vec.fill(1.0 / self.num_states)
 
-    def time_update(self) -> None:
-        """
-        Prediction Step:
-        Propagates belief vector through the ghost's stochastic transition model:
-        b'_t = T^T * b_{t-1}
-        """
-        # (N, N)^T @ (N,) -> (N,)
-        self.belief_vec = self.transition_matrix.T @ self.belief_vec
+    @property
+    def transition_matrix(self) -> np.ndarray:
+        """Dense uniform walk matrix for inspection or comparison with the sparse update."""
+        matrix = np.zeros((self.num_states, self.num_states))
+        matrix[self._src, self._dst] = self._uniform_weights
+        return matrix
+
+    def distances_from(self, position) -> np.ndarray:
+        if position not in self._distances:
+            self._distances[position] = abs(self.rows - position[0]) + abs(self.cols - position[1])
+        return self._distances[position]
+
+    def forecast(self, steps: int, *hunter_positions: tuple[int, int]) -> np.ndarray:
+        """Predict future ghost occupancy without changing the observed posterior."""
+        weights = self._uniform_weights
+        if hunter_positions:
+            nearest = self.distances_from(hunter_positions[0])
+            for position in hunter_positions[1:]:
+                nearest = np.minimum(nearest, self.distances_from(position))
+            # Each legal edge changes nearest-hunter distance by -1, 0 or 1.
+            weights = np.exp2(nearest[self._dst] - nearest[self._src])
+            totals = np.bincount(self._src, weights, minlength=self.num_states)
+            weights = weights / totals[self._src]
+        predicted = self.belief_vec.copy()
+        for _ in range(steps):
+            predicted = np.bincount(self._dst, weights * predicted[self._src], minlength=self.num_states)
+        return predicted
+
+    def time_update(self, *hunter_positions: tuple[int, int]) -> None:
+        """Advance the filter by one actual ghost move."""
+        self.belief_vec = self.forecast(1, *hunter_positions)
         self._normalize_and_floor()
 
     def observation_update(self, reading: int, observer_pos: tuple[int, int]) -> None:
@@ -83,16 +108,8 @@ class HMMTracker:
         Multiplies prior belief by sensor likelihood:
         b_t(s) = alpha * P(reading | X=s, observer_pos) * b'_t(s)
         """
-        likelihood_grid = discrete_sensor_likelihood(
-            reading=reading,
-            observer_pos=observer_pos,
-            sigma=self.sigma,
-            grid_dims=self.grid_dims,
-            free_cells=self.free_cells
-        )
-        
-        # Extract likelihoods for free cells
-        likelihood_vec = np.array([likelihood_grid[cell[0], cell[1]] for cell in self.cell_list], dtype=float)
+        likelihoods = likelihood_by_distance(reading, self.sigma, self.height + self.width - 2)
+        likelihood_vec = likelihoods[self.distances_from(observer_pos)]
         
         # Pointwise multiplication
         self.belief_vec = self.belief_vec * likelihood_vec
@@ -117,8 +134,7 @@ class HMMTracker:
         Walls have exactly 0 probability.
         """
         grid = np.zeros(self.grid_dims, dtype=float)
-        for i, (r, c) in enumerate(self.cell_list):
-            grid[r, c] = self.belief_vec[i]
+        grid[self.rows, self.cols] = self.belief_vec
         return grid
 
     def get_map_estimate(self) -> tuple[int, int]:

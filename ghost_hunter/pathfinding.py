@@ -26,7 +26,7 @@ def astar(
     Computes shortest path from start to goal avoiding walls.
     
     Includes a slight directional momentum penalty:
-    If a move continues in the same direction as last_action, its cost is reduced slightly,
+    If a move continues in the same direction as last_action, it is preferred among equal priorities,
     breaking symmetric ties and preventing the agent from oscillating back-and-forth.
 
     Returns:
@@ -38,24 +38,24 @@ def astar(
         return [start]
     
     height, width = grid_dims
-    free_cells = {(r, c) for r in range(height) for c in range(width)} - set(walls)
+
     
-    if goal not in free_cells:
+    if not (0 <= goal[0] < height and 0 <= goal[1] < width) or goal in walls:
         # If goal is in a wall, return in-place
         return [start]
 
-    # Priority queue stores: (f_score, g_score, counter, current_pos, current_last_action)
+    # Order by total estimated steps, distance remaining, then momentum.
     counter = 0
     open_heap = []
     start_h = heuristic(start, goal)
-    heapq.heappush(open_heap, (start_h, 0.0, counter, start, last_action))
+    heapq.heappush(open_heap, (start_h, start_h, 0.0, counter, 0, start, last_action))
     
     came_from: dict[tuple[int, int], tuple[int, int]] = {}
     g_scores: dict[tuple[int, int], float] = {start: 0.0}
     closed_set: set[tuple[int, int]] = set()
 
     while open_heap:
-        f, g, _, curr, prev_act = heapq.heappop(open_heap)
+        _, _, _, _, g, curr, prev_act = heapq.heappop(open_heap)
         
         if curr == goal:
             # Reconstruct path
@@ -80,24 +80,21 @@ def astar(
         ]
         
         for act, neighbor in candidates:
-            if neighbor not in free_cells or neighbor in closed_set:
+            if not (0 <= neighbor[0] < height and 0 <= neighbor[1] < width):
+                continue
+            if neighbor in walls or neighbor in closed_set:
                 continue
             
-            # Step cost: 1.0 base, minus small bonus if keeping current momentum
-            step_cost = 1.0
-            if prev_act is not None and prev_act == act:
-                step_cost -= momentum_weight
-                
-            tentative_g = g + step_cost
-            
+            tentative_g = g + 1
             if tentative_g < g_scores.get(neighbor, float('inf')):
                 came_from[neighbor] = curr
                 g_scores[neighbor] = tentative_g
                 h = heuristic(neighbor, goal)
-                # Subtle tie-breaking multiplier (1 + 0.001) prefers paths closer to goal
-                f_score = tentative_g + h * 1.001
+                # Momentum only breaks equal-priority ties. Every movement costs one turn.
+                momentum = -momentum_weight if act == prev_act else 0.0
                 counter += 1
-                heapq.heappush(open_heap, (f_score, tentative_g, counter, neighbor, act))
-                
+                heapq.heappush(open_heap, (tentative_g + h, h, momentum, counter,
+                                           tentative_g, neighbor, act))
+
     # If no path found (e.g. enclosed), stay at start
     return [start]
